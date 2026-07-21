@@ -1,0 +1,143 @@
+import { StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#E4E6E9'
+    },
+
+    searchSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        gap: 10,
+        backgroundColor: '#ffffff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#E4E6E9'
+    },
+
+    searchBox: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 24,
+        borderWidth: 1,
+        borderColor: '#D3D5D7',
+        height: 40,
+        paddingHorizontal: 10,
+        gap: 3
+    },
+
+    searchInput: {
+        flex: 1,
+        fontSize: 14,
+        fontWeight: '300',
+        color: "#000000",
+        paddingBottom: 8
+    },
+
+    btnFilter: {
+        width: 40,
+        height: 40,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#D3D5D7',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    tagRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        backgroundColor: '#ffffff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#E4E6E9',
+        gap: 8
+    },
+
+    activeTag: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#E6F1FB',
+        borderWidth: 1,
+        borderColor: '#185FA5',
+        borderRadius: 20,
+        paddingLeft: 12,
+        paddingRight: 8,
+        paddingVertical: 4,
+        gap: 4
+    },
+
+    tagText: {
+        color: '#185FA5',
+        fontSize: 13
+    },
+
+    btnRemoveTag: {
+        padding: 2,
+    },
+
+    xText: {
+        color: '#E24B4A',
+        fontSize: 11,
+        fontWeight: '700',
+    },
+
+    btnClear: {
+        color: '#E24B4A',
+        fontSize: 13,
+        fontWeight: '500'
+    },
+
+    subHeaderRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        marginBottom: 12,
+        backgroundColor: '#ffffff'
+    },
+
+    countText: {
+        fontSize: 14,
+        color: '#000000'
+    },
+
+    btnSort: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8
+    },
+
+    sortText: {
+        fontSize: 14,
+        fontWeight: '300',
+        color: '#1A7FC1'
+    },
+
+    btnLoadMore: {
+        backgroundColor: '#0284C7',
+        borderRadius: 6,
+        paddingVertical: 8,
+        marginHorizontal: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 4,
+        marginTop: -2,
+        marginBottom: 10
+    },
+
+    loadMoreText: {
+        color: '#ffffff',
+        fontSize: 16,
+        fontWeight: '500'
+    }
+});
+
+export default styles;

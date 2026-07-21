@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "69735254105",
+    "project_id": "tourguide-khanhhoa",
+    "storage_bucket": "tourguide-khanhhoa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69735254105:android:cce0a9c7816d19d6c8c948",
+        "android_client_info": {
+          "package_name": "com.app_core"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0KnfBlZ9h1E-sHpaCIj2R2jiJ1lWLJ5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69735254105:android:a483681f16b519d3c8c948",
+        "android_client_info": {
+          "package_name": "com.pushnotification"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0KnfBlZ9h1E-sHpaCIj2R2jiJ1lWLJ5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
