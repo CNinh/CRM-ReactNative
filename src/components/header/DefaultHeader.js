@@ -1,70 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import Icon from "react-native-vector-icons/Ionicons";
 import DefaultButton from "../buttons/DefaultButton";
 import ImageButton from "../buttons/ImageButton";
 import colors from "../../constants/colors";
 import IcReload from "../../assets/icons/reload.svg";
+import SideMenu from "../../navigation/SideMenu";
+import { useNavigation } from "@react-navigation/native";
 
 const DefaultHeader = ({ navigation, options, route }) => {
-    const title = options.headerTitle !== undefined ? options.headerTitle : route.name;
 
-    const isDetailScreen = route.name.startsWith('Detail');
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const title = options.headerTitle !== undefined ? options.headerTitle : route.name;
+    
+    const isDetailScreen =
+        route.name.startsWith('Detail') ||
+        route.name.startsWith('Form') ||
+        route.name.startsWith('Create') ||
+        route.name.startsWith('Edit') ||
+        route.name.startsWith('Select') ||
+        route.name.startsWith('Anniversary');
+
+    const handleGoBack = () => {
+        if (navigation && navigation.canGoBack()) {
+            navigation.goBack();
+        }
+    };
 
     return (
-        <View style={styles.headerContainer}>
-            {/* Left header */}
-            <View style={styles.leftGroup}>
+        <>
+            <View style={styles.headerContainer}>
+                {/* Left header */}
+                <View style={styles.leftGroup}>
+                    {isDetailScreen ? (
+                        <>
+                            <TouchableOpacity onPress={() => handleGoBack()} style={styles.leftButton}>
+                                <Icon name="arrow-back" size={24} color="#ffffff" />
+                            </TouchableOpacity>
+                            <Text style={[styles.titleText, styles.titleTextDetail]} numberOfLines={1}>
+                                {title}
+                            </Text>
+                        </>
+                    ) : (
+                        <>
+                            <TouchableOpacity onPress={() => setIsMenuOpen(true)} style={styles.leftButton}>
+                                <Icon name="menu" size={26} color="#ffffff" />
+                            </TouchableOpacity>
+                            <Text style={[styles.titleText]} numberOfLines={1}>
+                                {title}
+                            </Text>
+                        </>
+                    )}
+                </View>
+
+                {/* Right header */}
                 {isDetailScreen ? (
-                    <>
-                        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.leftButton}>
-                            <Icon name="arrow-back" size={24} color="#ffffff" />
-                        </TouchableOpacity>
-                        <Text style={[styles.titleText, styles.titleTextDetail]} numberOfLines={1}>
-                            {title}
-                        </Text>
-                    </>
+                    <View style={styles.rightContainerEmpty} />
                 ) : (
-                    <>
-                        <TouchableOpacity onPress={() => navigation.openDrawer()} style={styles.leftButton}>
-                            <Icon name="menu" size={26} color="#ffffff" />
+                    <View style={styles.rightContainer}>
+                        <TouchableOpacity style={{ marginRight: 18 }} onPress={() => console.log('Open Notification')}>
+                            <Icon name="notifications-outline" size={24} color="#ffffff" />
+                            {options.unreadNotification > 0 && (
+                                <View style={styles.badge}>
+                                    <Text style={styles.badgeText}>{options.unreadNotification}</Text>
+                                </View>
+                            )}
                         </TouchableOpacity>
-                        <Text style={[styles.titleText]} numberOfLines={1}>
-                            {title}
-                        </Text>
-                    </>
+
+                        {options.handleReload && (
+                            <TouchableOpacity onPress={options.handleReload}>
+                                <IcReload width={30} height={30} color="#ffffff" />
+                            </TouchableOpacity>
+                        )}
+                    </View>
                 )}
             </View>
             
-            {/* Right header */}
-            {isDetailScreen ? (
-                <View style={styles.rightContainerEmpty} />
-            ) : (
-                <View style={styles.rightContainer}>
-                    <TouchableOpacity style={{ marginRight: 18 }} onPress={() => console.log('Open Notification')}>
-                        <Icon name="notifications-outline" size={24} color="#ffffff" />
-                        {options.unreadNotification > 0 && (
-                            <View style={styles.badge}>
-                                <Text style={styles.badgeText}>{options.unreadNotification}</Text>
-                            </View>
-                        )}
-                    </TouchableOpacity>
-
-                    {options.handleReload && (
-                        <TouchableOpacity onPress={options.handleReload}>
-                            <IcReload width={30} height={30} color="#ffffff" />
-                        </TouchableOpacity>
-                    )}
-                </View>
+            {!isDetailScreen && isMenuOpen && (
+                <SideMenu
+                    visible={isMenuOpen}
+                    onClose={() => setIsMenuOpen(false)}
+                    navigation={navigation}
+                />
             )}
-        </View>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: 'row',
-        height: 56,
+        height: 60,
         backgroundColor: '#4AA0DF',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -73,42 +100,43 @@ const styles = StyleSheet.create({
         shadowColor: '#000000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
-        shadowRadius: 3,
+        shadowRadius: 3
     },
+
     leftGroup: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 4,
+        gap: 4
     },
 
     leftButton: {
         width: 30,
         height: 30,
         justifyContent: 'center',
-        alignItems: 'flex-start',        
+        alignItems: 'flex-start'
     },
 
     titleText: {
         fontSize: 18,
         fontWeight: 600,
         color: '#ffffff',
-        flex: 1,
+        flex: 1
     },
 
     titleTextDetail: {
-        fontWeight: 700,
+        fontWeight: 700
     },
 
     rightContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        paddingLeft: '10',
+        paddingLeft: '10'
     },
 
     rightContainerEmpty: {
-        width: 0,
+        width: 0
     },
 
     badge: {
@@ -120,13 +148,13 @@ const styles = StyleSheet.create({
         width: 18,
         height: 18,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
 
     badgeText: {
         color: 'white',
         fontSize: 10,
-        fontWeight: 'bold',
+        fontWeight: 'bold'
     }
 });
 

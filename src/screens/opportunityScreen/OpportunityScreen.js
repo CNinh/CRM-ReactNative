@@ -8,8 +8,8 @@ import {
     FlatList,
     ScrollView
 } from "react-native";
-import { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useState, useEffect, useCallback } from "react";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./OpportunityScreen.style";
 import OpportunityCard from "../../components/cards/OpportunityCard";
 import FilterModal from "../../components/modals/filterModal/FilterModal";
@@ -22,6 +22,8 @@ import { opportunity, stage, service, department, staff } from '../../data/mockD
 
 const OpportunityScreen = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+
     const [searchText, setSearchText] = useState('');
     const [visibleCount, setVisibleCount] = useState(4);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -33,6 +35,18 @@ const OpportunityScreen = () => {
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
 
+    // Nhận param redirect từ màn hình khách hàng sang
+    useFocusEffect(
+        useCallback(() => {
+            const keyword = route.params?.searchKeyword;
+
+            if (keyword) {
+                setSearchText(keyword);
+                // clear param sau khi truyền thành công
+                navigation.setParams({ searchKeyword: undefined });
+            }
+        }, [route.params?.searchKeyword])
+    );
 
     /* Filter */
     const getItemName = (id, dataArray) => {
@@ -57,10 +71,34 @@ const OpportunityScreen = () => {
         const cleanTitle = removeAccents(item.title || item.name || '').toLowerCase();
         const cleanCode = removeAccents(item.code || item.opportunityCode || item.projectCode || '').toLowerCase();
 
-        const matchesSearch = !cleanSearch ||
-            cleanTitle.includes(cleanSearch) ||
-            cleanCode.includes(cleanSearch);
-            
+        const cleanCustomerCode = removeAccents(item.customerCode || '').toLowerCase();
+        const cleanCustomerName = removeAccents(item.customerName || item.customer || '').toLowerCase();
+
+        let matchesSearch = !cleanSearch;
+
+        if (cleanSearch) {
+            const parts = cleanSearch.split('-').map(p => p.trim()).filter(Boolean);
+
+            if (parts.length > 1) {
+                const searchCode = parts[0];
+                const searchName = parts[1];
+
+                // search từ param được truyền vào
+                matchesSearch =
+                    (cleanCustomerCode && cleanCustomerCode.includes(searchCode)) ||
+                    (cleanCustomerName && cleanCustomerName.includes(searchName)) ||
+                    cleanTitle.includes(searchName) ||
+                    cleanCode.includes(searchCode);
+            } else {
+                // gõ tìm kiếm trên ô để search
+                matchesSearch =
+                    cleanTitle.includes(cleanSearch) ||
+                    cleanCode.includes(cleanSearch) ||
+                    (cleanCustomerCode && cleanCustomerCode.includes(cleanSearch)) ||
+                    (cleanCustomerName && cleanCustomerName.includes(cleanSearch));
+            }
+        }
+
         // Giai đoạn
         const matchesStage = selectedStage.length === 0 ||
             selectedStage.includes(item.stageId) ||
@@ -172,7 +210,7 @@ const OpportunityScreen = () => {
     useEffect(() => {
         navigation.setOptions({
             handleReload: () => {
-                console.log("Đang tải lại danh sách cơ hội kinh doanh...");
+                console.log("Làm mới danh sách cơ hội kinh doanh");
                 setSearchText('');
                 setVisibleCount(4);
             }
@@ -287,7 +325,7 @@ const OpportunityScreen = () => {
                     />
                 )}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 12 }}
+                contentContainerStyle={{ paddingBottom: 12, marginTop: 12 }}
 
                 ListFooterComponent={() => {
                     if (visibleCount < filteredData.length) {

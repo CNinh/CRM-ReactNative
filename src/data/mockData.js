@@ -55,18 +55,39 @@ export const staff = [
     { id: 12, name: 'Trần Duy Tân (tantd.kha)' }
 ];
 
+export const category = [
+    { id: 1, name: 'Doanh nghiệp' },
+    { id: 2, name: 'Hành chính sự nghiệp khác' },
+    { id: 3, name: 'Tổ chức' },
+    { id: 4, name: 'Hộ kinh doanh cá thể' },
+    { id: 5, name: 'Khối Xây dựng & Bất động sản' },
+    { id: 6, name: 'Khổi Giáo dục & Trường học' },
+    { id: 7, name: 'Khối Ngân hàng & Tài chính' },
+    { id: 8, name: 'Khối Hàng tiêu dùng nhanh' },
+    { id: 9, name: 'Khối Cơ quan Hành chính Nhà nước' }
+];
+
+export const state = [
+    { id: 1, name: 'Tìm năng' },
+    { id: 2, name: 'Đã liên hệ' },
+    { id: 3, name: 'Đàm phán' },
+    { id: 4, name: 'Đang hợp tác' },
+    { id: 5, name: 'Tạm ngưng' },
+    { id: 6, name: 'Kết thúc' }
+];
+
 /* Data cơ hội kinh doanh */
 const baseOpportunity = {
     code: "[BO00000080]",
-        name: "Truyền thanh thông minh - xã Hoà Trí",
-        stage: "Tìm hiểu nhu cầu",
-        dept: "Phòng Văn hoá xã hội",
-        services: ["VNPT SmartCloud", "VNPT WAF", "vnPortal", "VNPT DNS Protection", "VNPT Cloud Object Storage", "VNPT Cloud - Advanced Object Storage"],
-        staff: ["Quản trị CTN", "Ngô Việt Thắng", "Trần Duy Tân", "Nguyễn Thị Thu hà", "Đỗ Phương Liên"],
-        date: "07/05/2026",
-        time: "16:25",
-        expectedValue: 160000000,
-        probability: 50
+    name: "Truyền thanh thông minh - xã Hoà Trí",
+    stage: "Tìm hiểu nhu cầu",
+    dept: "Phòng Văn hoá xã hội",
+    services: ["VNPT SmartCloud", "VNPT WAF", "vnPortal", "VNPT DNS Protection", "VNPT Cloud Object Storage", "VNPT Cloud - Advanced Object Storage"],
+    staff: ["Quản trị CTN", "Ngô Việt Thắng", "Trần Duy Tân", "Nguyễn Thị Thu hà", "Đỗ Phương Liên"],
+    date: "07/05/2026",
+    time: "16:25",
+    expectedValue: 160000000,
+    probability: 50
 }
 
 export const opportunity = [
@@ -87,6 +108,8 @@ export const opportunity = [
         id: 2,
         code: "[BO00000080]",
         name: "Truyền thanh thông minh - xã Hoà Trí",
+        customerCode: "[KHA070768704]",
+        customerName: "(Nguyễn Tiến Dũng) CÔNG TY CỔ PHẦN THUẬN HẢI ENERGY",
         stage: "Tìm hiểu nhu cầu",
         dept: "Phòng Văn hoá xã hội",
         services: ["VNPT SmartCloud", "VNPT WAF", "vnPortal", "VNPT DNS Protection", "VNPT Cloud Object Storage", "VNPT Cloud - Advanced Object Storage"],
@@ -147,7 +170,7 @@ export const opportunity = [
         time: "16:25",
         expectedValue: 160000000,
         probability: 50
-    },{
+    }, {
         id: 7,
         code: "[BO00000081]",
         name: "Số hóa quy trình quản lý văn bản bệnh viện",
@@ -178,16 +201,16 @@ export const opportunity = [
 /* Data dự án */
 const baseProject = {
     code: "[DA00000103]",
-        name: "Dự án nuôi em",
-        stage: "Tư vấn/khảo sát",
-        dept: "Ban Chỉ Huy Bộ Đội Biên Phòng",
-        services: ["Camera AI", "Dịch vụ điện toán đám mây VNPT Cloud hợp tác SBĐ", "Hạ tầng Cloud"],
-        staff: ["Phan Lương Bằng", "Trần Duy Tân"],
-        date: "01/04/2026",
-        time: "08:00",
-        cost: 120000000,
-        revenue: 0,
-        successRate: 100
+    name: "Dự án nuôi em",
+    stage: "Tư vấn/khảo sát",
+    dept: "Ban Chỉ Huy Bộ Đội Biên Phòng",
+    services: ["Camera AI", "Dịch vụ điện toán đám mây VNPT Cloud hợp tác SBĐ", "Hạ tầng Cloud"],
+    staff: ["Phan Lương Bằng", "Trần Duy Tân"],
+    date: "01/04/2026",
+    time: "08:00",
+    cost: 120000000,
+    revenue: 0,
+    successRate: 100
 }
 
 export const project = [
@@ -395,7 +418,97 @@ export const plan = [
         time: "09:00",
         description: ""
     },
-]
+];
+
+/* Data khách hàng */
+const baseCustomer = {
+        code: "[KHA070768704]",
+        name: "(Nguyễn Tiến Dũng) CÔNG TY CỔ PHẦN THUẬN HẢI ENERGY",
+        tax: "0124624562",
+        mail: "energy@gmail.com",
+        contact: "0775566138",
+        phone: "0915162897",
+        mess: "0352925631",
+        category: "Quản lý doanh nghiệp",
+        toc: "Doanh nghiệp",
+        foundingDate: "24/04/2019",
+        fund: 1000000000,
+        address: "52 Lê Hồng Phong - Nha Trang - Khánh Hoà",
+        state: "Tiềm năng"
+    }
+
+const baseContact = {
+        id: 1,
+        code: "[KHA070761408]",
+        name: "Lê Thị Bảo Ngọc",
+        tax: "0124624562",
+        email: "abcc@gmail.com",
+        phone: "543162897",
+        mobile: "0412162897",
+        message: "0748925631",
+        position: "Quản lý doanh nghiệp",
+        toc: "Doanh nghiệp",
+        foundingDate: "04/12/2014",
+        fund: 1000000000,
+        address: "29 Tố Hữu - Nha Trang - Khánh Hoà",
+        state: "Đã liên hệ",
+        status: "Hoạt động"
+    }
+
+/* Data kỷ niệm */
+export const anniversaryType = [
+    {id: 1, name: 'Sinh nhật'},
+    {id: 2, name: 'Ngày ký hợp đồng'},
+    {id: 3, name: 'Ngày thành lập'}
+];
+
+export const anniversary = [
+    {
+        id: 1,
+        title: 'Sinh nhật',
+        icon: 'birthday',
+        date: '03/06/2026',
+        calendarType: 'Dương lịch',
+        hasReminder: true,
+        note: 'Khách hàng năm ngoái đặt bánh kem 2 tầng vị chocolate, có yêu cầu ship tận công ty trước 9h sáng và tặng kèm hoa hồng đỏ. Năm nay nên đặt trước ít nhất 3 ngày để kịp chuẩn bị.'
+    },
+    {
+        id: 2,
+        title: 'Ngày ký hợp đồng',
+        icon: 'contract',
+        date: '05/08/2026',
+        calendarType: 'Âm lịch',
+        hasReminder: true,
+        note: ''
+    },
+    {
+        id: 3,
+        title: 'Ngày thành lập',
+        icon: 'company',
+        date: '21/07/2026',
+        calendarType: 'Dương lịch',
+        hasReminder: true,
+        note: ''
+    },
+    {
+        id: 4,
+        title: 'Ngày thành lập',
+        icon: 'company',
+        date: '21/07/2026',
+        calendarType: 'Dương lịch',
+        hasReminder: true,
+        note: ''
+    },
+    {
+        id: 5,
+        title: 'Ngày thành lập',
+        icon: 'company',
+        date: '21/07/2026',
+        calendarType: 'Dương lịch',
+        hasReminder: true,
+        note: ''
+    },
+];
 
 /* =================================================== */
 /* Hàm helper duplicate data */
@@ -409,3 +522,6 @@ const duplicateData = (baseItem, count) => {
 
 export const mockOpportunity = duplicateData(baseOpportunity, 15);
 export const mockProject = duplicateData(baseProject, 15);
+export const mockCustomer = duplicateData(baseCustomer, 15);
+export const mockContact = duplicateData(baseContact, 4);
+export const addContact = duplicateData(baseContact, 10);

@@ -171,7 +171,7 @@ const ProjectScreen = () => {
     useEffect(() => {
         navigation.setOptions({
             handleReload: () => {
-                console.log("Đang tải danh sách dự án...");
+                console.log("Làm mới danh sách dự án");
                 setSearchText('');
                 setVisibleCount(4);
             }
@@ -281,7 +281,7 @@ const ProjectScreen = () => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => <ProjectCard item={item} type="project" />}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 12 }}
+                contentContainerStyle={{ paddingBottom: 12, marginTop: 12 }}
 
                 ListFooterComponent={() => {
                     if (visibleCount < filteredData.length) {
