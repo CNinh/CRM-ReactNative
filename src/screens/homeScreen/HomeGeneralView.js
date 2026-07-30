@@ -48,7 +48,6 @@ const HomeGeneralView = () => {
     const [currentTab, setCurrentTab] = useState('summary');
     const [fromDate, setFromDate] = useState(getCurrentDateString());
     const [toDate, setToDate] = useState(getCurrentDateString());
-    const [viewMode, setViewMode] = useState('OVERVIEW');
     const [searchOpportunity, setSearchOpportunity] = useState('');
     const [searchProject, setSearchProject] = useState('');
 
@@ -96,33 +95,21 @@ const HomeGeneralView = () => {
     };
 
     const handleLoadMoreOpt = () => {
-        setViewMode('EXPAND_OPPORTUNITY')
         setVisibleOpportunity(prev => prev + 10);
     }
 
     const handleLoadMorePrj = () => {
-        setViewMode('EXPAND_PROJECT')
         setVisibleProject(prev => prev + 10);
     }
 
-    // Các nút chức năng trên navigation header
     useEffect(() => {
-        if (viewMode === 'OVERVIEW') {
-            navigation.setOptions({
-                handleReload: () => {
-                    console.log("Đang tải dữ liệu mới nhất cho trang...");
-                }
-            });
-        } else {
-            navigation.setOptions({
-                handleReload: () => {
-                    setViewMode('OVERVIEW');
-                    setVisibleOpportunity(3);
-                    setVisibleProject(3);
-                }
-            });
-        }
-    }, [navigation, viewMode]);
+        navigation.setOptions({
+            handleReload: () => {
+                setVisibleOpportunity(3);
+                setVisibleProject(3);
+            }
+        });
+    }, [navigation]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -204,82 +191,78 @@ const HomeGeneralView = () => {
                 {/* Opportunity | Project list */}
                 <View style={styles.overviewBody}>
                     {/* Opportunity list */}
-                    {viewMode !== 'EXPAND_PROJECT' && (
-                        <View style={styles.halfSection}>
-                            <View style={styles.sectionHeader}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 30 }}>
-                                    <IcList width={24} height={24} color="#1A7FC1" />
-                                    <Text style={styles.sectionTitle}>Danh sách cơ hội</Text>
-                                </View>
+                    <View style={styles.halfSection}>
+                        <View style={styles.sectionHeader}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 30 }}>
+                                <IcList width={24} height={24} color="#1A7FC1" />
+                                <Text style={styles.sectionTitle}>Danh sách cơ hội</Text>
                             </View>
-                            <View style={styles.searchBox}>
-                                <IcSearch width={18} height={18} color="#D3D5D7" />
-                                <TextInput
-                                    style={[styles.searchInput, { flex: 1 }]}
-                                    placeholder="Nhập tên cơ hội kinh doanh"
-                                    value={searchOpportunity}
-                                    onChangeText={setSearchOpportunity}
-                                />
-                            </View>
-
-                            {getDisplayOpt().map((item, index) => (
-                                <OpportunityCard
-                                    key={item.id}
-                                    item={item}
-                                    type="home"
-                                    onButtonPress={() => {
-                                        console.log('Hiển thị nhật ký cơ hội')
-                                    }}
-                                />
-                            ))}
-
-                            {visibleOpportunity < (mockOpportunity?.length || 0) && (
-                                <TouchableOpacity style={styles.btnLoadMore} onPress={handleLoadMoreOpt}>
-                                    <IcPlus width={26} height={26} color="#ffffff" style={{ translateY: 1.2 }} />
-                                    <Text style={styles.loadMoreText}>Tải thêm 10 cơ hội</Text>
-                                </TouchableOpacity>
-                            )}
                         </View>
-                    )}
+                        <View style={styles.searchBox}>
+                            <IcSearch width={18} height={18} color="#D3D5D7" />
+                            <TextInput
+                                style={[styles.searchInput, { flex: 1 }]}
+                                placeholder="Nhập tên cơ hội kinh doanh"
+                                value={searchOpportunity}
+                                onChangeText={setSearchOpportunity}
+                            />
+                        </View>
+
+                        {getDisplayOpt().map((item, index) => (
+                            <OpportunityCard
+                                key={item.id}
+                                item={item}
+                                type="home"
+                                onButtonPress={() => {
+                                    console.log('Hiển thị nhật ký cơ hội')
+                                }}
+                            />
+                        ))}
+
+                        {visibleOpportunity < (mockOpportunity?.length || 0) && (
+                            <TouchableOpacity style={styles.btnLoadMore} onPress={handleLoadMoreOpt}>
+                                <IcPlus width={26} height={26} color="#ffffff" style={{ translateY: 1.2 }} />
+                                <Text style={styles.loadMoreText}>Tải thêm 10 cơ hội</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
 
                     {/* Project list */}
-                    {viewMode !== 'EXPAND_OPPORTUNITY' && (
-                        <View style={styles.halfSection}>
-                            <View style={styles.sectionHeader}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 30 }}>
-                                    <IcList width={24} height={24} color="#1A7FC1" />
-                                    <Text style={styles.sectionTitle}>Danh sách dự án</Text>
-                                </View>
+                    <View style={styles.halfSection}>
+                        <View style={styles.sectionHeader}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 30 }}>
+                                <IcList width={24} height={24} color="#1A7FC1" />
+                                <Text style={styles.sectionTitle}>Danh sách dự án</Text>
                             </View>
-                            <View style={styles.searchBox}>
-                                <IcSearch width={18} height={18} color="#D3D5D7" />
-                                <TextInput
-                                    style={[styles.searchInput, { flex: 1 }]}
-                                    placeholder="Nhập tên dự án"
-                                    value={searchProject}
-                                    onChangeText={setSearchProject}
-                                />
-                            </View>
-
-                            {getDisplayPrj().map((item, index) => (
-                                <ProjectCard
-                                    key={item.id}
-                                    item={item}
-                                    type="home"
-                                    onButtonPress={() => {
-                                        console.log('Hiển thị nhật ký dự án')
-                                    }}
-                                />
-                            ))}
-
-                            {visibleProject < (mockProject?.length || 0) && (
-                                <TouchableOpacity style={styles.btnLoadMore} onPress={handleLoadMorePrj}>
-                                    <IcPlus width={26} height={26} color="#ffffff" style={{ translateY: 1.2 }} />
-                                    <Text style={styles.loadMoreText}>Tải thêm 10 dự án</Text>
-                                </TouchableOpacity>
-                            )}
                         </View>
-                    )}
+                        <View style={styles.searchBox}>
+                            <IcSearch width={18} height={18} color="#D3D5D7" />
+                            <TextInput
+                                style={[styles.searchInput, { flex: 1 }]}
+                                placeholder="Nhập tên dự án"
+                                value={searchProject}
+                                onChangeText={setSearchProject}
+                            />
+                        </View>
+
+                        {getDisplayPrj().map((item, index) => (
+                            <ProjectCard
+                                key={item.id}
+                                item={item}
+                                type="home"
+                                onButtonPress={() => {
+                                    console.log('Hiển thị nhật ký dự án')
+                                }}
+                            />
+                        ))}
+
+                        {visibleProject < (mockProject?.length || 0) && (
+                            <TouchableOpacity style={styles.btnLoadMore} onPress={handleLoadMorePrj}>
+                                <IcPlus width={26} height={26} color="#ffffff" style={{ translateY: 1.2 }} />
+                                <Text style={styles.loadMoreText}>Tải thêm 10 dự án</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>
