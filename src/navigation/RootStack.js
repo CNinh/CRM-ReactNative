@@ -6,6 +6,9 @@ import FormContactScreen from '../screens/customerScreen/FormContactScreen';
 import SelectContactScreen from '../screens/customerScreen/SelectContactScreen';
 import AnniversaryScreen from '../screens/customerScreen/AnniversaryScreen';
 import FormAnniversaryScreen from '../screens/customerScreen/FormAnniversaryScreen';
+import AddMemberScreen from '../screens/opportunityScreen/AddMemberScreen';
+import DetailOpportunityScreen from '../screens/opportunityScreen/detailOpportunityScreen/DetailOpportunityScreen';
+import CreateOpportunityScreen from '../screens/opportunityScreen/CreateOpportunityScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +30,7 @@ const RootStack = () => {
                         : 'Thêm mới khách hàng'
                 })}
             />
+
             <Stack.Screen
                 name="FormContactScreen"
                 component={FormContactScreen}
@@ -36,11 +40,13 @@ const RootStack = () => {
                         : 'Thêm người liên hệ'
                 })}
             />
+
             <Stack.Screen
                 name="SelectContactScreen"
                 component={SelectContactScreen}
                 options={{ headerTitle: 'Thêm thông tin người liên hệ' }}
             />
+
             <Stack.Screen
                 name="AnniversaryScreen"
                 component={AnniversaryScreen}
@@ -57,6 +63,7 @@ const RootStack = () => {
                     };
                 }}
             />
+
             <Stack.Screen
                 name="FormAnniversaryScreen"
                 component={FormAnniversaryScreen}
@@ -65,6 +72,24 @@ const RootStack = () => {
                         ? 'Cập nhật ngày kỷ niệm'
                         : 'Thêm ngày kỷ niệm'
                 })}
+            />
+
+            <Stack.Screen
+                name="AddMemberScreen"
+                component={AddMemberScreen}
+                options={{ headerTitle: 'Thêm thành viên tham gia' }}
+            />
+
+            <Stack.Screen
+                name="DetailOpportunityScreen"
+                component={DetailOpportunityScreen}
+                options={{ headerTitle: 'Chi tiết cơ hội kinh doanh' }}
+            />
+
+            <Stack.Screen
+                name="CreateOpportunityScreen"
+                component={CreateOpportunityScreen}
+                options={{ headerTitle: 'Thêm mới cơ hội kinh doanh' }}
             />
         </Stack.Navigator>
     );

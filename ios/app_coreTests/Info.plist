@@ -20,5 +20,51 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>HelveticaNeue-Bold.otf</string>
+		<string>HelveticaNeue-BoldItalic.otf</string>
+		<string>HelveticaNeue-CondensedBlack.otf</string>
+		<string>HelveticaNeue-CondensedBold.otf</string>
+		<string>HelveticaNeue-Italic.otf</string>
+		<string>HelveticaNeue-Light.otf</string>
+		<string>HelveticaNeue-LightItalic.otf</string>
+		<string>HelveticaNeue-Medium.otf</string>
+		<string>HelveticaNeue-UltraLight.otf</string>
+		<string>HelveticaNeue-UltraLightItalic.otf</string>
+		<string>HelveticaNeue.otf</string>
+		<string>helvetica-neue-bold-italic.ttf</string>
+		<string>helvetica-neue-bold.ttf</string>
+		<string>helvetica-neue-condensed-black.ttf</string>
+		<string>helvetica-neue-condensed-bold.ttf</string>
+		<string>helvetica-neue-italic.ttf</string>
+		<string>helvetica-neue-light-italic.ttf</string>
+		<string>helvetica-neue-light.ttf</string>
+		<string>helvetica-neue-medium.ttf</string>
+		<string>helvetica-neue-regular.ttf</string>
+		<string>helvetica-neue-ultra-light-italic.ttf</string>
+		<string>helvetica-neue-ultra-light.ttf</string>
+		<string>helveticaneue.ttf</string>
+		<string>helveticaneuebold.ttf</string>
+		<string>helveticaneuebolditalic.ttf</string>
+		<string>helveticaneuecondensedblack.ttf</string>
+		<string>helveticaneuecondensedbold.ttf</string>
+		<string>helveticaneueitalic.ttf</string>
+		<string>helveticaneuelight.ttf</string>
+		<string>helveticaneuelightitalic.ttf</string>
+		<string>helveticaneuemedium.ttf</string>
+		<string>helveticaneueultralight.ttf</string>
+		<string>helveticaneueultralightitalic.ttf</string>
+		<string>IntelOneMono-Bold.ttf</string>
+		<string>IntelOneMono-BoldItalic.ttf</string>
+		<string>IntelOneMono-Italic.ttf</string>
+		<string>IntelOneMono-Light.ttf</string>
+		<string>IntelOneMono-LightItalic.ttf</string>
+		<string>IntelOneMono-Medium.ttf</string>
+		<string>IntelOneMono-MediumItalic.ttf</string>
+		<string>IntelOneMono-Regular.ttf</string>
+		<string>IntelOneMono-SemiBold.ttf</string>
+		<string>IntelOneMono-SemiBoldItalic.ttf</string>
+	</array>
 </dict>
 </plist>

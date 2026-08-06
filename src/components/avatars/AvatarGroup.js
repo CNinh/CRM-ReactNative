@@ -1,7 +1,11 @@
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { getInitials, getAvatarColorPair } from "./AvatarColor";
+import MemberListModal from "../modals/MemberListModal";
 
 const AvatarGroup = ({ members = [], maxDisplay = 3 }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+
     const displayMembers = members.slice(0, maxDisplay);
     const others = members.length - maxDisplay;
 
@@ -29,12 +33,22 @@ const AvatarGroup = ({ members = [], maxDisplay = 3 }) => {
             })}
 
             {others > 0 && (
-                <View style={[styles.avatarCircle, { backgroundColor: '#F1EFE8', marginLeft: -10 }]}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => setModalVisible(true)}
+                    style={[styles.avatarCircle, { backgroundColor: '#F1EFE8', marginLeft: -10 }]}
+                >
                     <Text style={[styles.avatarText, { color: '#185FA5' }]}>
                         +{others}
                     </Text>
-                </View>
+                </TouchableOpacity>
             )}
+
+            <MemberListModal
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                members={members}
+            />
         </View>
     );
 }
@@ -46,19 +60,31 @@ const styles = StyleSheet.create({
     },
 
     avatarCircle: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
+        width: 32,
+        height: 32,
+        borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
         borderColor: '#ffffff'
     },
-    
+
     avatarText: {
         fontSize: 11,
         fontWeight: '500',
     }
 });
 
-export default AvatarGroup;
+const arePropsEqual = (prevProps, nextProps) => {
+    if (prevProps.maxDisplay !== nextProps.maxDisplay) return false;
+    if (prevProps.members.length !== nextProps.members.length) return false;
+
+    return prevProps.members.every((member, index) => {
+        const prevName = typeof member === 'string' ? member : member.name;
+        const nextMember = nextProps.members[index];
+        const nextName = typeof nextMember === 'string' ? nextMember : nextMember.name;
+        return prevName === nextName;
+    });
+};
+
+export default React.memo(AvatarGroup, arePropsEqual);

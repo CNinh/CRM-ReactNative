@@ -86,6 +86,16 @@
 		<string>helveticaneuemedium.ttf</string>
 		<string>helveticaneueultralight.ttf</string>
 		<string>helveticaneueultralightitalic.ttf</string>
+		<string>IntelOneMono-Bold.ttf</string>
+		<string>IntelOneMono-BoldItalic.ttf</string>
+		<string>IntelOneMono-Italic.ttf</string>
+		<string>IntelOneMono-Light.ttf</string>
+		<string>IntelOneMono-LightItalic.ttf</string>
+		<string>IntelOneMono-Medium.ttf</string>
+		<string>IntelOneMono-MediumItalic.ttf</string>
+		<string>IntelOneMono-Regular.ttf</string>
+		<string>IntelOneMono-SemiBold.ttf</string>
+		<string>IntelOneMono-SemiBoldItalic.ttf</string>
 	</array>
 </dict>
 </plist>

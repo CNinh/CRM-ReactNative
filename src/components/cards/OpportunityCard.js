@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import IcBuilding from '../../assets/icons/building.svg';
 import IcHistory from '../../assets/icons/history.svg';
 import IcClock from '../../assets/icons/clock.svg';
@@ -8,6 +9,7 @@ import IcAdd from '../../assets/icons/add.svg';
 import AvatarGroup from "../avatars/AvatarGroup";
 
 const OpportunityCard = ({ item, type = 'opportunity', onButtonPress }) => {
+    const navigation = useNavigation();
     const service = item?.services || [];
     const displayServices = service.slice(0, 2);
     const otherServices = service.length - 2;
@@ -19,72 +21,81 @@ const OpportunityCard = ({ item, type = 'opportunity', onButtonPress }) => {
         return `${value.toLocaleString('vi-VN')} đ`;
     };
 
+    const handlePressCard = () => {
+        navigation.navigate('DetailOpportunityScreen', { item });
+    }
+
     return (
-        <View style={styles.cardContainer}>
-            <View style={styles.cardHeader}>
-                <View style={[styles.statusTag, { backgroundColor: '#008BB2' }]}>
-                    <Text style={styles.statusText}>{item?.stage}</Text>
-                </View>
-                <View style={styles.cardTime}>
-                    <IcClock width={14} height={14} color="#000000" />
-                    <Text style={styles.timeText}>{item?.date} · {item?.time}</Text>
-                </View>
-            </View>
-
-            <Text style={styles.titleText} numberOfLines={2}>
-                {item?.code} {item?.name}
-            </Text>
-
-            <View style={styles.infoRow}>
-                <IcBuilding width={22} height={22} color="#C62828" />
-                <Text style={styles.deptText}>{item?.dept}</Text>
-            </View>
-
-            <View style={styles.tagGroup}>
-                {displayServices.map((srv, idx) => (
-                    <View key={idx} style={styles.serviceTag}>
-                        <IcBox width={12} height={12} color="#000000" />
-                        <Text style={styles.serviceText}>{srv}</Text>
+        <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={handlePressCard}
+        >
+            <View style={styles.cardContainer}>
+                <View style={styles.cardHeader}>
+                    <View style={[styles.statusTag, { backgroundColor: '#008BB2' }]}>
+                        <Text style={styles.statusText}>{item?.stage}</Text>
                     </View>
-                ))}
-                {otherServices > 0 && (
-                    <View style={[styles.serviceTag, { backgroundColor: '#c7e1fa', borderColor: '#185FA5' }]}>
-                        <IcPlus width={14} height={14} color="#185FA5" />
-                        <Text style={[styles.serviceText, { color: '#185FA5' }]}>
-                            {otherServices} dịch vụ khác
-                        </Text>
+                    <View style={styles.cardTime}>
+                        <IcClock width={14} height={14} color="#000000" />
+                        <Text style={styles.timeText}>{item?.date} · {item?.time}</Text>
                     </View>
-                )}
-            </View>
+                </View>
 
-            <Text style={styles.valueText}>
-                Giá trị dự kiến: <Text style={styles.boldGreen}>{formatCurrency(item?.expectedValue)}</Text> - Xác xuất chốt <Text style={styles.boldOrange}>{item?.probability},00 %</Text>
-            </Text>
+                <Text style={styles.titleText} numberOfLines={2}>
+                    {item?.code} {item?.name}
+                </Text>
 
-            <View style={styles.cardFooter}>
-                <AvatarGroup members={item?.staff || []} maxDisplay={3} />
+                <View style={styles.infoRow}>
+                    <IcBuilding width={22} height={22} color="#C62828" />
+                    <Text style={styles.deptText}>{item?.dept}</Text>
+                </View>
 
-                <TouchableOpacity
-                    style={[
-                        styles.btnAction,
-                        type === 'home' ? styles.btnActionHome : styles.btnActionOpportunity
-                    ]}
-                    onPress={onButtonPress}
-                >
-                    {type === 'home' ? (
-                        <>
-                            <IcHistory width={16} height={16} color="#ffffff" />
-                            <Text style={styles.btnText}>Nhật ký</Text>
-                        </>
-                    ) : (
-                        <>
-                            <IcAdd width={20} height={20} color="#ffffff" />
-                            <Text style={styles.btnText}>Thêm thành viên</Text>
-                        </>
+                <View style={styles.tagGroup}>
+                    {displayServices.map((srv, idx) => (
+                        <View key={idx} style={styles.serviceTag}>
+                            <IcBox width={12} height={12} color="#000000" />
+                            <Text style={styles.serviceText}>{srv}</Text>
+                        </View>
+                    ))}
+                    {otherServices > 0 && (
+                        <View style={[styles.serviceTag, { backgroundColor: '#c7e1fa', borderColor: '#185FA5' }]}>
+                            <IcPlus width={14} height={14} color="#185FA5" />
+                            <Text style={[styles.serviceText, { color: '#185FA5' }]}>
+                                {otherServices} dịch vụ khác
+                            </Text>
+                        </View>
                     )}
-                </TouchableOpacity>
+                </View>
+
+                <Text style={styles.valueText}>
+                    Giá trị dự kiến: <Text style={styles.boldGreen}>{formatCurrency(item?.expectedValue)}</Text> - Xác xuất chốt <Text style={styles.boldOrange}>{item?.probability},00 %</Text>
+                </Text>
+
+                <View style={styles.cardFooter}>
+                    <AvatarGroup members={item?.staff || []} maxDisplay={3} />
+
+                    <TouchableOpacity
+                        style={[
+                            styles.btnAction,
+                            type === 'home' ? styles.btnActionHome : styles.btnActionOpportunity
+                        ]}
+                        onPress={onButtonPress}
+                    >
+                        {type === 'home' ? (
+                            <>
+                                <IcHistory width={16} height={16} color="#ffffff" />
+                                <Text style={styles.btnText}>Nhật ký</Text>
+                            </>
+                        ) : (
+                            <>
+                                <IcAdd width={20} height={20} color="#ffffff" />
+                                <Text style={styles.btnText}>Thêm thành viên</Text>
+                            </>
+                        )}
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 

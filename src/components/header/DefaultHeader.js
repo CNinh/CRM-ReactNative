@@ -1,30 +1,45 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
-import Icon from "react-native-vector-icons/Ionicons";
+import { View, Text, StyleSheet, Platform, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import DefaultButton from "../buttons/DefaultButton";
 import ImageButton from "../buttons/ImageButton";
 import colors from "../../constants/colors";
-import IcReload from "../../assets/icons/reload.svg";
 import SideMenu from "../../navigation/SideMenu";
 import { useNavigation } from "@react-navigation/native";
 
-const DefaultHeader = ({ navigation, options, route }) => {
+import IcMenu from "../../assets/icons/menu.svg";
+import IcNotification from "../../assets/icons/notification.svg";
+import IcReload from "../../assets/icons/reload.svg";
+import IcBack from "../../assets/icons/back.svg";
+import IcDotMenu from "../../assets/icons/ellipsis-vertical.svg";
+import IcEdit from "../../assets/icons/save_edit.svg";
+import IcEditState from '../../assets/icons/clipboard.svg';
+import IcCalendar from '../../assets/icons/calendar_blank.svg';
+import IcLink from '../../assets/icons/link.svg';
 
+const DefaultHeader = ({ navigation, options, route }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isOptionMenuOpen, setIsOptionMenuOpen] = useState(false);
 
     const title = options.headerTitle !== undefined ? options.headerTitle : route.name;
-    
-    const isDetailScreen =
-        route.name.startsWith('Detail') ||
-        route.name.startsWith('Form') ||
-        route.name.startsWith('Create') ||
-        route.name.startsWith('Edit') ||
-        route.name.startsWith('Select') ||
-        route.name.startsWith('Anniversary');
+
+    const MAIN_SCREENS = ['Home', 'Customer', 'Opportunity', 'Project'];
+
+    const isChildScreen = !MAIN_SCREENS.includes(route.name);
+
+    const isDetailOpportunity = route.name === 'DetailOpportunityScreen' || route.name === 'DetailOpportunity';
 
     const handleGoBack = () => {
         if (navigation && navigation.canGoBack()) {
             navigation.goBack();
+        }
+    };
+
+    const handleOptionSelect = (actionType) => {
+        setIsOptionMenuOpen(false);
+        if (options.onOptionPress) {
+            options.onOptionPress(actionType);
+        } else {
+            console.log('Action selected:', actionType);
         }
     };
 
@@ -33,10 +48,10 @@ const DefaultHeader = ({ navigation, options, route }) => {
             <View style={styles.headerContainer}>
                 {/* Left header */}
                 <View style={styles.leftGroup}>
-                    {isDetailScreen ? (
+                    {isChildScreen ? (
                         <>
                             <TouchableOpacity onPress={() => handleGoBack()} style={styles.leftButton}>
-                                <Icon name="arrow-back" size={24} color="#ffffff" />
+                                <IcBack width={20} height={20} color="#ffffff" />
                             </TouchableOpacity>
                             <Text style={[styles.titleText, styles.titleTextDetail]} numberOfLines={1}>
                                 {title}
@@ -45,7 +60,7 @@ const DefaultHeader = ({ navigation, options, route }) => {
                     ) : (
                         <>
                             <TouchableOpacity onPress={() => setIsMenuOpen(true)} style={styles.leftButton}>
-                                <Icon name="menu" size={26} color="#ffffff" />
+                                <IcMenu width={30} height={30} color="#ffffff" />
                             </TouchableOpacity>
                             <Text style={[styles.titleText]} numberOfLines={1}>
                                 {title}
@@ -55,12 +70,21 @@ const DefaultHeader = ({ navigation, options, route }) => {
                 </View>
 
                 {/* Right header */}
-                {isDetailScreen ? (
-                    <View style={styles.rightContainerEmpty} />
+                {isChildScreen ? (
+                    isDetailOpportunity ? (
+                        <TouchableOpacity
+                            style={styles.moreButton}
+                            onPress={() => setIsOptionMenuOpen(true)}
+                        >
+                            <IcDotMenu width={22} height={22} color="#ffffff" />
+                        </TouchableOpacity>
+                    ) : (
+                        <View style={styles.rightContainerEmpty} />
+                    )
                 ) : (
                     <View style={styles.rightContainer}>
                         <TouchableOpacity style={{ marginRight: 18 }} onPress={() => console.log('Open Notification')}>
-                            <Icon name="notifications-outline" size={24} color="#ffffff" />
+                            <IcNotification width={24} height={24} color="#ffffff" />
                             {options.unreadNotification > 0 && (
                                 <View style={styles.badge}>
                                     <Text style={styles.badgeText}>{options.unreadNotification}</Text>
@@ -76,8 +100,56 @@ const DefaultHeader = ({ navigation, options, route }) => {
                     </View>
                 )}
             </View>
-            
-            {!isDetailScreen && isMenuOpen && (
+
+            <Modal
+                visible={isOptionMenuOpen}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setIsOptionMenuOpen(false)}
+            >
+                <TouchableWithoutFeedback onPress={() => setIsOptionMenuOpen(false)}>
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.dropdownMenu}>
+                            <TouchableOpacity
+                                style={styles.optionItem}
+                                onPress={() => handleOptionSelect('UPDATE')}
+                            >
+                                <IcEdit width={20} height={20} color="#000000" />
+                                <Text style={styles.optionText}>Cập nhật</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={styles.optionItem}
+                                onPress={() => handleOptionSelect('UPDATE_STATUS')}
+                            >
+                                <IcEditState width={20} height={20} color="#000000" />
+                                <Text style={styles.optionText}>Cập nhật trạng thái</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={styles.optionItem}
+                                onPress={() => handleOptionSelect('REGISTER_PLAN')}
+                            >
+                                <IcCalendar width={20} height={20} color="#000000" />
+                                <Text style={styles.optionText}>Đăng ký kế hoạch</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[styles.optionItem, { borderBottomWidth: 0 }]}
+                                onPress={() => handleOptionSelect('CONVERT_PROJECT')}
+                            >
+                                <IcLink width={20} height={20} color="#000000" />
+                                <Text
+                                    style={[styles.optionText, style={ marginLeft:-2 }]}>
+                                    Chuyển thành dự án
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+
+            {!isChildScreen && isMenuOpen && (
                 <SideMenu
                     visible={isMenuOpen}
                     onClose={() => setIsMenuOpen(false)}
@@ -95,7 +167,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#4AA0DF',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 15,
+        paddingHorizontal: 18,
         elevation: 3,
         shadowColor: '#000000',
         shadowOffset: { width: 0, height: 2 },
@@ -107,7 +179,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 4
+        gap: 8
     },
 
     leftButton: {
@@ -141,8 +213,8 @@ const styles = StyleSheet.create({
 
     badge: {
         position: 'absolute',
-        right: -6,
-        bottom: -3,
+        right: -8,
+        bottom: -6,
         backgroundColor: '#C62828',
         borderRadius: 9,
         width: 18,
@@ -154,7 +226,38 @@ const styles = StyleSheet.create({
     badgeText: {
         color: 'white',
         fontSize: 10,
-        fontWeight: 'bold'
+        fontWeight: '500'
+    },
+
+    modalOverlay: {
+        flex: 1
+    },
+
+    dropdownMenu: {
+        position: 'absolute',
+        top: 60,
+        right: 24,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#D3D5D7',
+        width: 180,
+        height: 168
+    },
+
+    optionItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#D3D5D7',
+        gap: 10
+    },
+
+    optionText: {
+        fontSize: 14,
+        color: '#000000',
+        fontWeight: '500'
     }
 });
 

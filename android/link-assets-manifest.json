@@ -132,6 +132,46 @@
     {
       "path": "src/assets/fonts/Helvetica/helveticaneueultralightitalic.ttf",
       "sha1": "61f58da09626f1e25724fa46bd21826ee04f7de0"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-Bold.ttf",
+      "sha1": "c7ed72d9b12ba18b2329699f41b2c1f96a11e310"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-BoldItalic.ttf",
+      "sha1": "cf83a306bb50cde6a75823bf10c58a20dbd7294c"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-Italic.ttf",
+      "sha1": "b6711a58b4ac2cf38970557efac38d7d734be23e"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-Light.ttf",
+      "sha1": "f480a4e04c2c4fcad5f68b43f8fb23185638e207"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-LightItalic.ttf",
+      "sha1": "27431fa87712a4185a13f16054164f271313bf21"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-Medium.ttf",
+      "sha1": "85101d9cba435bf500b29058389f05d72acb3640"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-MediumItalic.ttf",
+      "sha1": "db68fe13fa7b85b270566ff95da4bd5d546e43ae"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-Regular.ttf",
+      "sha1": "15addc5ef6bf53d44b1996c3608731977c7961ec"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-SemiBold.ttf",
+      "sha1": "ef9acf90fa22a5096ba32905a831756d0a4e453f"
+    },
+    {
+      "path": "src/assets/fonts/Intel One Mono/IntelOneMono-SemiBoldItalic.ttf",
+      "sha1": "636b61b3886311ddd261d1087b2aed0c6ab26226"
     }
   ]
 }

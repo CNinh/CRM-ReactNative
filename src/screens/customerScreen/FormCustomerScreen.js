@@ -8,7 +8,8 @@ import {
     ScrollView,
     Alert,
     Modal,
-    FlatList
+    FlatList,
+    DeviceEventEmitter
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from './FormCustomerScreen.style';
@@ -23,7 +24,7 @@ const FormCustomerScreen = () => {
     const navigation = useNavigation();
     const route = useRoute();
 
-    const { customerData, onSave } = route.params || {};
+    const { customerData } = route.params || {};
     const isEdit = !!customerData;
 
     const [activeTab, setActiveTab] = useState(0);
@@ -35,7 +36,7 @@ const FormCustomerScreen = () => {
         name: customerData?.title || customerData?.name || '',
         toc: customerData?.toc || '',
         foundingDate: customerData?.foundingDate || '',
-        fund: customerData?.fund || '',
+        fund: customerData?.fund !== undefined ? String(customerData.fund) : '',
         phone: customerData?.contact || customerData?.phone || '',
         email: customerData?.mail || customerData?.email || '',
         fax: customerData?.fax || '',
@@ -133,14 +134,12 @@ const FormCustomerScreen = () => {
             tax: formData.tax,
             fax: formData.fax,
             website: formData.website,
-            fund: formData.fund,
+            fund: formData.fund ? Number(formData.fund) : 0,
             foundingDate: formData.foundingDate,
             contacts: contact
         };
 
-        if (onSave) {
-            onSave(saveData);
-        }
+        DeviceEventEmitter.emit('ON_SAVE_CUSTOMER', { saveData, isEdit });
 
         Alert.alert(
             'Thành công',

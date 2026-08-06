@@ -8,9 +8,10 @@ import {
     FlatList,
     ScrollView,
     StyleSheet,
-    Alert
+    Alert,
+    DeviceEventEmitter
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./CustomerScreen.style";
 import CustomerFilterModal from "../../components/modals/filterModal/CustomerFilterModal";
 import CustomerCard from "../../components/cards/CustomerCard";
@@ -22,6 +23,8 @@ import { mockCustomer, category, state } from "../../data/mockData";
 
 const CustomerScreen = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+
     const [searchText, setSearchText] = useState('');
     const [visibleCount, setVisibleCount] = useState(5);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -32,21 +35,12 @@ const CustomerScreen = () => {
     const [selectedState, setSelectedState] = useState([]);
 
     const handleCreate = () => {
-        navigation.navigate('FormCustomer', {
-            onSave: (newCustomer) => {
-                setCustomerList(prev => [newCustomer, ...prev]);
-            }
-        });
+        navigation.navigate('FormCustomer');
     };
 
     const handleEdit = (customer) => {
         navigation.navigate('FormCustomer', {
-            customerData: customer,
-            onSave: (updatedCustomer) => {
-                setCustomerList(prev =>
-                    prev.map(item => (item.id === updatedCustomer.id || item.code === updatedCustomer.code) ? updatedCustomer : item)
-                );
-            }
+            customerData: customer
         });
     };
 
@@ -147,11 +141,26 @@ const CustomerScreen = () => {
     useEffect(() => {
         navigation.setOptions({
             handleReload: () => {
-                console.log("Đang tải danh sách khách hàng...");
                 setSearchText('');
                 setVisibleCount(5);
             }
         });
+
+        const listener = DeviceEventEmitter.addListener('ON_SAVE_CUSTOMER', ({ saveData, isEdit }) => {
+            setCustomerList(prev => {
+                if (isEdit) {
+                    return prev.map(item =>
+                        (item.id === saveData.id || item.code === saveData.code) ? saveData : item
+                    );
+                } else {
+                    return [saveData, ...prev];
+                }
+            });
+        });
+
+        return () => {
+            listener.remove();
+        };
     }, [navigation]);
 
     return (

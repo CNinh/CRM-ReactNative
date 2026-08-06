@@ -320,7 +320,9 @@ const OpportunityScreen = () => {
                         item={item}
                         type="opportunity"
                         onButtonPress={() => {
-                            console.log('Mở modal thêm thành viên')
+                            navigation.navigate('AddMemberScreen', {
+                                opportunityId: item.id
+                            });
                         }}
                     />
                 )}
