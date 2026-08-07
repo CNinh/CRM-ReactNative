@@ -1,15 +1,13 @@
+import { useState } from "react";
 import {
     View,
     Text,
     TouchableOpacity,
-    TouchableWithoutFeedback,
     ScrollView,
     SafeAreaView,
-    Image,
-    Modal,
     StyleSheet
 } from "react-native";
-import { useState } from "react";
+
 import IcUser from '../assets/icons/user.svg';
 import IcDashboard from '../assets/icons/summary.svg';
 import IcArrowR from '../assets/icons/arrow_right.svg';
@@ -26,9 +24,7 @@ import IcDocument from '../assets/icons/document.svg';
 import IcLogout from '../assets/icons/logout.svg';
 
 
-const SideMenu = ({ visible, onClose, navigation }) => {
-    if (!visible) return null;
-
+const SideMenu = ({ navigation }) => {
     const [activeTab, setActiveTab] = useState('Dashboard')
 
     const [expandedSection, setExpandedSection] = useState({
@@ -45,196 +41,178 @@ const SideMenu = ({ visible, onClose, navigation }) => {
     };
 
     const handleNavigate = (screenName) => {
-        onClose();
         if (screenName && navigation) {
+            navigation.closeDrawer();
             navigation.navigate(screenName);
         }
     };
 
     return (
-        <Modal
-            visible={visible}
-            transparent={true}
-            animationType="fade"
-            onRequestClose={onClose}
-        >
-            <View style={styles.modalOverlay} >
-                <SafeAreaView style={styles.container}>
-                    <View style={styles.userContainer}>
-                        <View style={styles.avatarContainer}>
-                            <IcUser width={40} height={40} color="#000000" />
-                        </View>
-                        <Text style={styles.userName}>Phan Lương Bằng</Text>
-                        <Text style={styles.userRole}>Tổ Nghiên cứu phát triển</Text>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.headerContainer}>
+                <TouchableOpacity style={styles.userContainer}>
+                    <View style={styles.avatarContainer}>
+                        <IcUser width={40} height={40} color="#000000" />
                     </View>
-
-                    <ScrollView showsVerticalScrollIndicator={false} style={styles.menuList}>
-                        {/* Dashboard (Active State) */}
-                        <TouchableOpacity
-                            style={[
-                                styles.menuItem,
-                                activeTab === 'Dashboard' && styles.activeMenuItem
-                            ]}
-                        >
-                            <IcDashboard
-                                width={22} height={22}
-                                color={activeTab === 'Dashboard' ? "#0C447C" : "#7E8387"}
-                            />
-                            <Text style={[styles.menuText, styles.activeMenuText]}>Dashboard</Text>
-                        </TouchableOpacity>
-
-                        {/* Danh mục */}
-                        <TouchableOpacity
-                            style={styles.sectionHeader}
-                            onPress={() => toggleSection('category')}
-                        >
-                            <Text style={styles.sectionTitle}>Danh mục</Text>
-                            {expandedSection.category ? (
-                                <IcArrowD width={16} height={16} color="#000000" />
-                            ) : (
-                                <IcArrowR width={16} height={16} color="#000000" />
-                            )}
-                        </TouchableOpacity>
-
-                        {expandedSection.category && (
-                            <View style={styles.subGroup}>
-                                <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Contact')}>
-                                    <IcContact width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Người liên hệ</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('ProductService')}>
-                                    <IcBox width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Sản phẩm dịch vụ</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Customer')}>
-                                    <IcCustomer width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Khách hàng</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-
-                        {/* Nghiệp vụ */}
-                        <TouchableOpacity
-                            style={styles.sectionHeader}
-                            onPress={() => toggleSection('business')}
-                        >
-                            <Text style={styles.sectionTitle}>Nghiệp vụ</Text>
-                            {expandedSection.business ? (
-                                <IcArrowD width={16} height={16} color="#000000" />
-                            ) : (
-                                <IcArrowR width={16} height={16} color="#000000" />
-                            )}
-                        </TouchableOpacity>
-
-                        {expandedSection.business && (
-                            <View style={styles.subGroup}>
-                                <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Opportunity')}>
-                                    <IcOpportunity width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Cơ hội kinh doanh</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Project')}>
-                                    <IcProject width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Dự án</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Contract')}>
-                                    <IcContract width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Hợp đồng</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('BusinessPlan')}>
-                                    <IcPlan width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Kế hoạch kinh doanh</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('ReviewPeriod')}>
-                                    <IcSession width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Rà soát định kỳ</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-
-                        {/* Thống kê */}
-                        <TouchableOpacity
-                            style={styles.sectionHeader}
-                            onPress={() => toggleSection('statistic')}
-                        >
-                            <Text style={styles.sectionTitle}>Thống kê</Text>
-                            {expandedSection.statistic ? (
-                                <IcArrowD width={16} height={16} color="#000000" />
-                            ) : (
-                                <IcArrowR width={16} height={16} color="#000000" />
-                            )}
-                        </TouchableOpacity>
-
-                        {expandedSection.statistic && (
-                            <View style={styles.subGroup}>
-                                <TouchableOpacity style={styles.subMenuItem}>
-                                    <IcDocument width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Cơ hội kinh doanh theo tuần</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem}>
-                                    <IcDocument width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Tổng hợp doanh thu dự án</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem}>
-                                    <IcDocument width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Thống kê tổng hợp thông tin cơ hội/dự án</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem}>
-                                    <IcDocument width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Thống kê cơ hội/dự án không có nhân sự phòng GP</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem}>
-                                    <IcDocument width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Rà soát định kỳ</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem}>
-                                    <IcDocument width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Rà soát rà soát</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.subMenuItem}>
-                                    <IcDocument width={22} height={22} color="#7E8387" />
-                                    <Text style={styles.subMenuText}>Báo cáo công việc dự án theo tuần</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-
-                        {/* 3. LOGOUT BUTTON */}
-                        <TouchableOpacity style={styles.logoutBtn} onPress={() => console.log('Đăng xuất')}>
-                            <IcLogout width={22} height={22} color="#C62828" />
-                            <Text style={styles.logoutText}>Đăng xuất</Text>
-                        </TouchableOpacity>
-                    </ScrollView>
-                </SafeAreaView>
-
-                <TouchableWithoutFeedback onPress={onClose}>
-                    <View style={styles.backdrop} />
-                </TouchableWithoutFeedback>
+                    <Text style={styles.userName}>Phan Lương Bằng</Text>
+                    <Text style={styles.userRole}>Tổ Nghiên cứu phát triển</Text>
+                </TouchableOpacity>
             </View>
-        </Modal>
+
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.menuList}>
+                {/* Dashboard (Active State) */}
+                <TouchableOpacity
+                    style={[
+                        styles.menuItem,
+                        activeTab === 'Dashboard' && styles.activeMenuItem
+                    ]}
+                >
+                    <IcDashboard
+                        width={22} height={22}
+                        color={activeTab === 'Dashboard' ? "#0C447C" : "#7E8387"}
+                    />
+                    <Text style={[styles.menuText, styles.activeMenuText]}>Dashboard</Text>
+                </TouchableOpacity>
+
+                {/* Danh mục */}
+                <TouchableOpacity
+                    style={styles.sectionHeader}
+                    onPress={() => toggleSection('category')}
+                >
+                    <Text style={styles.sectionTitle}>Danh mục</Text>
+                    {expandedSection.category ? (
+                        <IcArrowD width={16} height={16} color="#000000" />
+                    ) : (
+                        <IcArrowR width={16} height={16} color="#000000" />
+                    )}
+                </TouchableOpacity>
+
+                {expandedSection.category && (
+                    <View style={styles.subGroup}>
+                        <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Contact')}>
+                            <IcContact width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Người liên hệ</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('ProductService')}>
+                            <IcBox width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Sản phẩm dịch vụ</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Customer')}>
+                            <IcCustomer width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Khách hàng</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+
+                {/* Nghiệp vụ */}
+                <TouchableOpacity
+                    style={styles.sectionHeader}
+                    onPress={() => toggleSection('business')}
+                >
+                    <Text style={styles.sectionTitle}>Nghiệp vụ</Text>
+                    {expandedSection.business ? (
+                        <IcArrowD width={16} height={16} color="#000000" />
+                    ) : (
+                        <IcArrowR width={16} height={16} color="#000000" />
+                    )}
+                </TouchableOpacity>
+
+                {expandedSection.business && (
+                    <View style={styles.subGroup}>
+                        <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Opportunity')}>
+                            <IcOpportunity width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Cơ hội kinh doanh</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Project')}>
+                            <IcProject width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Dự án</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('Contract')}>
+                            <IcContract width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Hợp đồng</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('BusinessPlan')}>
+                            <IcPlan width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Kế hoạch kinh doanh</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem} onPress={() => handleNavigate('ReviewPeriod')}>
+                            <IcSession width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Rà soát định kỳ</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+
+                {/* Thống kê */}
+                <TouchableOpacity
+                    style={styles.sectionHeader}
+                    onPress={() => toggleSection('statistic')}
+                >
+                    <Text style={styles.sectionTitle}>Thống kê</Text>
+                    {expandedSection.statistic ? (
+                        <IcArrowD width={16} height={16} color="#000000" />
+                    ) : (
+                        <IcArrowR width={16} height={16} color="#000000" />
+                    )}
+                </TouchableOpacity>
+
+                {expandedSection.statistic && (
+                    <View style={styles.subGroup}>
+                        <TouchableOpacity style={styles.subMenuItem}>
+                            <IcDocument width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Cơ hội kinh doanh theo tuần</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem}>
+                            <IcDocument width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Tổng hợp doanh thu dự án</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem}>
+                            <IcDocument width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Thống kê tổng hợp thông tin cơ hội/dự án</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem}>
+                            <IcDocument width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Thống kê cơ hội/dự án không có nhân sự phòng GP</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem}>
+                            <IcDocument width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Rà soát định kỳ</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem}>
+                            <IcDocument width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Rà soát rà soát</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.subMenuItem}>
+                            <IcDocument width={22} height={22} color="#7E8387" />
+                            <Text style={styles.subMenuText}>Báo cáo công việc dự án theo tuần</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+
+                {/* 3. LOGOUT BUTTON */}
+                <TouchableOpacity style={styles.logoutBtn} onPress={() => console.log('Đăng xuất')}>
+                    <IcLogout width={22} height={22} color="#C62828" />
+                    <Text style={styles.logoutText}>Đăng xuất</Text>
+                </TouchableOpacity>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    modalOverlay: {
-        flex: 1,
-        flexDirection: 'row',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)'
-    },
-
     container: {
-        width: '70%',
-        height: '100%',
+        flex: 1,
         backgroundColor: '#FFFFFF',
     },
 
@@ -243,7 +221,7 @@ const styles = StyleSheet.create({
         height: '100%'
     },
 
-    userContainer: {
+    headerContainer: {
         backgroundColor: '#2B82C9',
         paddingHorizontal: 16,
         paddingTop: 20,

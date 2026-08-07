@@ -17,7 +17,6 @@ import IcCalendar from '../../assets/icons/calendar_blank.svg';
 import IcLink from '../../assets/icons/link.svg';
 
 const DefaultHeader = ({ navigation, options, route }) => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isOptionMenuOpen, setIsOptionMenuOpen] = useState(false);
 
     const title = options.headerTitle !== undefined ? options.headerTitle : route.name;
@@ -31,6 +30,17 @@ const DefaultHeader = ({ navigation, options, route }) => {
     const handleGoBack = () => {
         if (navigation && navigation.canGoBack()) {
             navigation.goBack();
+        }
+    };
+
+    const handleOpenDrawer = () => {
+        if (navigation.openDrawer) {
+            navigation.openDrawer();
+        } else {
+            const parent = navigation.getParent();
+            if (parent && parent.openDrawer) {
+                parent.openDrawer();
+            }
         }
     };
 
@@ -59,7 +69,7 @@ const DefaultHeader = ({ navigation, options, route }) => {
                         </>
                     ) : (
                         <>
-                            <TouchableOpacity onPress={() => setIsMenuOpen(true)} style={styles.leftButton}>
+                            <TouchableOpacity onPress={handleOpenDrawer} style={styles.leftButton}>
                                 <IcMenu width={30} height={30} color="#ffffff" />
                             </TouchableOpacity>
                             <Text style={[styles.titleText]} numberOfLines={1}>
@@ -140,7 +150,7 @@ const DefaultHeader = ({ navigation, options, route }) => {
                             >
                                 <IcLink width={20} height={20} color="#000000" />
                                 <Text
-                                    style={[styles.optionText, style={ marginLeft:-2 }]}>
+                                    style={[styles.optionText, style = { marginLeft: -2 }]}>
                                     Chuyển thành dự án
                                 </Text>
                             </TouchableOpacity>
@@ -148,14 +158,6 @@ const DefaultHeader = ({ navigation, options, route }) => {
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
-
-            {!isChildScreen && isMenuOpen && (
-                <SideMenu
-                    visible={isMenuOpen}
-                    onClose={() => setIsMenuOpen(false)}
-                    navigation={navigation}
-                />
-            )}
         </>
     );
 };

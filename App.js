@@ -12,7 +12,7 @@ import Toast from 'react-native-toast-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LoginScreen from './src/screens/loginScreen/LoginScreen';
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
-import RootStack from './src/navigation/RootStack';
+import DrawerNavigation from './src/navigation/DrawerNavigation';
 
 const App = () => {
   return (
@@ -24,7 +24,7 @@ const App = () => {
               <SafeAreaView style={styles.container}>
                 <NavigationContainer>
                   {/* <LoginScreen /> */}
-                  <RootStack />
+                  <DrawerNavigation />
                 </NavigationContainer>
                 <Toast />
               </SafeAreaView>
