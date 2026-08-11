@@ -257,7 +257,6 @@ const OpportunityScreen = () => {
                         setFromDate(filters.fromDate || '');
                         setToDate(filters.toDate || '');
                     }
-                    setIsFilterOpen(false);
                 }}
             />
 

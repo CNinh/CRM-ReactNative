@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
     Text,
@@ -7,23 +7,28 @@ import {
     TextInput,
     ScrollView,
     StyleSheet,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Animated,
+    Dimensions
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import IcCheckboxBlank from '../../../assets/icons/check-box-outline-blank.svg';
+import IcCheckbox from '../../../assets/icons/check-box.svg';
 import IcFilter from '../../../assets/icons/filter.svg';
 import IcClose from '../../../assets/icons/close.svg';
 import IcSearch from '../../../assets/icons/search.svg';
 
 import { category, state } from '../../../data/mockData';
 
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+
 // Component CheckBox
 const CheckBox = ({ selected, onPress }) => (
     <TouchableOpacity style={styles.checkboxContainer} onPress={onPress} activeOpacity={0.8}>
         {selected ? (
-            <Icon name="check-box" size={22} color="#1A7FC1" />
+            <IcCheckbox width={15} height={15} color="#1A7FC1" />
         ) : (
-            <Icon name="check-box-outline-blank" size={22} color="#A0A0A0" />
+            <IcCheckboxBlank width={15} height={15} color="#7E8387" />
         )}
     </TouchableOpacity>
 );
@@ -39,13 +44,52 @@ const CustomerFilterModal = ({
     const [selectedCategory, setSelectedCategory] = useState(initialCategory);
     const [selectedState, setSelectedState] = useState(initialState);
 
+    // khởi tạo vị trí cho animation khi mở
+    const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+    const backdropOpacity = useRef(new Animated.Value(0)).current;
+
     useEffect(() => {
         if (visible) {
             setSelectedCategory(initialCategory || []);
             setSelectedState(initialState || []);
             setSearchTypeKey('');
+
+            // set vị trí mở
+            translateY.setValue(SCREEN_HEIGHT);
+
+            // Animation mở
+            Animated.parallel([
+                Animated.timing(translateY, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: true
+                }),
+                Animated.timing(backdropOpacity, {
+                    toValue: 1,
+                    duration: 250,
+                    useNativeDriver: true
+                })
+            ]).start();
         }
     }, [visible, initialCategory, initialState]);
+
+    // Animation đóng
+    const handleClose = () => {
+        Animated.parallel([
+            Animated.timing(translateY, {
+                toValue: SCREEN_HEIGHT,
+                duration: 200,
+                useNativeDriver: true
+            }),
+            Animated.timing(backdropOpacity, {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver: true
+            })
+        ]).start(() => {
+            if (onClose) onClose();
+        });
+    };
 
     const toggleCategory = (id) => {
         setSelectedCategory(prev =>
@@ -71,9 +115,21 @@ const CustomerFilterModal = ({
                 selectedState
             });
         }
-        if (onClose) {
-            onClose();
-        }
+
+        Animated.parallel([
+            Animated.timing(translateY, {
+                toValue: SCREEN_HEIGHT,
+                duration: 200,
+                useNativeDriver: true
+            }),
+            Animated.timing(backdropOpacity, {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver: true
+            })
+        ]).start(() => {
+            if (onClose) onClose();
+        });
     };
 
     const getItemLabel = (item) => item?.title || item?.name || item?.label || '';
@@ -86,22 +142,27 @@ const CustomerFilterModal = ({
         <Modal
             visible={visible}
             transparent={true}
-            animationType="slide"
-            onRequestClose={onClose}
+            animationType="none"
+            onRequestClose={handleClose}
         >
             <View style={styles.overlayContainer}>
-                <TouchableWithoutFeedback onPress={onClose}>
-                    <View style={styles.backdrop} />
+                <TouchableWithoutFeedback onPress={handleClose}>
+                    <Animated.View style={[styles.backdrop, { opacity: backdropOpacity }]} />
                 </TouchableWithoutFeedback>
 
-                <View style={styles.modalContent}>
+                <Animated.View
+                    style={[
+                        styles.modalContent,
+                        { transform: [{ translateY }] }
+                    ]}
+                >
                     <View style={styles.header}>
                         <View style={styles.titleRow}>
                             <IcFilter width={20} height={20} color="#1A7FC1" />
                             <Text style={styles.headerTitle}>Bộ lọc</Text>
                         </View>
                         <TouchableOpacity
-                            onPress={onClose}
+                            onPress={handleClose}
                             activeOpacity={0.6}
                             hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
                         >
@@ -192,7 +253,7 @@ const CustomerFilterModal = ({
                             <Text style={styles.btnApplyText}>Áp dụng</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </Animated.View>
             </View>
         </Modal>
     );
@@ -290,13 +351,12 @@ const styles = StyleSheet.create({
     },
 
     checkboxList: {
-        paddingRight: 4,       
+        paddingRight: 4,
     },
 
     checkboxRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 4,
         paddingVertical: 5,
         borderBottomWidth: 1,
         borderBottomColor: '#D3D5D7'
@@ -305,7 +365,7 @@ const styles = StyleSheet.create({
     checkboxContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: 8
+        marginHorizontal: 12
     },
 
     checkboxLabel: {
@@ -313,7 +373,7 @@ const styles = StyleSheet.create({
         color: '#000000',
     },
 
-    sectionState:{
+    sectionState: {
         marginBottom: 10
     },
 

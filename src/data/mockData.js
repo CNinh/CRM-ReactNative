@@ -1,3 +1,17 @@
+/* Data dùng cho account */
+export const user = {
+    id: 1,
+    fullName: 'Phan Lương Bằng',
+    dept: {
+        id: 1,
+        name: 'Tổ nghiên cứu phát triển'
+    },
+    email: 'bangpl.kha@vnpt.vn',
+    phone: '(+84) 886562558',
+    username: 'bangpl.kha',
+    password: '!Kha123456789'
+}
+
 /* Data dùng cho modal filter */
 export const stage = [
     { id: 1, name: 'Khởi tạo' },

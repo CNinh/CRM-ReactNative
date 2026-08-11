@@ -1,5 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigation from './BottomTabNavigation';
+import ProfileScreen from '../screens/userInfoScreen/ProfileScreen';
+import UpdateProfile from '../screens/userInfoScreen/UpdateProfile';
+import ChangePasswordScreen from '../screens/userInfoScreen/ChangePasswordScreen';
 import DefaultHeader from '../components/header/DefaultHeader';
 import FormCustomerScreen from '../screens/customerScreen/FormCustomerScreen';
 import FormContactScreen from '../screens/customerScreen/FormContactScreen';
@@ -19,6 +22,24 @@ const RootStack = () => {
                 name="MainTabs" 
                 component={BottomTabNavigation} 
                 options={{ headerShown: false }} 
+            />
+
+            <Stack.Screen
+                name="Profile"
+                component={ProfileScreen}
+                options={{ headerTitle: 'Thông tin cá nhân' }}
+            />
+
+            <Stack.Screen
+                name="UpdateProfile"
+                component={UpdateProfile}
+                options={{ headerTitle: 'Cập nhật thông tin tài khoản' }}
+            />
+
+            <Stack.Screen
+                name="ChangePassword"
+                component={ChangePasswordScreen}
+                options={{ headerTitle: 'Đổi mật khẩu' }}
             />
 
             <Stack.Screen

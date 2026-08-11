@@ -201,7 +201,6 @@ const CustomerScreen = () => {
                         setSelectedCategory(filters.selectedCategory || []);
                         setSelectedState(filters.selectedState || []);
                     }
-                    setIsFilterOpen(false);
                 }}
             />
 

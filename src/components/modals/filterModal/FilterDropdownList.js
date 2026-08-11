@@ -10,14 +10,15 @@ import { useState } from "react";
 import IcArrowR from '../../../assets/icons/arrow_right.svg';
 import IcArrowD from '../../../assets/icons/arrow_down.svg';
 import IcSearch from '../../../assets/icons/search.svg';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import IcCheckbox from '../../../assets/icons/check-box.svg';
+import IcCheckboxBlank from '../../../assets/icons/check-box-outline-blank.svg';
 
 const CheckBox = ({ selected, onPress }) => (
     <TouchableOpacity style={styles.checkboxContainer} onPress={onPress} activeOpacity={0.8}>
         {selected ? (
-            <Icon name="check-box" size={20} color="#1A7FC1" />
+            <IcCheckbox width={15} height={15} color="#1A7FC1" />
         ) : (
-            <Icon name="check-box-outline-blank" size={20} color="#5e5e5e" />
+            <IcCheckboxBlank width={15} height={15} color="#7E8387" />
         )}
     </TouchableOpacity>
 );
@@ -143,7 +144,7 @@ const FilterDropdownList = ({
     return (
         <View style={[
             styles.container,
-            isOpen && { borderBottomWidth: 1, borderBlockColor:'#D3D5D7' }
+            isOpen && { borderBottomWidth: 1, borderBlockColor: '#D3D5D7' }
         ]}>
             <TouchableOpacity
                 style={styles.headerRow}
@@ -223,17 +224,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 6,
-        paddingHorizontal: 4,
+        paddingLeft: 10,
+        paddingRight: 4,
         borderBottomWidth: 1,
         borderBottomColor: '#D3D5D7',
-        gap: 8
+        gap: 10
     },
 
     itemText: {
         flex: 1,
         fontSize: 11.5,
         color: '#000000',
-        lineHeight: 18
+        lineHeight: 14
     },
 
     // Style item con của list tree

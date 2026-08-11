@@ -23,6 +23,7 @@ import IcSession from '../assets/icons/session_calendar.svg';
 import IcDocument from '../assets/icons/document.svg';
 import IcLogout from '../assets/icons/logout.svg';
 
+import { user } from '../data/mockData';
 
 const SideMenu = ({ navigation }) => {
     const [activeTab, setActiveTab] = useState('Dashboard')
@@ -50,12 +51,12 @@ const SideMenu = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
-                <TouchableOpacity style={styles.userContainer}>
+                <TouchableOpacity style={styles.userContainer} onPress={() => navigation.navigate('Profile')}>
                     <View style={styles.avatarContainer}>
                         <IcUser width={40} height={40} color="#000000" />
                     </View>
-                    <Text style={styles.userName}>Phan Lương Bằng</Text>
-                    <Text style={styles.userRole}>Tổ Nghiên cứu phát triển</Text>
+                    <Text style={styles.userName}>{user.fullName}</Text>
+                    <Text style={styles.userRole}>{user.dept.name}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
     },
 
     headerContainer: {
-        backgroundColor: '#2B82C9',
+        backgroundColor: '#4AA0DF',
         paddingHorizontal: 16,
         paddingTop: 20,
         paddingBottom: 12
@@ -306,7 +307,6 @@ const styles = StyleSheet.create({
     },
 
     // Sub Menu Items
-
     subMenuItem: {
         flexDirection: 'row',
         alignItems: 'center',

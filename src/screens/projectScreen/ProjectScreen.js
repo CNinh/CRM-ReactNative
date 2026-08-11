@@ -221,7 +221,6 @@ const ProjectScreen = () => {
                         setFromDate(filters.fromDate || '');
                         setToDate(filters.toDate || '');
                     }
-                    setIsFilterOpen(false);
                 }}
             />
 

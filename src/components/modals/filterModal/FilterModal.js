@@ -1,22 +1,25 @@
+import { useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  ScrollView
+  ScrollView,
+  Animated
 } from 'react-native';
 import { Portal } from 'react-native-paper';
-import { useEffect, useState } from 'react';
 import FilterDropdownList from './FilterDropdownList';
 import DatePickerSheet from '../../sheets/DatePickerSheet';
+
 import IcFilter from '../../../assets/icons/filter.svg'
 import IcArrowR from '../../../assets/icons/arrow_right.svg';
 import IcArrowD from '../../../assets/icons/arrow_down.svg';
 import IcCalendar from '../../../assets/icons/calendar.svg';
+
 import { stage, service, department, staff } from '../../../data/mockData';
 
-const { height } = Dimensions.get('window');
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 const HEADER_HEIGHT = 56;
 
 const FilterModal = ({
@@ -52,6 +55,41 @@ const FilterModal = ({
   const [openFirstDate, setOpenFirstDate] = useState(false);
   const [openLastDate, setOpenLastDate] = useState(false);
 
+  // Khởi tạo vị trí cho animation mở
+  const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+
+  useEffect(() => {
+    if (visible) {
+      setSelectedStage(initialStage);
+      setSelectedService(initialService);
+      setSelectedDepartment(initialDepartment);
+      setSelectedStaff(initialStaff);
+      if (initialFromDate) setFromDate(initialFromDate);
+      if (initialToDate) setToDate(initialToDate);
+
+      // set vị trí mở
+      translateY.setValue(SCREEN_HEIGHT)
+
+      // Animation mở
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true
+      }).start();
+    }
+  }, [visible]);
+
+  // Animation đóng
+  const handleClose = () => {
+    Animated.timing(translateY, {
+      toValue: SCREEN_HEIGHT,
+      duration: 250,
+      useNativeDriver: true
+    }).start(() => {
+      if (onClose) onClose();
+    });
+  };
+
   const handleSelectStage = (id) => {
     setSelectedStage(prev =>
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
@@ -71,7 +109,7 @@ const FilterModal = ({
   };
 
   const handleSelectStaff = (id) => {
-    setSelectedStaff(prev => 
+    setSelectedStaff(prev =>
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     );
   };
@@ -97,28 +135,30 @@ const FilterModal = ({
         toDate
       });
     }
-  };
 
-  useEffect(() => {
-    if (visible) {
-      setSelectedStage(initialStage);
-      setSelectedService(initialService);
-      setSelectedDepartment(initialDepartment);
-      setSelectedStaff(initialStaff);
-      if (initialFromDate) setFromDate(initialFromDate);
-      if (initialToDate) setToDate(initialToDate);
-    }
-  }, [visible]);
+    Animated.timing(translateY, {
+      toValue: SCREEN_HEIGHT,
+      duration: 250,
+      useNativeDriver: true
+    }).start(() => {
+      if (onClose) onClose();
+    });
+  };
 
   return (
     <Portal>
-      <View style={styles.modalContainer}>
+      <Animated.View
+        style={[
+          styles.modalContainer,
+          { transform: [{ translateY }] }
+        ]}
+      >
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <IcFilter width={20} height={20} color="#2971BF" />
             <Text style={styles.headerTitle}>Bộ lọc</Text>
           </View>
-          <TouchableOpacity onPress={onClose} activeOpacity={0.7}>
+          <TouchableOpacity onPress={handleClose} activeOpacity={0.7}>
             <Text style={styles.closeText}>✕</Text>
           </TouchableOpacity>
         </View>
@@ -226,7 +266,7 @@ const FilterModal = ({
             <Text style={styles.txtApply}>Áp dụng</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
     </Portal>
   );
 }
