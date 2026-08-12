@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import AvatarGroup from "../avatars/AvatarGroup";
+
 import IcCalendar from "../../assets/icons/calendar_blank.svg";
 import IcBuilding from "../../assets/icons/building.svg";
 import IcHistory from "../../assets/icons/history.svg";
 import IcUser from "../../assets/icons/user.svg";
-import AvatarGroup from "../avatars/AvatarGroup";
 
 const ProjectCard = ({ item, type = 'project' }) => {
 

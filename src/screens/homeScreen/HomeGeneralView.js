@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "./HomeGeneralView.style";
 import colors from "../../constants/colors";
 import DefaultHeader from "../../components/header/DefaultHeader";
+
 import IcCalendar from "../../assets/icons/calendar.svg";
 import IcFolder from "../../assets/icons/folder.svg";
 import IcFolderCheck from "../../assets/icons/folder-check.svg";
@@ -213,8 +214,17 @@ const HomeGeneralView = () => {
                                 key={item.id}
                                 item={item}
                                 type="home"
+                                onPress={() => {
+                                    navigation.navigate('DetailOpportunityScreen', {
+                                        item: item,
+                                        initialTab: 'info'
+                                    });
+                                }}
                                 onButtonPress={() => {
-                                    console.log('Hiển thị nhật ký cơ hội')
+                                    navigation.navigate('DetailOpportunityScreen', {
+                                        item: item,
+                                        initialTab: 'log'
+                                    });
                                 }}
                             />
                         ))}

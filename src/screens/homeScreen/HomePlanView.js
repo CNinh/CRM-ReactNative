@@ -9,11 +9,25 @@ import {
 import { Checkbox } from "react-native-paper";
 import styles from "./HomePlanView.style";
 import PlanCard from "../../components/cards/PlanCard";
-import IcArrowL from "../../assets/icons/arrow_left.svg";
-import IcArrowR from "../../assets/icons/arrow_right.svg";
 import MonthYearPickerSheet from "../../components/sheets/MonthYearPickerSheet";
 
+import IcCheckboxBlank from '../../assets/icons/check-box-outline-blank.svg';
+import IcCheckbox from '../../assets/icons/check-box.svg';
+import IcArrowL from "../../assets/icons/arrow_left.svg";
+import IcArrowR from "../../assets/icons/arrow_right.svg";
+
 import { plan } from "../../data/mockData";
+
+// Component CheckBox
+const CheckBox = ({ selected, onPress }) => (
+    <TouchableOpacity style={styles.checkboxContainer} onPress={onPress} activeOpacity={0.8}>
+        {selected ? (
+            <IcCheckbox width={15} height={15} color="#1A7FC1" />
+        ) : (
+            <IcCheckboxBlank width={15} height={15} color="#7E8387" />
+        )}
+    </TouchableOpacity>
+);
 
 const parseDate = (dateStr) => {
     if (!dateStr) return '';
@@ -57,7 +71,8 @@ const HomePlanView = ({ navigation }) => {
             company: item.dept,
             address: item.address,
             description: item.description,
-            fullDate: parseDate(item.date)
+            fullDate: parseDate(item.date),
+            isPersonal: item.isPersonal || false
         }));
     }, []);
 
@@ -184,16 +199,13 @@ const HomePlanView = ({ navigation }) => {
                 <TouchableOpacity
                     style={styles.checkboxRow}
                     onPress={() => setIsPersonal(!isPersonal)}
-                    activeOpacity={0.8}
+                    activeOpacity={0.7}
                 >
-                    <View style={[styles.checkbox, isPersonal && styles.checkboxChecked]}>
-                        {isPersonal && (
-                            <Text style={{ color: '#000000', fontSize: 12, fontWeight: 'bold', textAlign: 'center', lineHeight: 14 }}>
-                                ✓
-                            </Text>
-                        )}
-                    </View>
-                    <Text style={styles.labelCheckbox}>Lịch cá nhân</Text>
+                    <CheckBox
+                        selected={isPersonal}
+                        onPress={() => setIsPersonal(!isPersonal)}
+                    />
+                    <Text style={styles.checkboxLabel}>Lịch cá nhân</Text>
                 </TouchableOpacity>
                 <Text style={styles.txtTotal}>Tổng: {totalWeeklyPlans}</Text>
             </View>

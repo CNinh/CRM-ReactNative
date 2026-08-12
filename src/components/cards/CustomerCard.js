@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import AvatarGroup from "../avatars/AvatarGroup";
+
 import IcCelebrate from "../../assets/icons/celebrate.svg";
 import IcOpportunity from "../../assets/icons/opportunity.svg";
 import IcEdit from "../../assets/icons/edit.svg";

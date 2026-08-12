@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+
 import IcBuilding from '../../assets/icons/building.svg';
 import IcLocation from '../../assets/icons/location.svg';
-import { useState } from "react";
 
 const PlanCard = ({ item }) => {
 

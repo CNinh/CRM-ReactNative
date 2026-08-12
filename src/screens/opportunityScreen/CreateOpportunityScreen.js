@@ -31,7 +31,7 @@ const CreateOpportunityScreen = () => {
     const navigation = useNavigation();
     const route = useRoute();
 
-    const { item, department = item?.dept } = route.params || {};
+    const { item, department = item?.dept || 'Phòng Văn hoá xã hội' } = route.params || {};
 
     const [name, setName] = useState('');
     const [contact, setContact] = useState(null);

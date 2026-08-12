@@ -9,9 +9,9 @@ const styles = StyleSheet.create({
     searchSection: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 16,
+        paddingHorizontal: 10,
         paddingVertical: 14,
-        gap: 10,
+        gap: 5,
         backgroundColor: '#ffffff',
         borderBottomWidth: 1,
         borderBottomColor: '#E4E6E9'
@@ -45,6 +45,17 @@ const styles = StyleSheet.create({
         borderColor: '#D3D5D7',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+
+    btnAdd: {
+        width: 40,
+        height: 40,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#185FA5',
+        backgroundColor: '#4AA0DF'
     },
 
     tagRow: {

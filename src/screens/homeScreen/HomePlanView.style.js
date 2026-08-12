@@ -41,10 +41,11 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
 
-    labelCheckbox: {
+    checkboxLabel: {
         fontSize: 14,
         fontWeight: "500",
-        color: "#000000"
+        color: "#000000",
+        marginHorizontal: 12
     },
 
     txtTotal: {

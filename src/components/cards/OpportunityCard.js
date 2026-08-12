@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AvatarGroup from "../avatars/AvatarGroup";
+
 import IcBuilding from '../../assets/icons/building.svg';
 import IcHistory from '../../assets/icons/history.svg';
 import IcClock from '../../assets/icons/clock.svg';
 import IcPlus from '../../assets/icons/plus.svg';
 import IcBox from '../../assets/icons/box.svg';
 import IcAdd from '../../assets/icons/add.svg';
-import AvatarGroup from "../avatars/AvatarGroup";
 
 const OpportunityCard = ({ item, type = 'opportunity', onButtonPress }) => {
     const navigation = useNavigation();

@@ -14,6 +14,8 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from './FormCustomerScreen.style';
 import ContactCard from '../../components/cards/ContactCard';
+import DeleteModal from '../../components/modals/DeleteModal';
+
 import IcSave from '../../assets/icons/save.svg';
 import IcArrowD from '../../assets/icons/arrow_down.svg';
 import IcPlus from '../../assets/icons/plus.svg';
@@ -48,6 +50,11 @@ const FormCustomerScreen = () => {
     const [error, setError] = useState({});
 
     const [contact, setContact] = useState(mockContact);
+
+    const [deleteModal, setDeleteModal] = useState({
+        visible: false,
+        item: null
+    });
 
     const [dropdownTarget, setDropdownTarget] = useState(null);
 
@@ -87,15 +94,18 @@ const FormCustomerScreen = () => {
         });
     };
 
-    const handleDeleteContact = (id) => {
-        Alert.alert('Xác nhận xóa', 'Bạn có chắc chắn muốn xóa người liên hệ này?', [
-            { text: 'Hủy', style: 'cancel' },
-            {
-                text: 'Xóa',
-                style: 'destructive',
-                onPress: () => setContact(prev => prev.filter(c => c.id !== id))
-            }
-        ]);
+    const handleOpenDelete = (contact) => {
+        setDeleteModal({
+            visible: true,
+            item: contact
+        });
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteModal.item) {
+            setContact(prev => prev.filter(c => c.id !== deleteModal.item.id));
+        };
+        setDeleteModal({ visible: false, item: null });
     };
 
     const handleChange = (key, value) => {
@@ -382,7 +392,7 @@ const FormCustomerScreen = () => {
                                 key={item.id}
                                 item={item}
                                 onEdit={handleEditContact}
-                                onDelete={handleDeleteContact}
+                                onDelete={() => handleOpenDelete(item)}
                             />
                         ))}
                     </View>
@@ -428,6 +438,14 @@ const FormCustomerScreen = () => {
                     </View>
                 </Modal>
             )}
+
+            <DeleteModal
+                isVisible={deleteModal.visible}
+                onClose={() => setDeleteModal({ visible: false, item: null })}
+                onConfirm={handleConfirmDelete}
+                type="Người liên hệ"
+                title={deleteModal.item ? `${deleteModal.item.name}` : ''}
+            />
         </SafeAreaView>
     );
 }

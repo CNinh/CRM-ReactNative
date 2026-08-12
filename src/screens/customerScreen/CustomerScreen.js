@@ -15,10 +15,13 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./CustomerScreen.style";
 import CustomerFilterModal from "../../components/modals/filterModal/CustomerFilterModal";
 import CustomerCard from "../../components/cards/CustomerCard";
+import DeleteModal from "../../components/modals/DeleteModal";
+
 import IcSearch from "../../assets/icons/search.svg";
 import IcFilter from "../../assets/icons/filter.svg";
 import IcPlus from "../../assets/icons/plus.svg";
 import IcSort from "../../assets/icons/sort.svg";
+
 import { mockCustomer, category, state } from "../../data/mockData";
 
 const CustomerScreen = () => {
@@ -34,6 +37,11 @@ const CustomerScreen = () => {
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedState, setSelectedState] = useState([]);
 
+    const [deleteModal, setDeleteModal] = useState({
+        visible: false,
+        item: null
+    });
+
     const handleCreate = () => {
         navigation.navigate('FormCustomer');
     };
@@ -44,15 +52,18 @@ const CustomerScreen = () => {
         });
     };
 
-    const handleDelete = (customer) => {
-        Alert.alert('Xác nhận xóa', `Bạn có chắc chắn muốn xóa khách hàng "${customer.name || customer.title}"?`, [
-            { text: 'Hủy', style: 'cancel' },
-            {
-                text: 'Xóa',
-                style: 'destructive',
-                onPress: () => setCustomerList(prev => prev.filter(c => c.code !== customer.code))
-            }
-        ]);
+    const handleOpenDelete = (customer) => {
+        setDeleteModal({
+            visible: true,
+            item: customer
+        });
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteModal.item) {
+            setCustomerList(prev => prev.filter(c => c.id !== deleteModal.item.id));
+        }
+        setDeleteModal({ visible: false, item: null });
     };
 
     // Xoá dấu dùng cho search
@@ -263,7 +274,7 @@ const CustomerScreen = () => {
                         item={item}
                         type="customer"
                         onEdit={() => handleEdit(item)}
-                        onDelete={() => handleDelete(item)}
+                        onDelete={() => handleOpenDelete(item)}
                         onOpenAnniversary={() => {
                             navigation.navigate('AnniversaryScreen', {
                                 customer: item?.name || ''
@@ -295,6 +306,14 @@ const CustomerScreen = () => {
                     }
                     return null;
                 }}
+            />
+
+            <DeleteModal
+                isVisible={deleteModal.visible}
+                onClose={() => setDeleteModal({ visible: false, item: null })}
+                onConfirm={handleConfirmDelete}
+                type="Khách hàng"
+                title={deleteModal.item ? `${deleteModal.item.code} - ${deleteModal.item.name}` : ''}
             />
         </SafeAreaView>
     )

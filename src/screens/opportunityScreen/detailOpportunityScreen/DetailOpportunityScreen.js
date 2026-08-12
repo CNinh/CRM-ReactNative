@@ -28,7 +28,7 @@ const DetailOpportunityScreen = () => {
     const navigation = useNavigation();
     const route = useRoute();
 
-    const { item } = route.params || {};
+    const { item, initialTab = 'info' } = route.params || {};
 
     const [historyList, setHistoryList] = useState(() =>
         optHistories.filter(h => h.opportunityId === item?.id)
@@ -51,7 +51,13 @@ const DetailOpportunityScreen = () => {
         { id: 'log', title: 'Nhật ký rà soát', icon: IcLog, count: logList.length },
     ];
 
-    const [activeTab, setActiveTab] = useState('info');
+    const [activeTab, setActiveTab] = useState(initialTab);
+
+    useEffect(() => {
+        if (route.params?.initialTab) {
+            setActiveTab(route.params.initialTab);
+        }
+    }, [route.params?.initialTab]);
 
     const formatCurrency = (value) => {
         if (!value) return "0";

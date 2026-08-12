@@ -1066,6 +1066,7 @@ export const plan = [
 
 /* Data khách hàng */
 const baseCustomer = {
+    id: 1,
     code: "[KHA070768704]",
     name: "(Nguyễn Tiến Dũng) CÔNG TY CỔ PHẦN THUẬN HẢI ENERGY",
     tax: "0124624562",

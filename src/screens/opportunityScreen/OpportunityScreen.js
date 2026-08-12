@@ -138,6 +138,10 @@ const OpportunityScreen = () => {
     const remainingOpt = filteredData.length - visibleCount;
     const loadCount = remainingOpt > 10 ? 10 : remainingOpt;
 
+    const handleCreate = () => {
+        navigation.navigate('CreateOpportunityScreen');
+    }
+
     const handleLoadMore = () => {
         const currentRemaining = filteredData.length - visibleCount
         const currentLoad = remainingOpt > 10 ? 10 : remainingOpt;
@@ -236,6 +240,9 @@ const OpportunityScreen = () => {
                     style={styles.btnFilter}
                 >
                     <IcFilter width={20} height={20} color="#000000" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.btnAdd} onPress={handleCreate}>
+                    <IcPlus width={24} height={24} color="#ffffff" style={{ translate: 0.9 }} />
                 </TouchableOpacity>
             </View>
 

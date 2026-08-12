@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
-import { useState } from "react";
 
 import IcBirthday from '../../assets/icons/birthday.svg';
 import IcContract from '../../assets/icons/certificate.svg';

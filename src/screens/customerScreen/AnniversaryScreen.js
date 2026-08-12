@@ -12,6 +12,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import styles from "./AnniversaryScreen.style";
 import AnniversaryCard from '../../components/cards/AnniversaryCard';
 import AnniversaryDetailModal from "../../components/modals/AnniversaryDetailModal";
+import DeleteModal from "../../components/modals/DeleteModal";
+
 import IcSearch from '../../assets/icons/search.svg';
 import IcPlus from '../../assets/icons/plus.svg';
 
@@ -23,6 +25,10 @@ const AnniversaryScreen = () => {
 
     const [selectedItem, setSelectedItem] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+    const [deleteModal, setDeleteModal] = useState({
+        visible: false,
+        item: null
+    });
 
     const [searchText, setSearchText] = useState('');
     const [anniversaryList, setAnniversaryList] = useState(anniversary);
@@ -64,15 +70,18 @@ const AnniversaryScreen = () => {
         });
     };
 
-    const handleDelete = (id) => {
-        Alert.alert('Xác nhận xóa', 'Bạn có chắc chắn muốn xóa ngày kỷ niệm này?', [
-            { text: 'Hủy', style: 'cancel' },
-            {
-                text: 'Xóa',
-                style: 'destructive',
-                onPress: () => setAnniversaryList(prev => prev.filter(item => item.id !== id))
-            }
-        ]);
+    const handleOpenDelete = (anniversary) => {
+        setDeleteModal({
+            visible: true,
+            item: anniversary
+        });
+    };
+
+    const handleConfirmDelete = () => {
+        if (deleteModal.item) {
+            setAnniversaryList(prev => prev.filter(a => a.id !== deleteModal.item.id));
+        }
+        setDeleteModal({ visible: false, item: null });
     };
 
     return (
@@ -105,7 +114,7 @@ const AnniversaryScreen = () => {
                         item={item}
                         onView={handleView}
                         onEdit={handleEdit}
-                        onDelete={handleDelete}
+                        onDelete={() => handleOpenDelete(item)}
                     />
                 )}
                 contentContainerStyle={styles.listContent}
@@ -117,6 +126,14 @@ const AnniversaryScreen = () => {
                 item={selectedItem}
                 customerInfo={customerInfo}
                 onClose={() => setModalVisible(false)}
+            />
+
+            <DeleteModal
+                isVisible={deleteModal.visible}
+                onClose={() => setDeleteModal({ visible: false, item: null })}
+                onConfirm={handleConfirmDelete}
+                type="Ngày kỷ niệm"
+                title={deleteModal.item ? `${deleteModal.item.title}` : ''}
             />
         </SafeAreaView>
     )
