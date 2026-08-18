@@ -16,6 +16,8 @@ const DropDownList = ({
     onSelect,
     showAllOption = false,
     allOptionLabel = '-- Tất cả --',
+    fontSize = 13,
+    fontWeight = 400,
     customMaxHeight = 180,
     dropDownHeight = 32,
     containerStyle,
@@ -44,8 +46,8 @@ const DropDownList = ({
         ? (selectedItem.name || selectedItem.title || selectedItem.label || selectedItem)
         : placeholder;
 
-    const listData = showAllOption 
-        ? [{ id: 'all_option_id', name: allOptionLabel }, ...data] 
+    const listData = showAllOption
+        ? [{ id: 'all_option_id', name: allOptionLabel }, ...data]
         : data;
 
     return (
@@ -56,17 +58,23 @@ const DropDownList = ({
                 onPress={handleOpenDropdown}
                 activeOpacity={0.7}
             >
-                <Text style={[styles.dropdownText, !selectedItem && styles.placeholderText]} numberOfLines={1}>
+                <Text style={[
+                    styles.dropdownText,
+                    !selectedItem && styles.placeholderText,
+                    { fontSize: fontSize, fontWeight: fontWeight }
+                ]}
+                    numberOfLines={1}
+                >
                     {displayValue}
                 </Text>
                 <IcArrowD width={16} height={16} color="#7E8387" />
             </TouchableOpacity>
 
             {dropdownTarget && (
-                <Modal 
-                    visible 
-                    transparent 
-                    animationType="none" 
+                <Modal
+                    visible
+                    transparent
+                    animationType="none"
                     onRequestClose={() => setDropdownTarget(null)}
                 >
                     <TouchableOpacity
@@ -94,7 +102,7 @@ const DropDownList = ({
                             renderItem={({ item }) => {
                                 const isAll = item.id === 'all_option_id';
                                 const itemLabel = isAll ? allOptionLabel : (item.title || item.name || item.label || item);
-                                
+
                                 return (
                                     <TouchableOpacity
                                         style={styles.dropdownListItem}
@@ -144,7 +152,7 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'transparent'
     },
-    
+
     dropdownListModal: {
         position: 'absolute',
         backgroundColor: '#FFFFFF',

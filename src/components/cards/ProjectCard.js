@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import AvatarGroup from "../avatars/AvatarGroup";
 
 import IcCalendar from "../../assets/icons/calendar_blank.svg";
@@ -7,83 +8,99 @@ import IcHistory from "../../assets/icons/history.svg";
 import IcUser from "../../assets/icons/user.svg";
 
 const ProjectCard = ({ item, type = 'project' }) => {
+    const navigation = useNavigation();
 
     const getRateColor = (rateValue) => {
-        if (rateValue >= 80) return '#56A856';
+        if (rateValue >= 70) return '#56A856';
         if (rateValue < 50) return '#C62828';
         return '#E19E2E';
     };
 
-    const rateNum = item?.successRateValue ?? 100;
-    const rateStr = item?.successRateText ?? '100,00%';
+    const rateNum = item?.successRate ?? 100;
+
+    const formatRate = (val) => {
+        if (val === undefined || val === null || val === '') return '0,00';
+        const num = Number(val);
+        if (isNaN(num)) return '0,00';
+        return num.toFixed(2).replace('.', ',');
+    };
 
     const formatCurrency = (value) => {
         if (!value) return "0 triệu";
-        if (value >= 1000000000) return `${(value / 1000000000).toFixed(1)} tỷ`;
+        if (value >= 1000000000) return `${(value / 1000000000).toFixed(0)} tỷ`;
         if (value >= 1000000) return `${(value / 1000000).toFixed(0)} triệu`;
         return `${value} đ`;
     }
 
+    const handlePressCard = () => {
+        navigation.navigate('DetailProjectScreen', { item });
+    }
+
     return (
-        <View style={styles.cardContainer}>
-            <View style={styles.cardHeader}>
-                <View style={[styles.statusTag, { backgroundColor: '#FFBE50' }]}>
-                    <Text style={[styles.statusText, { color: type === 'home' ? '#000000' : '#ffffff' }]}>
-                        {item?.stage || "Đang thực hiện"}
+        <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={handlePressCard}
+        >
+            <View style={styles.cardContainer}>
+                <View style={styles.cardHeader}>
+                    <View style={[styles.statusTag, { backgroundColor: '#FFBE50' }]}>
+                        <Text style={[styles.statusText, { color: type === 'home' ? '#000000' : '#ffffff' }]}>
+                            {item?.stage || "Đang thực hiện"}
+                        </Text>
+                    </View>
+
+                    {type === 'project' && (
+                        <View style={styles.headerDate}>
+                            <IcCalendar width={16} height={16} color="#000000" />
+                            <Text style={styles.dateText}>{item?.date}</Text>
+                        </View>
+                    )}
+                </View>
+
+                <Text style={styles.titleText}>
+                    {item?.name}
+                </Text>
+
+                <View style={[styles.infoRow, { marginLeft: type === 'home' ? -2 : -6 }]}>
+                    <IcBuilding width={22} height={22} color="#C62828" />
+                    <Text style={styles.deptText}>
+                        {item?.dept} {item?.location}
                     </Text>
                 </View>
 
-                {type === 'project' && (
-                    <View style={styles.headerDate}>
-                        <IcCalendar width={16} height={16} color="#000000" />
-                        <Text style={styles.dateText}>{item?.date}</Text>
+                {type === 'home' ? (
+                    <View style={styles.financeRow}>
+                        <View style={styles.financeTag}>
+                            <Text style={styles.financeText}>
+                                Chi phí: {formatCurrency(item?.cost)}
+                            </Text>
+                        </View>
+                        <View style={[styles.financeTag, { backgroundColor: '#9ee1b9' }]}>
+                            <Text style={[styles.financeText, { color: '#000000' }]}>
+                                Doanh thu: {formatCurrency(item?.revenue)}
+                            </Text>
+                        </View>
+                    </View>
+                ) : (
+                    <View style={styles.rateContainer}>
+                        <Text style={styles.rateLabel}>
+                            Tỉ lệ thành công <Text style={[styles.rateValue, { color: getRateColor(rateNum) }]}>{formatRate(rateNum)} %</Text>
+                        </Text>
+                    </View>
+                )}
+
+                {type === 'home' && (
+                    <View style={styles.cardFooter}>
+                        <AvatarGroup members={item?.staff || []} maxDisplay={3} />
+
+                        <TouchableOpacity style={styles.btnHistory}>
+                            <IcHistory width={18} height={18} color="#ffffff" />
+                            <Text style={styles.btnText}>Nhật ký</Text>
+                        </TouchableOpacity>
                     </View>
                 )}
             </View>
-
-            <Text style={styles.titleText}>
-                {item?.code} {item?.name}
-            </Text>
-
-            <View style={[styles.infoRow, { marginLeft: type === 'home' ? -2 : -6 }]}>
-                <IcBuilding width={22} height={22} color="#C62828" />
-                <Text style={styles.deptText}>
-                    {item?.dept}
-                </Text>
-            </View>
-
-            {type === 'home' ? (
-                <View style={styles.financeRow}>
-                    <View style={styles.financeTag}>
-                        <Text style={styles.financeText}>
-                            Chi phí: {formatCurrency(item?.cost)}
-                        </Text>
-                    </View>
-                    <View style={[styles.financeTag, { backgroundColor: '#9ee1b9' }]}>
-                        <Text style={[styles.financeText, { color: '#000000' }]}>
-                            Doanh thu: {formatCurrency(item?.revenue)}
-                        </Text>
-                    </View>
-                </View>
-            ) : (
-                <View style={styles.rateContainer}>
-                    <Text style={styles.rateLabel}>
-                        Tỉ lệ thành công <Text style={[styles.rateValue, { color: getRateColor(rateNum) }]}>{item?.successRate}%</Text>
-                    </Text>
-                </View>
-            )}
-
-            {type === 'home' && (
-                <View style={styles.cardFooter}>
-                    <AvatarGroup members={item?.staff || []} maxDisplay={3} />
-
-                    <TouchableOpacity style={styles.btnHistory}>
-                        <IcHistory width={18} height={18} color="#ffffff" />
-                        <Text style={styles.btnText}>Nhật ký</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
-        </View>
+        </TouchableOpacity>
     );
 };
 

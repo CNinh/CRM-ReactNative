@@ -54,12 +54,12 @@ const ProjectScreen = () => {
         const cleanSearch = removeAccents(searchText).toLowerCase().trim();
 
         const cleanTitle = removeAccents(item.title || item.name || '').toLowerCase();
-        const cleanCode = removeAccents(item.code || item.opportunityCode || item.projectCode || '').toLowerCase();
+        const cleanCode = removeAccents(String(item.code || item.opportunityCode || item.projectCode || '')).toLowerCase();
 
         const matchesSearch = !cleanSearch ||
             cleanTitle.includes(cleanSearch) ||
             cleanCode.includes(cleanSearch);
-            
+
         // Giai đoạn
         const matchesStage = selectedStage.length === 0 ||
             selectedStage.includes(item.stageId) ||
@@ -278,7 +278,12 @@ const ProjectScreen = () => {
                 style={{ flex: 1 }}
                 data={displayData}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => <ProjectCard item={item} type="project" />}
+                renderItem={({ item }) => (
+                    <ProjectCard
+                        item={item}
+                        type="project"
+                    />
+                )}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 12, marginTop: 12 }}
 

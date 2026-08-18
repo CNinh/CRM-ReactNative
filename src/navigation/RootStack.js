@@ -12,16 +12,19 @@ import FormAnniversaryScreen from '../screens/customerScreen/FormAnniversaryScre
 import AddMemberScreen from '../screens/opportunityScreen/AddMemberScreen';
 import DetailOpportunityScreen from '../screens/opportunityScreen/detailOpportunityScreen/DetailOpportunityScreen';
 import CreateOpportunityScreen from '../screens/opportunityScreen/CreateOpportunityScreen';
+import DetailProjectScreen from '../screens/projectScreen/detailProjectScreen/DetailProjectScreen';
+import TaskInfoScreen from '../screens/projectScreen/TaskInfoScreen';
+import FormTaskScreen from '../screens/projectScreen/FormTaskScreen';
 
 const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
     return (
         <Stack.Navigator screenOptions={{ header: (props) => <DefaultHeader {...props} /> }}>
-            <Stack.Screen 
-                name="MainTabs" 
-                component={BottomTabNavigation} 
-                options={{ headerShown: false }} 
+            <Stack.Screen
+                name="MainTabs"
+                component={BottomTabNavigation}
+                options={{ headerShown: false }}
             />
 
             <Stack.Screen
@@ -74,7 +77,7 @@ const RootStack = () => {
                 options={({ route }) => {
                     const { customer } = route.params || {};
                     const displayCustomer = customer ? `${customer}` : '';
-                    
+
                     return {
                         headerTitle: `Ngày kỷ niệm: ${displayCustomer}`,
                         headerTitleStyle: {
@@ -111,6 +114,32 @@ const RootStack = () => {
                 name="CreateOpportunityScreen"
                 component={CreateOpportunityScreen}
                 options={{ headerTitle: 'Thêm mới cơ hội kinh doanh' }}
+            />
+
+            <Stack.Screen
+                name="DetailProjectScreen"
+                component={DetailProjectScreen}
+                options={{ headerTitle: 'Chi tiết dự án' }}
+            />
+
+            <Stack.Screen
+                name="TaskInfoScreen"
+                component={TaskInfoScreen}
+                options={({ route }) => {
+                    const taskData = route.params?.taskData;
+
+                    const headerTitle = taskData
+                        ? `${taskData.code ? `${taskData.code} - ` : ''}${taskData.title}`
+                        : 'Chi tiết công việc';
+                        
+                    return { headerTitle };
+                }}
+            />
+
+            <Stack.Screen
+                name="FormTaskScreen"
+                component={FormTaskScreen}
+                options={{ headerTitle: 'Chỉnh sửa công việc' }}
             />
         </Stack.Navigator>
     );

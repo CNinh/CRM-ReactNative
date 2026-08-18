@@ -491,7 +491,7 @@ export const optServices = [
     { id: 5, name: 'VNPT SmartCloud', desc: 'Dịch vụ điện toán đám mây VNPT Cloud tự phát triển' },
 ];
 
-export const optDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged.";
+export const optDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum.";
 
 export const optAttachments = [
     { id: 1, name: 'danhsachbophan14042026...xlsx', type: 'excel' },
@@ -860,63 +860,107 @@ const baseProject = {
 export const project = [
     {
         id: 1,
-        code: "[DA00000102]",
+        code: 88,
         name: "Nâng cấp bổ sung cụm loa Truyền Thanh Thông Minh Đông Ninh Hoà",
-        stage: "Tư vấn/khảo sát",
-        dept: "PHÒNG VĂN HOÁ XÃ - HỘI PHƯỜNG ĐÔNG NINH HOÀ",
+        opportunity: {
+            id: 1,
+            name: "Truyền thanh thông minh - xã Hoà Trí",
+            dept: "Phòng văn hoá xã hội",
+            probability: 50,
+            expectedValue: 160000000
+        },
+        creator: "Nguyễn Thị Thu Hà (hantt.kha)",
+        stage: "Tiếp cận và khảo sát nhu cầu",
+        dept: "Phòng Văn hoá - Xã hội",
+        location: "Phường Đông Ninh Hoà",
         services: ["VNPT IOC", "Camera AI", "Hạ tầng Cloud"],
         staff: ["Nguyễn Vũ Linh", "Vương Hồng Quân", "Ngô Việt Thắng"],
         date: "01/04/2026",
         time: "08:00",
         cost: 1200000000,
         revenue: 2500000000,
-        successRate: 50
+        earned: 0,
+        probability: 50,
+        successRate: 70
     },
     {
         id: 2,
-        code: "[DA00000102]",
+        code: 24,
         name: "Nâng cấp bổ sung cụm loa Truyền Thanh Thông Minh Đông Ninh Hoà",
-        stage: "Tư vấn/khảo sát",
-        dept: "PHÒNG VĂN HOÁ XÃ - HỘI PHƯỜNG ĐÔNG NINH HOÀ",
+        opportunity: {
+            id: 2,
+            name: "Truyền thanh thông minh - xã Hoà Trí",
+            dept: "Phòng văn hoá xã hội",
+            probability: 50,
+            expectedValue: 160000000
+        },
+        creator: "Nguyễn Thị Thu Hà (hantt.kha)",
+        stage: "Tiếp cận và khảo sát nhu cầu",
+        dept: "Phòng Văn hoá - Xã hội",
+        location: "Phường Đông Ninh Hoà",
         services: ["VNPT IOC", "Camera AI", "Hạ tầng Cloud"],
         staff: ["Nguyễn Vũ Linh", "Vương Hồng Quân", "Ngô Việt Thắng"],
         date: "01/04/2026",
         time: "08:00",
         cost: 1200000000,
         revenue: 2500000000,
+        earned: 0,
+        probability: 20,
         successRate: 20
     },
     {
         id: 3,
-        code: "[DA00000102]",
+        code: 52,
         name: "Nâng cấp bổ sung cụm loa Truyền Thanh Thông Minh Đông Ninh Hoà",
-        stage: "Tư vấn/khảo sát",
-        dept: "PHÒNG VĂN HOÁ XÃ - HỘI PHƯỜNG ĐÔNG NINH HOÀ",
+        opportunity: {
+            id: 3,
+            name: "Truyền thanh thông minh - xã Hoà Trí",
+            dept: "Phòng văn hoá xã hội",
+            probability: 50,
+            expectedValue: 160000000
+        },
+        creator: "Nguyễn Thị Thu Hà (hantt.kha)",
+        stage: "Tiếp cận và khảo sát nhu cầu",
+        dept: "Phòng Văn hoá - Xã hội",
+        location: "Phường Đông Ninh Hoà",
         services: ["VNPT IOC", "Camera AI", "Hạ tầng Cloud"],
         staff: ["Nguyễn Vũ Linh", "Vương Hồng Quân", "Ngô Việt Thắng"],
         date: "01/04/2026",
         time: "08:00",
         cost: 1200000000,
         revenue: 2500000000,
+        earned: 0,
+        probability: 80,
         successRate: 100
     },
     {
         id: 4,
-        code: "[DA00000103]",
-        name: "Dự án nuôi em",
-        stage: "Tư vấn/khảo sát",
-        dept: "Ban Chỉ Huy Bộ Đội Biên Phòng",
-        services: ["Camera AI", "Dịch vụ điện toán đám mây VNPT Cloud hợp tác SBĐ", "Hạ tầng Cloud"],
-        staff: ["Phan Lương Bằng", "Trần Duy Tân"],
+        code: 12,
+        name: "Nâng cấp bổ sung cụm loa Truyền Thanh Thông Minh Đông Ninh Hoà",
+        opportunity: {
+            id: 4,
+            name: "Truyền thanh thông minh - xã Hoà Trí",
+            dept: "Phòng văn hoá xã hội",
+            probability: 50,
+            expectedValue: 160000000
+        },
+        creator: "Nguyễn Thị Thu Hà (hantt.kha)",
+        stage: "Tiếp cận và khảo sát nhu cầu",
+        dept: "Phòng Văn hoá - Xã hội",
+        location: "Phường Đông Ninh Hoà",
+        services: ["VNPT IOC", "Camera AI", "Hạ tầng Cloud"],
+        staff: ["Nguyễn Vũ Linh", "Vương Hồng Quân", "Ngô Việt Thắng"],
         date: "01/04/2026",
         time: "08:00",
-        cost: 120000000,
-        revenue: 0,
+        cost: 1200000000,
+        revenue: 2500000000,
+        earned: 0,
+        probability: 70,
         successRate: 100
     },
     {
         id: 5,
-        code: "[DA00000103]",
+        code: 23,
         name: "Dự án nuôi em",
         stage: "Tư vấn/khảo sát",
         dept: "Ban Chỉ Huy Bộ Đội Biên Phòng",
@@ -926,11 +970,13 @@ export const project = [
         time: "08:00",
         cost: 120000000,
         revenue: 0,
+        earned: 0,
+        probability: 80,
         successRate: 100
     },
     {
         id: 6,
-        code: "[DA00000103]",
+        code: 76,
         name: "Dự án nuôi em",
         stage: "Tư vấn/khảo sát",
         dept: "Ban Chỉ Huy Bộ Đội Biên Phòng",
@@ -940,11 +986,13 @@ export const project = [
         time: "08:00",
         cost: 120000000,
         revenue: 0,
+        earned: 0,
+        probability: 80,
         successRate: 100
     },
     {
         id: 7,
-        code: "[DA00000103]",
+        code: 86,
         name: "Dự án nuôi em",
         stage: "Tư vấn/khảo sát",
         dept: "Ban Chỉ Huy Bộ Đội Biên Phòng",
@@ -954,11 +1002,13 @@ export const project = [
         time: "08:00",
         cost: 120000000,
         revenue: 0,
+        earned: 0,
+        probability: 80,
         successRate: 100
     },
     {
         id: 8,
-        code: "[DA00000103]",
+        code: 47,
         name: "Dự án nuôi em",
         stage: "Tư vấn/khảo sát",
         dept: "Ban Chỉ Huy Bộ Đội Biên Phòng",
@@ -968,8 +1018,485 @@ export const project = [
         time: "08:00",
         cost: 120000000,
         revenue: 0,
+        earned: 0,
+        probability: 68,
         successRate: 100
     },
+    {
+        id: 9,
+        code: 34,
+        name: "Dự án nuôi em",
+        stage: "Tư vấn/khảo sát",
+        dept: "Ban Chỉ Huy Bộ Đội Biên Phòng",
+        services: ["Camera AI", "Dịch vụ điện toán đám mây VNPT Cloud hợp tác SBĐ", "Hạ tầng Cloud"],
+        staff: ["Phan Lương Bằng", "Trần Duy Tân"],
+        date: "01/04/2026",
+        time: "08:00",
+        cost: 120000000,
+        revenue: 0,
+        earned: 0,
+        probability: 59,
+        successRate: 100
+    },
+    {
+        id: 10,
+        code: 83,
+        name: "Dự án nuôi em",
+        stage: "Tư vấn/khảo sát",
+        dept: "Ban Chỉ Huy Bộ Đội Biên Phòng",
+        services: ["Camera AI", "Dịch vụ điện toán đám mây VNPT Cloud hợp tác SBĐ", "Hạ tầng Cloud"],
+        staff: ["Phan Lương Bằng", "Trần Duy Tân"],
+        date: "01/04/2026",
+        time: "08:00",
+        cost: 120000000,
+        revenue: 0,
+        earned: 0,
+        probability: 76,
+        successRate: 100
+    }
+];
+
+export const prjServices = [
+    {
+        id: 1,
+        projectId: 1,
+        name: "Hệ thống truyền thanh thông minh",
+        startDate: "28/05/2026",
+        endDate: "30/08/2026",
+        expectedValue: 494000000,
+        earned: 0,
+        cost: 0,
+        members: [
+            {
+                id: 201,
+                name: "Quản trị CTN",
+                username: "quantri",
+                roles: ["AM", "BA", "Kiểm thử"]
+            },
+            {
+                id: 202,
+                name: "Đỗ Phương Liên",
+                username: "liendp.kha",
+                dept: "Tổ Nghiên cứu phát triển",
+                roles: ["PM", "Kiểm thử"]
+            },
+            {
+                id: 203,
+                name: "Lê Tuấn Huy",
+                username: "huylt.kha",
+                roles: ["PM"]
+            },
+            {
+                id: 204,
+                name: "Phan Lương Bằng",
+                username: "bangpl.kha",
+                dept: "Tổ Nghiên cứu phát triển",
+                roles: ["AM", "BA", "Quản lý"]
+            },
+            {
+                id: 205,
+                name: "Trần Duy Tân",
+                username: "tantd.kha",
+                roles: ["AM", "BA", "Kiểm thử"]
+            }
+        ]
+    },
+    {
+        id: 2,
+        projectId: 2,
+        name: "Hệ thống truyền thanh thông minh",
+        startDate: "28/05/2026",
+        endDate: "30/08/2026",
+        expectedValue: 494000000,
+        earned: 0,
+        cost: 0,
+        members: [
+            {
+                id: 201,
+                name: "Quản trị CTN",
+                username: "quantri",
+                roles: ["AM", "BA", "Kiểm thử"]
+            },
+            {
+                id: 202,
+                name: "Đỗ Phương Liên",
+                username: "liendp.kha",
+                dept: "Tổ Nghiên cứu phát triển",
+                roles: ["PM", "Kiểm thử"]
+            },
+            {
+                id: 203,
+                name: "Lê Tuấn Huy",
+                username: "huylt.kha",
+                roles: ["PM"]
+            },
+            {
+                id: 204,
+                name: "Phan Lương Bằng",
+                username: "bangpl.kha",
+                dept: "Tổ Nghiên cứu phát triển",
+                roles: ["AM", "BA", "Quản lý"]
+            },
+            {
+                id: 205,
+                name: "Trần Duy Tân",
+                username: "tantd.kha",
+                roles: ["AM", "BA", "Kiểm thử"]
+            }
+        ]
+    },
+    {
+        id: 3,
+        projectId: 3,
+        name: "Hệ thống truyền thanh thông minh",
+        startDate: "28/05/2026",
+        endDate: "30/08/2026",
+        expectedValue: 494000000,
+        earned: 0,
+        cost: 0,
+        members: [
+            {
+                id: 201,
+                name: "Quản trị CTN",
+                username: "quantri",
+                roles: ["AM", "BA", "Kiểm thử"]
+            },
+            {
+                id: 202,
+                name: "Đỗ Phương Liên",
+                username: "liendp.kha",
+                dept: "Tổ Nghiên cứu phát triển",
+                roles: ["PM", "Kiểm thử"]
+            },
+            {
+                id: 203,
+                name: "Lê Tuấn Huy",
+                username: "huylt.kha",
+                roles: ["PM"]
+            },
+            {
+                id: 204,
+                name: "Phan Lương Bằng",
+                username: "bangpl.kha",
+                dept: "Tổ Nghiên cứu phát triển",
+                roles: ["AM", "BA", "Quản lý"]
+            },
+            {
+                id: 205,
+                name: "Trần Duy Tân",
+                username: "tantd.kha",
+                roles: ["AM", "BA", "Kiểm thử"]
+            }
+        ]
+    },
+    {
+        id: 4,
+        projectId: 4,
+        name: "Hệ thống truyền thanh thông minh",
+        startDate: "28/05/2026",
+        endDate: "30/08/2026",
+        expectedValue: 494000000,
+        earned: 0,
+        cost: 0,
+        members: [
+            {
+                id: 201,
+                name: "Quản trị CTN",
+                username: "quantri",
+                roles: ["AM", "BA", "Kiểm thử"]
+            },
+            {
+                id: 202,
+                name: "Đỗ Phương Liên",
+                username: "liendp.kha",
+                dept: "Tổ Nghiên cứu phát triển",
+                roles: ["PM", "Kiểm thử"]
+            },
+            {
+                id: 203,
+                name: "Lê Tuấn Huy",
+                username: "huylt.kha",
+                roles: ["PM"]
+            },
+            {
+                id: 204,
+                name: "Phan Lương Bằng",
+                username: "bangpl.kha",
+                dept: "Tổ Nghiên cứu phát triển",
+                roles: ["AM", "BA", "Quản lý"]
+            },
+            {
+                id: 205,
+                name: "Trần Duy Tân",
+                username: "tantd.kha",
+                roles: ["AM", "BA", "Kiểm thử"]
+            }
+        ]
+    },
+]
+
+export const prjChats = [
+    {
+        id: 1,
+        projectId: 1,
+        date: '15/06/2026',
+        taskCode: '#1225',
+        taskName: 'Công việc TestPM',
+        priority: 'Bình thường',
+        time: '14:08:52',
+        sender: 'Phan Lương Bằng',
+        action: 'đã tạo công việc',
+        content: '',
+        attachment: null
+    },
+    {
+        id: 2,
+        projectId: 1,
+        date: '15/06/2026',
+        taskCode: '#1225',
+        taskName: 'Công việc TestPM',
+        priority: 'Bình thường',
+        time: '14:08:52',
+        sender: 'Phan Lương Bằng',
+        action: 'đã tạo công việc',
+        content: 'test thêm tiêu đề dự án',
+        attachment: null
+    },
+    {
+        id: 3,
+        projectId: 1,
+        date: '15/06/2026',
+        taskCode: '#1225',
+        taskName: 'Công việc TestPM',
+        priority: 'Bình thường',
+        time: '14:08:52',
+        sender: 'Phan Lương Bằng',
+        action: 'đã tạo công việc',
+        content: 'đây là biên bản cuộc họp',
+        attachment: {
+            name: '645909d5-4324-437c-ad5b-496a689c634c.jpg',
+            type: 'image',
+            url: 'https://example.com/files/645909d5.jpg'
+        }
+    },
+    {
+        id: 4,
+        projectId: 1,
+        date: '15/06/2026',
+        taskCode: '#1225',
+        taskName: 'Công việc TestPM',
+        priority: 'Bình thường',
+        time: '14:08:52',
+        sender: 'Phan Lương Bằng',
+        action: 'đã tạo công việc',
+        content: 'đây là biên bản cuộc họp',
+        attachment: {
+            name: '645909d5-4324-437c-ad5b-496a689c634c.jpg',
+            type: 'image',
+            url: 'https://example.com/files/645909d5.jpg'
+        }
+    }
+];
+
+export const prjLogs = [
+    {
+        id: 401,
+        projectId: 1,
+        reviewTitle: "Rà soát đột xuất khách hàng trọng điểm",
+        date: "26/05/2026",
+        time: "14:54",
+        level: "Cấp 3",
+        reviewerName: "Phan Lương Bằng",
+        status: "confirmed",
+        statusLabel: "Đã xác nhận rà soát",
+        comment: "",
+        attachment: null
+    },
+    {
+        id: 402,
+        projectId: 1,
+        reviewTitle: "Rà soát đột xuất khách hàng trọng điểm",
+        date: "26/05/2026",
+        time: "14:54",
+        level: "Cấp 3",
+        reviewerName: "Phan Lương Bằng",
+        status: "commented",
+        statusLabel: "Đã cho ý kiến",
+        comment: "đã rà soát dự án này update",
+        attachment: null
+    },
+    {
+        id: 403,
+        projectId: 1,
+        reviewTitle: "Rà soát đột xuất khách hàng trọng điểm",
+        date: "26/05/2026",
+        time: "14:54",
+        level: "Cấp 3",
+        reviewerName: "Phan Lương Bằng",
+        status: "commented",
+        statusLabel: "Đã cho ý kiến",
+        comment: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged.",
+        attachment: {
+            id: "img_log_1",
+            name: "645909d5-4324-437c-ad5b-496a689c634c.jpg",
+            type: "image",
+            url: ""
+        }
+    },
+    {
+        id: 404,
+        projectId: 7,
+        reviewTitle: "Rà soát định kỳ Quý II/2026",
+        date: "10/05/2026",
+        time: "09:15",
+        level: "Cấp 2",
+        reviewerName: "Lê Tuấn Huy",
+        status: "confirmed",
+        statusLabel: "Đã xác nhận rà soát",
+        comment: "Tiến độ triển khai đáp ứng yêu cầu của Sở Y tế.",
+        attachment: null
+    }
+];
+
+export const taskTypes = [
+    { id: 1, name: 'General' },
+    { id: 2, name: 'Khảo sát' },
+    { id: 3, name: 'Triển khai' },
+    { id: 4, name: 'Tư vấn' }
+];
+
+export const taskPriorities = [
+    { id: 1, name: 'Thấp' },
+    { id: 2, name: 'Bình thường' },
+    { id: 3, name: 'Cao' },
+    { id: 4, name: 'Khẩn cấp' }
+];
+
+export const taskStatuses = [
+    { id: 1, name: 'Chưa bắt đầu' },
+    { id: 2, name: 'Đang thực hiện' },
+    { id: 3, name: 'Tạm dừng' },
+    { id: 4, name: 'Hoàn thành' },
+    { id: 5, name: 'Hủy' }
+];
+
+export const prjTasks = [
+    {
+        id: 1,
+        projectId: 1,
+        code: '#218',
+        title: 'Họp kickoff dự án',
+        type: 'General',
+        priority: 'Bình thường',
+        status: 'Đang thực hiện',
+        progress: 20,
+        startDate: '01/06/2026',
+        endDate: '06/06/2026',
+        estimatedHours: 8.00,
+        actualHours: 0.00,
+        parentTaskId: null,
+        parentTaskCode: null,
+        assignee: 'Mai Ngọc Phương Ngân',
+        assigneeAvatar: 'PN',
+        description: 'Gặp khách hàng họp chuẩn bị tài liệu liên quan',
+        attachments: [],
+        logs: [
+            {
+                id: 101,
+                time: '17:43',
+                date: '15/06/2026',
+                author: 'Phan Lương Bằng',
+                actionType: 'comment', // 'comment' | 'update'
+                actionText: 'Đã bình luận',
+                content: 'đây là biên bản cuộc họp',
+                attachment: {
+                    id: 'att_log_1',
+                    name: '645909d5-4324-437c-ad5b-496a689c634c.jpg',
+                    type: 'image',
+                    url: ''
+                }
+            },
+            {
+                id: 102,
+                time: '17:40',
+                date: '15/06/2026',
+                author: 'Phan Lương Bằng',
+                actionType: 'update',
+                actionText: 'Đã cập nhật',
+                content: 'Trạng thái: Chưa bắt đầu ➔ Đang thực hiện',
+                attachment: null
+            }
+        ]
+    },
+    {
+        id: 2,
+        projectId: 1,
+        code: '#1225',
+        title: 'Công việc TestPM',
+        type: 'Khảo sát',
+        priority: 'Bình thường',
+        status: 'Chưa bắt đầu',
+        progress: 0,
+        startDate: '10/06/2026',
+        endDate: '15/06/2026',
+        estimatedHours: 16.00,
+        actualHours: 0.00,
+        parentTaskId: 1,
+        parentTaskCode: '#218',
+        assignee: 'Phan Lương Bằng',
+        assigneeAvatar: 'PLB',
+        description: 'Khảo sát hiện trạng hạ tầng mạng tại vị trí thi công.',
+        attachments: [
+            {
+                id: 'att_task_1',
+                name: 'danhsachbophan14042026.xlsx',
+                type: 'excel',
+                size: '24 KB',
+                url: ''
+            }
+        ],
+        logs: []
+    },
+    {
+        id: 3,
+        projectId: 1,
+        code: '#219',
+        title: 'Nghiệm thu thiết bị và bàn giao',
+        type: 'General',
+        priority: 'Cao',
+        status: 'Hoàn thành',
+        progress: 100,
+        startDate: '16/06/2026',
+        endDate: '20/06/2026',
+        estimatedHours: 24.00,
+        actualHours: 22.50,
+        parentTaskId: null,
+        parentTaskCode: null,
+        assignee: 'Nguyễn Văn A',
+        assigneeAvatar: 'NVA',
+        description: 'Kiểm kê thiết bị thực tế, ký biên bản bàn giao nghiệm thu.',
+        attachments: [],
+        logs: []
+    }
+];
+
+export const TASK_TYPES = [
+  { id: 1, name: 'General' },
+  { id: 2, name: 'SubTask' },
+];
+
+export const STATUS_OPTIONS = [
+  { id: 1, name: 'Chưa bắt đầu' },
+  { id: 2, name: 'Đang thực hiện' },
+  { id: 3, name: 'Hoàn thành' },
+  { id: 4, name: 'Tạm dừng' },
+];
+
+export const PRIORITY_OPTIONS = [
+  { id: 1, name: 'Thấp' },
+  { id: 2, name: 'Bình thường' },
+  { id: 3, name: 'Cao' },
+  { id: 4, name: 'Khẩn cấp' },
 ];
 
 /* Data kế hoạch */

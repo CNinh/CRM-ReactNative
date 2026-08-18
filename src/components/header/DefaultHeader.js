@@ -15,6 +15,7 @@ import IcEdit from "../../assets/icons/save_edit.svg";
 import IcEditState from '../../assets/icons/clipboard.svg';
 import IcCalendar from '../../assets/icons/calendar_blank.svg';
 import IcLink from '../../assets/icons/link.svg';
+import IcDelete from '../../assets/icons/delete.svg';
 
 const DefaultHeader = ({ navigation, options, route }) => {
     const [isOptionMenuOpen, setIsOptionMenuOpen] = useState(false);
@@ -26,6 +27,9 @@ const DefaultHeader = ({ navigation, options, route }) => {
     const isChildScreen = !MAIN_SCREENS.includes(route.name);
 
     const isDetailOpportunity = route.name === 'DetailOpportunityScreen' || route.name === 'DetailOpportunity';
+    const isDetailProject = route.name === 'DetailProjectScreen' || route.name === 'DetailProject';
+
+    const hasOptionMenu = isDetailOpportunity || isDetailProject;
 
     const handleGoBack = () => {
         if (navigation && navigation.canGoBack()) {
@@ -81,7 +85,7 @@ const DefaultHeader = ({ navigation, options, route }) => {
 
                 {/* Right header */}
                 {isChildScreen ? (
-                    isDetailOpportunity ? (
+                    hasOptionMenu ? (
                         <TouchableOpacity
                             style={styles.moreButton}
                             onPress={() => setIsOptionMenuOpen(true)}
@@ -119,42 +123,65 @@ const DefaultHeader = ({ navigation, options, route }) => {
             >
                 <TouchableWithoutFeedback onPress={() => setIsOptionMenuOpen(false)}>
                     <View style={styles.modalOverlay}>
-                        <View style={styles.dropdownMenu}>
-                            <TouchableOpacity
-                                style={styles.optionItem}
-                                onPress={() => handleOptionSelect('UPDATE')}
-                            >
-                                <IcEdit width={20} height={20} color="#000000" />
-                                <Text style={styles.optionText}>Cập nhật</Text>
-                            </TouchableOpacity>
+                        {/* DetailOpportunity */}
+                        {isDetailOpportunity && (
+                            <View style={[styles.dropdownMenu, { height: 168, width: 180 }]}>
+                                <TouchableOpacity
+                                    style={styles.optionItem}
+                                    onPress={() => handleOptionSelect('UPDATE')}
+                                >
+                                    <IcEdit width={20} height={20} color="#000000" />
+                                    <Text style={styles.optionText}>Cập nhật</Text>
+                                </TouchableOpacity>
 
-                            <TouchableOpacity
-                                style={styles.optionItem}
-                                onPress={() => handleOptionSelect('UPDATE_STATUS')}
-                            >
-                                <IcEditState width={20} height={20} color="#000000" />
-                                <Text style={styles.optionText}>Cập nhật trạng thái</Text>
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.optionItem}
+                                    onPress={() => handleOptionSelect('UPDATE_STATUS')}
+                                >
+                                    <IcEditState width={20} height={20} color="#000000" />
+                                    <Text style={styles.optionText}>Cập nhật trạng thái</Text>
+                                </TouchableOpacity>
 
-                            <TouchableOpacity
-                                style={styles.optionItem}
-                                onPress={() => handleOptionSelect('REGISTER_PLAN')}
-                            >
-                                <IcCalendar width={20} height={20} color="#000000" />
-                                <Text style={styles.optionText}>Đăng ký kế hoạch</Text>
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.optionItem}
+                                    onPress={() => handleOptionSelect('REGISTER_PLAN')}
+                                >
+                                    <IcCalendar width={20} height={20} color="#000000" />
+                                    <Text style={styles.optionText}>Đăng ký kế hoạch</Text>
+                                </TouchableOpacity>
 
-                            <TouchableOpacity
-                                style={[styles.optionItem, { borderBottomWidth: 0 }]}
-                                onPress={() => handleOptionSelect('CONVERT_PROJECT')}
-                            >
-                                <IcLink width={20} height={20} color="#000000" />
-                                <Text
-                                    style={[styles.optionText, style = { marginLeft: -2 }]}>
-                                    Chuyển thành dự án
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                                <TouchableOpacity
+                                    style={[styles.optionItem, { borderBottomWidth: 0 }]}
+                                    onPress={() => handleOptionSelect('CONVERT_PROJECT')}
+                                >
+                                    <IcLink width={20} height={20} color="#000000" />
+                                    <Text style={[styles.optionText, { marginLeft: -2 }]}>
+                                        Chuyển thành dự án
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+
+                        {/* DetailProject */}
+                        {isDetailProject && (
+                            <View style={[styles.dropdownMenu, { height: 86 }]}>
+                                <TouchableOpacity
+                                    style={styles.optionItem}
+                                    onPress={() => handleOptionSelect('EDIT_PROJECT')}
+                                >
+                                    <IcEdit width={20} height={20} color="#000000" />
+                                    <Text style={styles.optionText}>Chỉnh sửa</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    style={[styles.optionItem, { borderBottomWidth: 0 }]}
+                                    onPress={() => handleOptionSelect('DELETE_PROJECT')}
+                                >
+                                    <IcDelete width={18} height={18} color="#000000" />
+                                    <Text style={styles.optionText}>Xoá</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
@@ -243,8 +270,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
         borderColor: '#D3D5D7',
-        width: 180,
-        height: 168
+        maxWidth: 180,
+        maxHeight: 168
     },
 
     optionItem: {

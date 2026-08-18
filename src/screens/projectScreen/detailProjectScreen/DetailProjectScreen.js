@@ -1,53 +1,82 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { SafeAreaView, View, Text, TouchableOpacity, ScrollView, DeviceEventEmitter } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import styles from './DetailOpportunityScreen.style';
-import InfoTab from './InfoTab';
-import HistoryTab from './HistoryTab';
-import MemberTab from './MemberTab';
-import PlanTab from './PlanTab';
+import styles from './DetailProjectScreen.style';
+import DeleteModal from '../../../components/modals/DeleteModal';
+import ProjectTab from './ProjectTab';
+import ServiceTab from './ServiceTab';
+import ChatTab from './ChatTab';
+import TaskTab from './TaskTab';
 import LogTab from './LogTab';
 
 import IcBuilding from '../../../assets/icons/building.svg';
+import IcLink from '../../../assets/icons/paperclip-link.svg';
 import IcPercent from '../../../assets/icons/percent.svg'
 import IcValue from '../../../assets/icons/coins.svg';
 import IcChat from '../../../assets/icons/chats.svg';
 import IcMember from '../../../assets/icons/members.svg';
 import IcAdd from '../../../assets/icons/plus.svg';
 import IcEdit from '../../../assets/icons/save_edit.svg';
-import IcEditState from '../../../assets/icons/clipboard.svg'
-import IcInfo from '../../../assets/icons/info.svg';
-import IcHistory from '../../../assets/icons/history.svg';
-import IcPerson from '../../../assets/icons/person.svg';
-import IcPlan from '../../../assets/icons/calendar_day.svg';
+import IcGrid from '../../../assets/icons/grid-plus.svg';
+import IcProject from '../../../assets/icons/info.svg';
+import IcService from '../../../assets/icons/history.svg';
+import IcTask from '../../../assets/icons/calendar_day.svg';
 import IcLog from '../../../assets/icons/code-pull-request.svg';
 
-import { optHistories, optMembers, optPlans, optLogs } from '../../../data/mockData';
+import { prjServices, prjChats, prjTasks, prjLogs } from '../../../data/mockData';
 
-const DetailOpportunityScreen = () => {
+const DetailProjectScreen = () => {
     const navigation = useNavigation();
     const route = useRoute();
 
-    const { item, initialTab = 'info' } = route.params || {};
+    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
-    const [historyList, setHistoryList] = useState(() =>
-        optHistories.filter(h => h.opportunityId === item?.id)
+    const { item, initialTab = 'project' } = route.params || {};
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            onOptionPress: (actionType) => {
+                if (actionType === 'EDIT_PROJECT') {
+                    console.log('Open edit screen');
+                    // navigation.navigate('FormProjectScreen', { projectData: item });
+                } else if (actionType === 'DELETE_PROJECT') {
+                    setIsDeleteModalVisible(true);
+                }
+            },
+        });
+    }, [navigation, item]);
+
+    const handleConfirmDelete = async () => {
+        setIsDeleting(true);
+        try {
+            setIsDeleteModalVisible(false);
+            navigation.goBack();
+        } catch (error) {
+            console.error('Xoá dự án thất bại:', error);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const [serviceList, setServiceList] = useState(() =>
+        prjServices.filter(h => h.projectId === item?.id)
     );
-    const [memberList, setMemberList] = useState(() =>
-        optMembers.filter(m => m.opportunityId === item?.id)
+    const [chatList, setChatList] = useState(() =>
+        prjChats.filter(m => m.projectId === item?.id)
     );
-    const [planList, setPlanList] = useState(() =>
-        optPlans.filter(p => p.opportunityId === item?.id)
+    const [taskList, setTaskList] = useState(() =>
+        prjTasks.filter(p => p.projectId === item?.id)
     );
     const [logList, setLogList] = useState(() =>
-        optLogs.filter(l => l.opportunityId === item?.id)
+        prjLogs.filter(l => l.projectId === item?.id)
     );
 
     const TABS = [
-        { id: 'info', title: 'Thông tin', icon: IcInfo },
-        { id: 'history', title: 'Lịch sử', icon: IcHistory, count: historyList.length },
-        { id: 'member', title: 'Thành viên', icon: IcPerson, count: memberList.length },
-        { id: 'plan', title: 'Kế hoạch', icon: IcPlan, count: planList.length },
+        { id: 'project', title: 'Dự án', icon: IcProject },
+        { id: 'service', title: 'Dịch vụ', icon: IcService, count: serviceList.length },
+        { id: 'chat', title: 'Trao đổi', icon: IcChat, count: chatList.length },
+        { id: 'task', title: 'Công việc', icon: IcTask, count: taskList.length },
         { id: 'log', title: 'Nhật ký rà soát', icon: IcLog, count: logList.length },
     ];
 
@@ -65,13 +94,31 @@ const DetailOpportunityScreen = () => {
         return `${value.toLocaleString('vi-VN')} đ`;
     };
 
+    const rateNum = item?.successRate ?? 100;
+
+    const formatRate = (val) => {
+        if (val === undefined || val === null || val === '') return '0,00';
+        const num = Number(val);
+        if (isNaN(num)) return '0,00';
+        return num.toFixed(2).replace('.', ',');
+    };
+
+    const uniqueMembers = Array.from(
+        new Map(
+            serviceList
+                .flatMap(service => service.members || [])
+                .map(member => [member.id || member.username, member])
+        ).values()
+    );
+
     const title = item?.name || '';
     const dept = item?.dept || '';
+    const opportunity = item?.opportunity.name || '';
     const stage = item?.stage || '';
-    const winRate = item?.probability + '%' || '0%';
-    const expectedValue = formatCurrency(item?.expectedValue || '0');
-    const totalExchange = historyList.length || 0;
-    const totalMembers = memberList.length || 0;
+    const winRate = item?.successRate + '%' || '0%';
+    const expectedValue = formatCurrency(item?.revenue || '0');
+    const totalExchange = chatList.length || 0;
+    const totalMembers = uniqueMembers.length || 0;
 
     useEffect(() => {
         const memberSub = DeviceEventEmitter.addListener('ADD_MEMBER_SUCCESS', (newPayload) => {
@@ -86,9 +133,9 @@ const DetailOpportunityScreen = () => {
                 username: m.username,
                 dept: m.team || null,
                 roles: newRoles,
-                opportunityId: item?.id
+                projectId: item?.id
             }));
-            setMemberList(prevList => [...prevList, ...newMembers]);
+            setChatList(prevList => [...prevList, ...newMembers]);
         });
 
         return () => memberSub.remove();
@@ -96,14 +143,14 @@ const DetailOpportunityScreen = () => {
 
     const renderTabContent = () => {
         switch (activeTab) {
-            case 'info':
-                return <InfoTab item={item} />;
-            case 'history':
-                return <HistoryTab data={historyList} item={historyList} />;
-            case 'member':
-                return <MemberTab data={memberList} item={memberList} />;
-            case 'plan':
-                return <PlanTab data={planList} item={planList} />;
+            case 'project':
+                return <ProjectTab item={item} />;
+            case 'service':
+                return <ServiceTab data={serviceList} item={serviceList} projectId={item?.id} />;
+            case 'chat':
+                return <ChatTab data={chatList} item={chatList} projectId={item?.id} />;
+            case 'task':
+                return <TaskTab data={taskList} item={taskList} projectId={item?.id} />;
             case 'log':
                 return <LogTab data={logList} item={logList} />;
             default:
@@ -112,55 +159,48 @@ const DetailOpportunityScreen = () => {
     };
 
     const renderFooterButton = () => {
+        // ChatTab
+        if (activeTab === 'chat') {
+            return null;
+        }
+
+        // TaskTab - LogTab
+        if (activeTab === 'task' || activeTab === 'log') {
+            return (
+                <View style={styles.footerRow}>
+                    <TouchableOpacity
+                        style={styles.btnFooterHalf}
+                        activeOpacity={0.8}
+                        onPress={() => console.log('Thêm công việc')}
+                    >
+                        <IcAdd width={24} height={24} color="#FFFFFF" style={{ translateY: 1.2 }} />
+                        <Text style={[styles.btnHalfText, { marginLeft: -8 }]}>Thêm</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.btnFooterHalf}
+                        activeOpacity={0.8}
+                        onPress={() => console.log('Thêm từ bộ công việc')}
+                    >
+                        <IcGrid width={20} height={20} color="#FFFFFF" />
+                        <Text style={styles.btnHalfText}>Thêm từ bộ công việc</Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+
+        // ProjectTab - ServiceTab
         let IconComponent = IcEdit;
         let buttonText = 'Cập nhật';
         let iconSize = 18;
         let iconStyle = {};
-        let handlePress = () => console.log();
+        let handlePress = () => console.log('Press button');
 
-        switch (activeTab) {
-            case 'info':
-                IconComponent = IcEdit;
-                buttonText = 'Cập nhật';
-                handlePress = () => {
-                    navigation.navigate('CreateOpportunityScreen', {
-                        item: item,
-                        department: item?.dept
-                    });
-                };
-                break;
-
-            case 'plan':
-                IconComponent = IcEdit;
-                buttonText = 'Đăng ký kế hoạch';
-                break;
-
-            case 'history':
-                IconComponent = IcEditState;
-                buttonText = 'Cập nhật trạng thái';
-                break;
-
-            case 'member':
-                IconComponent = IcAdd;
-                iconStyle = { transform: [{ translateY: 2 }] }
-                iconSize = 24
-                buttonText = 'Thêm / quản lý thành viên';
-                handlePress = () => {
-                    navigation.navigate('AddMemberScreen', {
-                        opportunityId: item?.id
-                    });
-                };
-                break;
-         
-            case 'log':
-                IconComponent = IcEdit;
-                buttonText = 'Cập nhật';
-                break;
-
-            default:
-                IconComponent = IcEdit;
-                buttonText = 'Cập nhật';
-                break;
+        if (activeTab === 'service') {
+            IconComponent = IcAdd;
+            iconStyle = { transform: [{ translateY: 2 }] };
+            iconSize = 24;
+            buttonText = 'Thêm dịch vụ';
         }
 
         return (
@@ -196,6 +236,25 @@ const DetailOpportunityScreen = () => {
                         <IcBuilding width={26} height={26} color="#000000" />
                         <Text style={styles.deptName}>{dept}</Text>
                     </View>
+                    <TouchableOpacity
+                        style={styles.linkRow}
+                        onPress={() => {
+                            if (item?.opportunity) {
+                                navigation.navigate('DetailOpportunityScreen', {
+                                    item: item?.opportunity
+                                });
+                            }
+                        }}
+                    >
+                        <IcLink width={18} height={18} color="#1A7FC1" />
+                        <Text
+                            style={styles.linkName}
+                            numberOfLines={1}
+                            ellipsizeMode='clip'
+                        >
+                            Từ cơ hội: {opportunity}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
 
                 <ScrollView
@@ -209,7 +268,7 @@ const DetailOpportunityScreen = () => {
                             </View>
                             <View>
                                 <Text style={styles.overviewLabel}>Xác suất chốt</Text>
-                                <Text style={styles.overviewValue}>{winRate}</Text>
+                                <Text style={styles.overviewValue}>{formatRate(rateNum)}%</Text>
                             </View>
                         </View>
 
@@ -286,8 +345,17 @@ const DetailOpportunityScreen = () => {
 
                 {renderFooterButton()}
             </View>
+
+            <DeleteModal
+                isVisible={isDeleteModalVisible}
+                onClose={() => setIsDeleteModalVisible(false)}
+                onConfirm={handleConfirmDelete}
+                type="dự án"
+                title={title}
+                isLoading={isDeleting}
+            />
         </SafeAreaView>
     );
 };
 
-export default DetailOpportunityScreen;
+export default DetailProjectScreen;
