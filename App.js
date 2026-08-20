@@ -1,7 +1,7 @@
 import i18next from './src/localization/i18n';
-import React, { useState } from 'react';
-import { I18nextProvider, useTranslation } from 'react-i18next';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { useEffect } from 'react';
+import { I18nextProvider } from 'react-i18next';
+import { BackHandler, SafeAreaView, StyleSheet } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { Provider } from 'react-redux';
 import ConfirmModalTest from './src/test-utils/test-component/ConfirmModalTest';
@@ -11,10 +11,19 @@ import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LoginScreen from './src/screens/loginScreen/LoginScreen';
-import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import DrawerNavigation from './src/navigation/DrawerNavigation';
 
 const App = () => {
+  // Tắt vuốt mặc định của android
+  useEffect(() => {
+    const onBackPress = () => {
+      return true;
+    }
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => subscription.remove();
+  }, []);
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

@@ -10,6 +10,7 @@ const DrawerNavigation = () => {
             drawerContent={(props) => <SideMenu {...props} />}
             screenOptions={{
                 headerShown: false,
+                swipeEnabled: false,
                 drawerType: 'front'
             }}
         >
