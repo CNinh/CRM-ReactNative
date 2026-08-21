@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 
     contactCountText: {
         fontSize: 13,
-        color: '#333333'
+        color: '#000000'
     },
 
     btnAddContact: {
@@ -74,7 +74,9 @@ const styles = StyleSheet.create({
     cardForm: {
         backgroundColor: '#FFFFFF',
         borderRadius: 8,
-        padding: 14,
+        paddingHorizontal: 10,
+        paddingTop: 14,
+        paddingBottom: 8,
         elevation: 2,
         shadowColor: '#000000',
         shadowOffset: { width: 0, height: 1 },
@@ -181,12 +183,12 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 12,
         borderBottomWidth: 1,
-        borderBottomColor: '#F0F0F0'
+        borderBottomColor: '#D3D5D7'
     },
 
     dropdownItemText: {
         fontSize: 12.5,
-        color: '#333333'
+        color: '#000000'
     },
 
     footer: {

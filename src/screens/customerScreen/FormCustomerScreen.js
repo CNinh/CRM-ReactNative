@@ -14,6 +14,8 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from './FormCustomerScreen.style';
 import ContactCard from '../../components/cards/ContactCard';
+import { DateInput } from '../../utils/DateTimeInput';
+import { PhoneInput } from '../../utils/PhoneInput';
 import DeleteModal from '../../components/modals/DeleteModal';
 
 import IcSave from '../../assets/icons/save.svg';
@@ -275,12 +277,11 @@ const FormCustomerScreen = () => {
                             <View style={styles.row}>
                                 <View style={[styles.formGroup, styles.flex1]}>
                                     <Text style={styles.label}>Ngày thành lập</Text>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="dd/mm/yyyy"
-                                        placeholderTextColor="#D3D5D7"
+                                    <DateInput
                                         value={formData.foundingDate}
-                                        onChangeText={text => handleChange('foundingDate', text)}
+                                        onChange={(val) => handleChange('foundingDate', val)}
+                                        placeholder="dd/mm/yyyy"
+                                        customInputStyle={styles.input}
                                     />
                                 </View>
 
@@ -299,11 +300,10 @@ const FormCustomerScreen = () => {
                             <View style={styles.row}>
                                 <View style={[styles.formGroup, styles.flex3]}>
                                     <Text style={styles.label}>Số điện thoại</Text>
-                                    <TextInput
-                                        style={styles.input}
-                                        keyboardType="phone-pad"
+                                    <PhoneInput
                                         value={formData.phone}
-                                        onChangeText={text => handleChange('phone', text)}
+                                        onChange={text => handleChange('phone', text)}
+                                        customInputStyle={styles.input}
                                     />
                                 </View>
 

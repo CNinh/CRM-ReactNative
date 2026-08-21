@@ -8,8 +8,8 @@ import {
     ScrollView,
     Alert
 } from 'react-native';
-
 import styles from './ChangePasswordScreen.style';
+import { PhoneInput } from '../../utils/PhoneInput';
 
 import IcInfo from '../../assets/icons/info-circle.svg';
 import IcSave from '../../assets/icons/save-border.svg';
@@ -179,14 +179,13 @@ const UpdateProfile = ({ navigation }) => {
                             {!!errors.phone && (
                                 <Text style={styles.errorText}>{errors.phone}</Text>
                             )}
-                            <TextInput
-                                style={[styles.input, !!errors.phone && styles.inputError]}
-                                keyboardType='phone-pad'
+                            <PhoneInput
                                 value={phone}
-                                onChangeText={(text) => {
+                                onChange={(text) => {
                                     setPhone(text);
                                     clearError('phone');
                                 }}
+                                customInputStyle={[styles.input, !! errors.phone && styles.inputError]}
                             />
                         </View>
                     </View>

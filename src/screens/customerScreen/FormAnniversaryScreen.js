@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from './FormAnniversaryScreen.style';
+import { DateInput } from '../../utils/DateTimeInput';
 
 import IcSave from '../../assets/icons/save.svg';
 import IcArrowD from '../../assets/icons/arrow_down.svg';
@@ -66,7 +67,7 @@ const FormAnniversaryScreen = () => {
         const formData = {
             id: anniversaryData?.id || Date.now().toString(),
             title: type,
-            date: date || '01/01/2025',
+            date: date,
             calendarType: calendarType || 'Dương lịch',
             note,
             customerInfo,
@@ -107,12 +108,11 @@ const FormAnniversaryScreen = () => {
 
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Ngày kỷ niệm</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="dd/mm/yyyy"
-                            placeholderTextColor="#9E9E9E"
+                        <DateInput
                             value={date}
-                            onChangeText={setDate}
+                            placeholder="dd/mm/yyyy"
+                            onChange={setDate}
+                            customInputStyle={styles.input}
                         />
                     </View>
 

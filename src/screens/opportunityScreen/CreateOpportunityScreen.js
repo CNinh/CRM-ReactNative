@@ -11,6 +11,7 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from './CreateOpportunityScreen.style';
 import DropDownList from '../../components/lists/DropDownList';
+import { DateTimeInput } from '../../utils/DateTimeInput'
 
 import IcBuilding from '../../assets/icons/building.svg';
 import IcBox from '../../assets/icons/box.svg';
@@ -141,16 +142,14 @@ const CreateOpportunityScreen = () => {
                             <Text style={styles.errorText}>{errors.contactDate}</Text>
                         )}
 
-                        <TextInput
-                            style={styles.input}
-                            placeholder="dd/mm/yyyy  hh:mm"
-                            placeholderTextColor="#C4C4C4"
-                            keyboardType='numeric'
+                        <DateTimeInput
                             value={contactDate}
-                            onChangeText={(text) => {
+                            placeholder="dd/mm/yyyy hh:mm"
+                            onChange={(text) => {
                                 setContactDate(text);
                                 if (errors.contactDate) setErrors(prev => ({ ...prev, contactDate: null }));
                             }}
+                            customInputStyle={styles.input}
                         />
                     </View>
 

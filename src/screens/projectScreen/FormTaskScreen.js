@@ -11,6 +11,7 @@ import {
 import { Slider } from '@react-native-assets/slider';
 import styles from './FormTaskScreen.style';
 import DropDownList from '../../components/lists/DropDownList';
+import { DateInput } from '../../utils/DateTimeInput';
 
 import IcAlignR from '../../assets/icons/align-right.svg';
 import IcAlignL from '../../assets/icons/align-left.svg';
@@ -187,21 +188,19 @@ export const FormTaskScreen = ({ navigation }) => {
                     <View style={styles.rowGrid}>
                         <View style={[styles.formGroup, styles.colHalf]}>
                             <Text style={styles.label}>Ngày bắt đầu</Text>
-                            <TextInput
-                                style={styles.textInput}
-                                keyboardType='numeric'
+                            <DateInput
                                 value={startDate}
-                                onChangeText={setStartDate}
+                                onChange={setStartDate}
+                                customInputStyle={styles.textInput}
                             />
                         </View>
 
                         <View style={[styles.formGroup, styles.colHalf]}>
                             <Text style={styles.label}>Ngày kết thúc</Text>
-                            <TextInput
-                                style={styles.textInput}
-                                keyboardType='numeric'
+                            <DateInput
                                 value={endDate}
-                                onChangeText={setEndDate}
+                                onChange={setEndDate}
+                                customInputStyle={styles.textInput}
                             />
                         </View>
                     </View>
