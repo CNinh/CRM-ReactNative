@@ -71,7 +71,12 @@ export const TaskInfoScreen = () => {
       actionText: 'Đã bình luận',
       content: commentText,
       attachment: pendingFile
-        ? { id: `att_${Date.now()}`, name: pendingFile, type: 'file', url: '' }
+        ? {
+          id: `att_${Date.now()}`,
+          name: typeof pendingFile === 'object' ? pendingFile.name : pendingFile,
+          type: 'file',
+          url: ''
+        }
         : null,
     };
 

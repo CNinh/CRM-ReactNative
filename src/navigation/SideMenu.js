@@ -5,7 +5,8 @@ import {
     TouchableOpacity,
     ScrollView,
     SafeAreaView,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from "react-native";
 
 import IcUser from '../assets/icons/user.svg';
@@ -44,14 +45,17 @@ const SideMenu = ({ navigation }) => {
     const handleNavigate = (screenName) => {
         if (screenName && navigation) {
             navigation.closeDrawer();
-            navigation.navigate(screenName);
+
+            InteractionManager.runAfterInteractions(() => {
+                navigation.navigate(screenName);
+            });
         }
     };
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
-                <TouchableOpacity style={styles.userContainer} onPress={() => navigation.navigate('Profile')}>
+                <TouchableOpacity style={styles.userContainer} onPress={() => handleNavigate('Profile')}>
                     <View style={styles.avatarContainer}>
                         <IcUser width={40} height={40} color="#000000" />
                     </View>
