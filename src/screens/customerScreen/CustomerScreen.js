@@ -7,8 +7,6 @@ import {
     TouchableOpacity,
     FlatList,
     ScrollView,
-    StyleSheet,
-    Alert,
     DeviceEventEmitter
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -16,6 +14,7 @@ import styles from "./CustomerScreen.style";
 import CustomerFilterModal from "../../components/modals/filterModal/CustomerFilterModal";
 import CustomerCard from "../../components/cards/CustomerCard";
 import DeleteModal from "../../components/modals/DeleteModal";
+import colors from "../../constants/colors";
 
 import IcSearch from "../../assets/icons/search.svg";
 import IcFilter from "../../assets/icons/filter.svg";
@@ -95,13 +94,11 @@ const CustomerScreen = () => {
     });
 
     const displayData = filteredData.slice(0, visibleCount);
-    const remainingPrj = filteredData.length - visibleCount;
-    const loadCount = remainingPrj > 10 ? 10 : remainingPrj;
+    const remainingCount = filteredData.length - visibleCount;
+    const loadCount = remainingCount > 10 ? 10 : remainingCount;
 
     const handleLoadMore = () => {
-        const currentRemaining = filteredData.length - visibleCount;
-        const currentLoad = currentRemaining > 10 ? 10 : currentRemaining;
-        setVisibleCount(prev => prev + currentLoad);
+        setVisibleCount(prev => prev + loadCount);
     };
 
     const getSelectedTags = () => {
@@ -135,6 +132,7 @@ const CustomerScreen = () => {
     };
 
     const activeTags = getSelectedTags();
+    const activeFilterCount = selectedCategory.length + selectedState.length;
 
     const handleRemoveSingleTag = (removeTag) => {
         if (removeTag.type === 'category') {
@@ -147,7 +145,7 @@ const CustomerScreen = () => {
     const handleClearAllTags = () => {
         setSelectedCategory([]);
         setSelectedState([]);
-    }
+    };
 
     useEffect(() => {
         navigation.setOptions({
@@ -176,29 +174,43 @@ const CustomerScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* Search & Filter Section */}
+            {/* Search & Filter Top Bar */}
             <View style={styles.searchSection}>
                 <View style={styles.searchBox}>
-                    <IcSearch width={20} height={20} color="#D3D5D7" />
+                    <IcSearch width={18} height={18} color={colors.gray400} />
                     <TextInput
                         style={styles.searchInput}
                         placeholder="Tên, Mã KH, SĐT, MST..."
-                        placeholderTextColor="#8d8e8e"
+                        placeholderTextColor={colors.gray400}
                         value={searchText}
                         onChangeText={setSearchText}
                     />
+                    {searchText.length > 0 && (
+                        <TouchableOpacity onPress={() => setSearchText('')} style={styles.clearBtn}>
+                            <Text style={styles.clearBtnText}>✕</Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
+
                 <TouchableOpacity
                     onPress={() => setIsFilterOpen(true)}
-                    style={styles.btnFilter}
+                    style={[styles.btnFilter, activeFilterCount > 0 && styles.btnFilterActive]}
+                    activeOpacity={0.7}
                 >
-                    <IcFilter width={20} height={20} color="#000000" />
+                    <IcFilter width={18} height={18} color={activeFilterCount > 0 ? colors.primary : colors.gray700} />
+                    {activeFilterCount > 0 && (
+                        <View style={styles.filterBadge}>
+                            <Text style={styles.filterBadgeText}>{activeFilterCount}</Text>
+                        </View>
+                    )}
                 </TouchableOpacity>
+
                 <TouchableOpacity
                     style={styles.btnAdd}
                     onPress={handleCreate}
+                    activeOpacity={0.8}
                 >
-                    <IcPlus width={24} height={24} color="#ffffff" style={{ translate: 0.9 }} />
+                    <IcPlus width={20} height={20} color={colors.white} style={{ translate: 0.9 }} />
                 </TouchableOpacity>
             </View>
 
@@ -215,7 +227,7 @@ const CustomerScreen = () => {
                 }}
             />
 
-            {/*Filter Tags */}
+            {/* Filter Tags Bar */}
             <View style={styles.tagRow}>
                 <ScrollView
                     horizontal
@@ -231,7 +243,6 @@ const CustomerScreen = () => {
                         activeTags.map((tag) => (
                             <View key={tag.id} style={styles.activeTag}>
                                 <Text style={styles.tagText}>{tag.label}</Text>
-
                                 <TouchableOpacity
                                     onPress={() => handleRemoveSingleTag(tag)}
                                     style={styles.btnRemoveTag}
@@ -252,14 +263,13 @@ const CustomerScreen = () => {
                 </TouchableOpacity>
             </View>
 
-            {/* Count & Sort */}
+            {/* Total Count & Sort Control */}
             <View style={styles.subHeaderRow}>
                 <Text style={styles.countText}>
-                    <Text style={{ fontWeight: '700' }}>16,135</Text>
-                    <Text> Khách hàng</Text>
+                    Tổng cộng: <Text style={styles.countHighlight}>{filteredData.length.toLocaleString('vi-VN')}</Text> khách hàng
                 </Text>
-                <TouchableOpacity style={styles.btnSort}>
-                    <IcSort width={18} height={18} color="#1A7FC1" />
+                <TouchableOpacity style={styles.btnSort} activeOpacity={0.7}>
+                    <IcSort width={14} height={14} color={colors.primary} />
                     <Text style={styles.sortText}>Mới nhất</Text>
                 </TouchableOpacity>
             </View>
@@ -268,8 +278,8 @@ const CustomerScreen = () => {
             <FlatList
                 style={{ flex: 1 }}
                 data={displayData}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) =>
+                keyExtractor={(item, index) => item?.id ? String(item.id) : index.toString()}
+                renderItem={({ item }) => (
                     <CustomerCard
                         item={item}
                         type="customer"
@@ -280,7 +290,6 @@ const CustomerScreen = () => {
                                 customer: item?.name || ''
                             });
                         }}
-
                         onOpenOpportunity={() => {
                             const searchKeyword = `${item?.code || ''} - ${item?.name || ''}`;
                             navigation.navigate('Cơ hội', {
@@ -291,15 +300,25 @@ const CustomerScreen = () => {
                             });
                         }}
                     />
-                }
+                )}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 12, marginTop: 12 }}
-
+                contentContainerStyle={styles.listContent}
+                ListEmptyComponent={() => (
+                    <View style={styles.emptyContainer}>
+                        <IcSearch width={48} height={48} color={colors.gray300} />
+                        <Text style={styles.emptyText}>Không tìm thấy khách hàng nào</Text>
+                        <Text style={styles.emptySubText}>Vui lòng thử tìm kiếm bằng từ khóa hoặc bộ lọc khác</Text>
+                    </View>
+                )}
                 ListFooterComponent={() => {
                     if (visibleCount < filteredData.length) {
                         return (
-                            <TouchableOpacity style={styles.btnLoadMore} onPress={handleLoadMore}>
-                                <IcPlus width={26} height={26} color="#ffffff" style={{ translateY: 1.2 }} />
+                            <TouchableOpacity
+                                style={styles.btnLoadMore}
+                                onPress={handleLoadMore}
+                                activeOpacity={0.7}
+                            >
+                                <IcPlus width={18} height={18} color={colors.primary} style={{ translate: 0.9 }} />
                                 <Text style={styles.loadMoreText}>Tải thêm {loadCount} khách hàng</Text>
                             </TouchableOpacity>
                         );
@@ -316,7 +335,7 @@ const CustomerScreen = () => {
                 title={deleteModal.item ? `${deleteModal.item.code} - ${deleteModal.item.name}` : ''}
             />
         </SafeAreaView>
-    )
-}
+    );
+};
 
 export default CustomerScreen;

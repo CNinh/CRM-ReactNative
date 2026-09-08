@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
-import AvatarGroup from "../avatars/AvatarGroup";
+import colors from "../../constants/colors";
+import theme from "../../constants/theme";
 
 import IcCelebrate from "../../assets/icons/celebrate.svg";
 import IcOpportunity from "../../assets/icons/opportunity.svg";
@@ -12,33 +13,65 @@ import IcMail from "../../assets/icons/mail.svg";
 
 const CustomerCard = ({ item, onEdit, onDelete, onOpenOpportunity, onOpenAnniversary }) => {
     const swipeableRef = useRef(null);
-    
     const [isOpen, setIsOpen] = useState(false);
+
+    const getStateStyle = (state) => {
+        if (!state) return { bg: colors.primarySubtle, text: colors.primary };
+        const lower = state.toLowerCase();
+        if (lower.includes('tiềm năng')) {
+            return { bg: '#EFF6FF', text: '#2563EB' };
+        }
+        if (lower.includes('hợp tác') || lower.includes('thành công') || lower.includes('ký')) {
+            return { bg: '#ECFDF5', text: '#059669' };
+        }
+        if (lower.includes('tạm ngưng') || lower.includes('hủy')) {
+            return { bg: '#FEF2F2', text: '#DC2626' };
+        }
+        return { bg: colors.gray100, text: colors.gray700 };
+    };
+
+    const stateStyle = getStateStyle(item?.state);
 
     const renderRightActions = () => {
         return (
             <View style={styles.swipeActionContainer}>
                 {/* 1. Kỷ niệm */}
-                <TouchableOpacity style={[styles.actionBtn, { backgroundColor: '#FFC107' }]} onPress={onOpenAnniversary}>
-                    <IcCelebrate width={16.5} height={16.5} color="#FFFFFF" />
+                <TouchableOpacity
+                    style={[styles.actionBtn, { backgroundColor: colors.warning }]}
+                    onPress={onOpenAnniversary}
+                    activeOpacity={0.8}
+                >
+                    <IcCelebrate width={18} height={18} color={colors.white} />
                     <Text style={styles.actionText}>Kỷ niệm</Text>
                 </TouchableOpacity>
 
                 {/* 2. Cơ hội */}
-                <TouchableOpacity style={[styles.actionBtn, { backgroundColor: '#1D9E75' }]} onPress={onOpenOpportunity}>
-                    <IcOpportunity width={16.5} height={16.5} color="#FFFFFF" />
+                <TouchableOpacity
+                    style={[styles.actionBtn, { backgroundColor: colors.success }]}
+                    onPress={onOpenOpportunity}
+                    activeOpacity={0.8}
+                >
+                    <IcOpportunity width={18} height={18} color={colors.white} />
                     <Text style={styles.actionText}>Cơ hội</Text>
                 </TouchableOpacity>
 
                 {/* 3. Sửa */}
-                <TouchableOpacity style={[styles.actionBtn, { backgroundColor: '#1E88E5' }]} onPress={onEdit}>
-                    <IcEdit width={16.5} height={16.5} color="#FFFFFF" />
+                <TouchableOpacity
+                    style={[styles.actionBtn, { backgroundColor: colors.primary }]}
+                    onPress={onEdit}
+                    activeOpacity={0.8}
+                >
+                    <IcEdit width={18} height={18} color={colors.white} />
                     <Text style={styles.actionText}>Sửa</Text>
                 </TouchableOpacity>
 
                 {/* 4. Xóa */}
-                <TouchableOpacity style={[styles.actionBtn, styles.lastActionBtn, { backgroundColor: '#E24B4A' }]} onPress={onDelete}>
-                    <IcDelete width={16.5} height={16.5} color="#FFFFFF" />
+                <TouchableOpacity
+                    style={[styles.actionBtn, styles.lastActionBtn, { backgroundColor: colors.danger }]}
+                    onPress={onDelete}
+                    activeOpacity={0.8}
+                >
+                    <IcDelete width={18} height={18} color={colors.white} />
                     <Text style={styles.actionText}>Xóa</Text>
                 </TouchableOpacity>
             </View>
@@ -61,43 +94,58 @@ const CustomerCard = ({ item, onEdit, onDelete, onOpenOpportunity, onOpenAnniver
                     styles.cardContainer,
                     isOpen && styles.cardOpen
                 ]}>
-                    {/* Tên khách hàng */}
+                    {/* Header: Code & State Tag */}
+                    <View style={styles.topRow}>
+                        <View style={styles.codeBadge}>
+                            <Text style={styles.codeText}>{item?.code || 'KH'}</Text>
+                        </View>
+                        <View style={styles.tagGroup}>
+                            <View style={[styles.stateTag, { backgroundColor: stateStyle.bg }]}>
+                                <Text style={[styles.stateText, { color: stateStyle.text }]}>
+                                    {item?.state || 'Tiềm năng'}
+                                </Text>
+                            </View>
+                            {item?.toc && (
+                                <View style={styles.tocBadge}>
+                                    <Text style={styles.tocText}>{item.toc}</Text>
+                                </View>
+                            )}
+                        </View>
+                    </View>
+
+                    {/* Customer Name */}
                     <Text style={styles.titleText} numberOfLines={2}>
-                        <Text style={styles.codeText}>{item?.code}</Text> - {item?.name}
+                        {item?.name}
                     </Text>
 
-                    {/* Tags phân loại khách hàng */}
-                    <View style={styles.tagRow}>
-                        <View style={styles.stateTag}>
-                            <Text style={styles.stateText}>{item?.state || 'Tiềm năng'}</Text>
+                    {/* Contact Row */}
+                    {(item?.contact || item?.mail) && (
+                        <View style={styles.contactRow}>
+                            {/* Phone */}
+                            {item?.contact && (
+                                <TouchableOpacity
+                                    style={styles.contactButton}
+                                    onPress={() => Linking.openURL(`tel:${item.contact}`)}
+                                    activeOpacity={0.7}
+                                >
+                                    <IcPhone width={12} height={12} color={colors.primary} />
+                                    <Text style={styles.contactText}>{item.contact}</Text>
+                                </TouchableOpacity>
+                            )}
+
+                            {/* Mail */}
+                            {item?.mail && (
+                                <TouchableOpacity
+                                    style={styles.mailButton}
+                                    onPress={() => Linking.openURL(`mailto:${item.mail}`)}
+                                    activeOpacity={0.7}
+                                >
+                                    <IcMail width={12} height={12} color={colors.gray600} />
+                                    <Text style={styles.mailText} numberOfLines={1}>{item.mail}</Text>
+                                </TouchableOpacity>
+                            )}
                         </View>
-                        <Text style={styles.tocText}>{item?.toc || 'Doanh nghiệp'}</Text>
-                    </View>
-
-                    {/* Thông tin liên hệ */}
-                    <View style={styles.contactRow}>
-                        {/* Phone */}
-                        {item?.contact && (
-                            <TouchableOpacity
-                                style={styles.contactButton}
-                                onPress={() => Linking.openURL(`tel:${item.contact}`)}
-                            >
-                                <IcPhone width={13} height={13} color="#FFFFFF" />
-                                <Text style={styles.contactText}>{item.contact}</Text>
-                            </TouchableOpacity>
-                        )}
-
-                        {/* Mail */}
-                        {item?.mail && (
-                            <TouchableOpacity
-                                style={styles.mailButton}
-                                onPress={() => Linking.openURL(`mailto:${item.mail}`)}
-                            >
-                                <IcMail width={13} height={13} color="#000000" />
-                                <Text style={styles.mailText} numberOfLines={1}>{item.mail}</Text>
-                            </TouchableOpacity>
-                        )}
-                    </View>
+                    )}
                 </View>
             </Swipeable>
         </View>
@@ -107,107 +155,127 @@ const CustomerCard = ({ item, onEdit, onDelete, onOpenOpportunity, onOpenAnniver
 const styles = StyleSheet.create({
     swipeWrapper: {
         marginHorizontal: 16,
-        marginBottom: 10
+        marginBottom: 10,
     },
 
     swipeableContainer: {
-        borderRadius: 12,
-        overflow: 'hidden'
+        borderRadius: theme.radius.md,
+        overflow: 'hidden',
     },
 
     cardContainer: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 12,
-        padding: 12,
+        backgroundColor: colors.white,
+        borderRadius: theme.radius.md,
+        padding: 14,
         borderWidth: 1,
-        borderColor: '#E5E7EB',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.05,
-        shadowRadius: 2,
-        elevation: 2
+        borderColor: colors.gray200,
+        ...theme.shadows.xs,
     },
 
     cardOpen: {
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0,
-        borderRightWidth: 0
+        borderRightWidth: 0,
     },
 
-    titleText: {
-        fontSize: 14,
-        fontWeight: '500',
-        color: '#2971BF',
-        lineHeight: 19,
-        marginBottom: 4
+    topRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 8,
+    },
+
+    codeBadge: {
+        backgroundColor: colors.primarySubtle,
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+        borderRadius: theme.radius.xs,
     },
 
     codeText: {
-        color: '#0284C7'
+        fontSize: 11,
+        fontWeight: '700',
+        color: colors.primary,
     },
 
-    tagRow: {
+    tagGroup: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8,
-        marginBottom: 10
+        gap: 6,
     },
 
     stateTag: {
-        backgroundColor: '#0088B2',
-        paddingHorizontal: 10,
-        paddingVertical: 3,
-        borderRadius: 12
+        paddingHorizontal: 8,
+        paddingVertical: 2.5,
+        borderRadius: theme.radius.full,
     },
 
     stateText: {
-        color: '#FFFFFF',
-        fontSize: 11.5
+        fontSize: 11,
+        fontWeight: '700',
+    },
+
+    tocBadge: {
+        backgroundColor: colors.gray100,
+        paddingHorizontal: 8,
+        paddingVertical: 2.5,
+        borderRadius: theme.radius.full,
     },
 
     tocText: {
-        fontSize: 13,
-        color: '#000000'
+        fontSize: 11,
+        color: colors.gray600,
+        fontWeight: '500',
+    },
+
+    titleText: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: colors.gray900,
+        lineHeight: 20,
+        marginBottom: 10,
     },
 
     contactRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8
+        gap: 8,
+        flexWrap: 'wrap',
     },
 
     contactButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#2971BF',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 12,
-        gap: 4
+        backgroundColor: colors.primarySubtle,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: theme.radius.sm,
+        gap: 5,
+        borderWidth: 1,
+        borderColor: colors.primaryBorder,
     },
 
     contactText: {
-        color: '#FFFFFF',
+        color: colors.primary,
         fontSize: 12,
-        fontWeight: '300',
-        marginRight: 8
+        fontWeight: '600',
     },
 
     mailButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#D3D5D7',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 12,
-        gap: 4,
-        maxWidth: 180
+        backgroundColor: colors.gray100,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: theme.radius.sm,
+        gap: 5,
+        maxWidth: 180,
     },
 
     mailText: {
-        color: '#000000',
-        fontSize: 11.5,
-        marginRight: 8
+        color: colors.gray700,
+        fontSize: 12,
+        fontWeight: '500',
     },
 
     /* Action Container */
@@ -221,18 +289,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        gap: 4
+        gap: 4,
     },
 
     actionText: {
-        color: '#FFFFFF',
-        fontSize: 14,
-        fontWeight: '500'
+        color: colors.white,
+        fontSize: 12,
+        fontWeight: '600',
     },
 
     lastActionBtn: {
-        borderTopRightRadius: 12,
-        borderBottomRightRadius: 12,
+        borderTopRightRadius: theme.radius.md,
+        borderBottomRightRadius: theme.radius.md,
     },
 });
 

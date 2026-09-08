@@ -1,24 +1,23 @@
 import i18next from './src/localization/i18n';
 import { useEffect } from 'react';
 import { I18nextProvider } from 'react-i18next';
-import { BackHandler, SafeAreaView, StyleSheet } from 'react-native';
+import { BackHandler, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { Provider } from 'react-redux';
-import ConfirmModalTest from './src/test-utils/test-component/ConfirmModalTest';
 import { persistor, store } from './src/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import LoginScreen from './src/screens/loginScreen/LoginScreen';
 import DrawerNavigation from './src/navigation/DrawerNavigation';
+import colors from './src/constants/colors';
 
 const App = () => {
   // Tắt vuốt mặc định của android
   useEffect(() => {
     const onBackPress = () => {
       return true;
-    }
+    };
 
     const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
     return () => subscription.remove();
@@ -29,10 +28,14 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <PaperProvider>
           <I18nextProvider i18n={i18next}>
-            <GestureHandlerRootView style={{ flex: 1 }} >
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <StatusBar
+                barStyle="light-content"
+                backgroundColor={colors.primaryDark}
+                translucent={false}
+              />
               <SafeAreaView style={styles.container}>
                 <NavigationContainer>
-                  {/* <LoginScreen /> */}
                   <DrawerNavigation />
                 </NavigationContainer>
                 <Toast />
@@ -50,7 +53,6 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    fontFamily: 'helveticaneue',
-    fontStyle: 'italic',
+    backgroundColor: colors.background,
   },
 });

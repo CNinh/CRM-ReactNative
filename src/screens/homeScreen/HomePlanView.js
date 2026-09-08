@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo } from "react";
 import {
     SafeAreaView,
     View,
@@ -6,10 +6,10 @@ import {
     TouchableOpacity,
     FlatList
 } from "react-native";
-import { Checkbox } from "react-native-paper";
 import styles from "./HomePlanView.style";
 import PlanCard from "../../components/cards/PlanCard";
 import MonthYearPickerSheet from "../../components/sheets/MonthYearPickerSheet";
+import colors from "../../constants/colors";
 
 import IcCheckboxBlank from '../../assets/icons/check-box-outline-blank.svg';
 import IcCheckbox from '../../assets/icons/check-box.svg';
@@ -22,9 +22,9 @@ import { plan } from "../../data/mockData";
 const CheckBox = ({ selected, onPress }) => (
     <TouchableOpacity style={styles.checkboxContainer} onPress={onPress} activeOpacity={0.8}>
         {selected ? (
-            <IcCheckbox width={15} height={15} color="#1A7FC1" />
+            <IcCheckbox width={18} height={18} color={colors.primary} />
         ) : (
-            <IcCheckboxBlank width={15} height={15} color="#7E8387" />
+            <IcCheckboxBlank width={18} height={18} color={colors.gray400} />
         )}
     </TouchableOpacity>
 );
@@ -32,8 +32,8 @@ const CheckBox = ({ selected, onPress }) => (
 const parseDate = (dateStr) => {
     if (!dateStr) return '';
     const [day, month, year] = dateStr.split('/');
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, 0)}`;
-}
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+};
 
 const HomePlanView = ({ navigation }) => {
     // lấy ngày hiện tại
@@ -76,7 +76,7 @@ const HomePlanView = ({ navigation }) => {
         }));
     }, []);
 
-    // Tìm ngày kế tiếp gần nhất ngày hiện tại
+    // Tìm ngày kế tiếp gần nhất ngày hiện tại có kế hoạch
     const nearestFutureDateWithPlan = useMemo(() => {
         const todayStr = currentDate;
         const futureDates = formattedPlans
@@ -179,7 +179,6 @@ const HomePlanView = ({ navigation }) => {
                     const rMonthStr = String(reloadToday.getMonth() + 1).padStart(2, "0");
 
                     setIsPersonal(false);
-                    setVisibleCount(3);
                     setSelectedDate(`${reloadToday.getFullYear()}-${rMonthStr}-${rDayStr}`);
                     setCurrentMonth(reloadToday.getMonth() + 1);
                     setCurrentYear(reloadToday.getFullYear());
@@ -195,6 +194,7 @@ const HomePlanView = ({ navigation }) => {
 
     const renderCalendarHeader = () => (
         <View style={styles.calendarContainer}>
+            {/* Top Tier: Personal toggle & Total count */}
             <View style={styles.tierContainer}>
                 <TouchableOpacity
                     style={styles.checkboxRow}
@@ -207,23 +207,35 @@ const HomePlanView = ({ navigation }) => {
                     />
                     <Text style={styles.checkboxLabel}>Lịch cá nhân</Text>
                 </TouchableOpacity>
-                <Text style={styles.txtTotal}>Tổng: {totalWeeklyPlans}</Text>
+                <Text style={styles.txtTotal}>Tổng: {totalWeeklyPlans} kế hoạch</Text>
             </View>
 
-            {/* Tháng, năm */}
+            {/* Tháng, năm Selector */}
             <View style={styles.monthSelectorRow}>
-                <TouchableOpacity style={styles.arrowBtn} onPress={() => handleNavigateWeek("prev")}>
-                    <IcArrowL width={16} height={16} color="#000000" />
+                <TouchableOpacity
+                    style={styles.arrowBtn}
+                    onPress={() => handleNavigateWeek("prev")}
+                    activeOpacity={0.7}
+                >
+                    <IcArrowL width={14} height={14} color={colors.gray800} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.monthBadge} onPress={() => setIsModalVisible(true)}>
+                <TouchableOpacity
+                    style={styles.monthBadge}
+                    onPress={() => setIsModalVisible(true)}
+                    activeOpacity={0.7}
+                >
                     <Text style={styles.monthText}>Tháng {currentMonth}, {currentYear}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.arrowBtn} onPress={() => handleNavigateWeek("next")}>
-                    <IcArrowR width={16} height={16} color="#000000" />
+                <TouchableOpacity
+                    style={styles.arrowBtn}
+                    onPress={() => handleNavigateWeek("next")}
+                    activeOpacity={0.7}
+                >
+                    <IcArrowR width={14} height={14} color={colors.gray800} />
                 </TouchableOpacity>
             </View>
 
-            {/* Tuần */}
+            {/* Tuần: 7-day strip */}
             <View style={styles.weekStripRow}>
                 {weeklyDaysData.map((item) => {
                     const isSelected = item.fullDate === selectedDate;
@@ -237,7 +249,13 @@ const HomePlanView = ({ navigation }) => {
                             <Text style={[styles.txtSubDay, item.isRed && styles.txtRedColor]}>
                                 {item.dayOfWeek}
                             </Text>
-                            <Text style={[styles.txtMainDay, item.isRed && styles.txtRedColor, isSelected]}>
+                            <Text
+                                style={[
+                                    styles.txtMainDay,
+                                    item.isRed && styles.txtRedColor,
+                                    isSelected && { color: colors.primary },
+                                ]}
+                            >
                                 {item.dayNumber}
                             </Text>
 
@@ -276,7 +294,7 @@ const HomePlanView = ({ navigation }) => {
                 onChange={handleMonthYearChange}
             />
         </SafeAreaView>
-    )
-}
+    );
+};
 
 export default HomePlanView;

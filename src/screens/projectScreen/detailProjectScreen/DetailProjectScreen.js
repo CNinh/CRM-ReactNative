@@ -113,7 +113,7 @@ const DetailProjectScreen = () => {
 
     const title = item?.name || '';
     const dept = item?.dept || '';
-    const opportunity = item?.opportunity.name || '';
+    const opportunity = item?.opportunity?.name || '';
     const stage = item?.stage || '';
     const winRate = item?.successRate + '%' || '0%';
     const expectedValue = formatCurrency(item?.revenue || '0');

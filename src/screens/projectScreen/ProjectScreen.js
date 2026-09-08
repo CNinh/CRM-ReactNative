@@ -6,13 +6,14 @@ import {
     TextInput,
     TouchableOpacity,
     FlatList,
-    ScrollView,
-    StyleSheet
+    ScrollView
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./ProjectScreen.style";
 import ProjectCard from "../../components/cards/ProjectCard";
 import FilterModal from "../../components/modals/filterModal/FilterModal";
+import colors from "../../constants/colors";
+
 import IcSearch from "../../assets/icons/search.svg";
 import IcFilter from "../../assets/icons/filter.svg";
 import IcPlus from "../../assets/icons/plus.svg";
@@ -33,11 +34,11 @@ const ProjectScreen = () => {
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
 
-    /* Filter */
+    /* Filter Helper */
     const getItemName = (id, dataArray) => {
         const found = dataArray?.find(item => item.id === id);
         return found ? (found.title || found.name || found.label) : id;
-    }
+    };
 
     // Xoá dấu dùng cho search
     const removeAccents = (str) => {
@@ -50,9 +51,7 @@ const ProjectScreen = () => {
     };
 
     const filteredData = (project || []).filter(item => {
-        // search
         const cleanSearch = removeAccents(searchText).toLowerCase().trim();
-
         const cleanTitle = removeAccents(item.title || item.name || '').toLowerCase();
         const cleanCode = removeAccents(String(item.code || item.opportunityCode || item.projectCode || '')).toLowerCase();
 
@@ -100,9 +99,7 @@ const ProjectScreen = () => {
     const loadCount = remainingPrj > 10 ? 10 : remainingPrj;
 
     const handleLoadMore = () => {
-        const currentRemaining = filteredData.length - visibleCount;
-        const currentLoad = currentRemaining > 10 ? 10 : currentRemaining;
-        setVisibleCount(prev => prev + currentLoad);
+        setVisibleCount(prev => prev + loadCount);
     };
 
     const getSelectedTags = () => {
@@ -148,6 +145,7 @@ const ProjectScreen = () => {
     };
 
     const activeTags = getSelectedTags();
+    const activeFilterCount = selectedStage.length + selectedService.length + selectedDepartment.length + selectedStaff.length;
 
     const handleRemoveSingleTag = (removeTag) => {
         if (removeTag.type === 'stage') {
@@ -166,12 +164,11 @@ const ProjectScreen = () => {
         setSelectedService([]);
         setSelectedDepartment([]);
         setSelectedStaff([]);
-    }
+    };
 
     useEffect(() => {
         navigation.setOptions({
             handleReload: () => {
-                console.log("Làm mới danh sách dự án");
                 setSearchText('');
                 setVisibleCount(4);
             }
@@ -183,23 +180,40 @@ const ProjectScreen = () => {
             {/* Search & Filter Section */}
             <View style={styles.searchSection}>
                 <View style={styles.searchBox}>
-                    <IcSearch width={20} height={20} color="#D3D5D7" />
+                    <IcSearch width={18} height={18} color={colors.gray400} />
                     <TextInput
                         style={styles.searchInput}
                         placeholder="Tìm theo tên, mã dự án,..."
-                        placeholderTextColor="#8d8e8e"
+                        placeholderTextColor={colors.gray400}
                         value={searchText}
                         onChangeText={setSearchText}
                     />
+                    {searchText.length > 0 && (
+                        <TouchableOpacity onPress={() => setSearchText('')} style={styles.clearBtn}>
+                            <Text style={styles.clearBtnText}>✕</Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
+
                 <TouchableOpacity
                     onPress={() => setIsFilterOpen(true)}
-                    style={styles.btnFilter}
+                    style={[styles.btnFilter, activeFilterCount > 0 && styles.btnFilterActive]}
+                    activeOpacity={0.7}
                 >
-                    <IcFilter width={20} height={20} color="#000000" />
+                    <IcFilter width={18} height={18} color={activeFilterCount > 0 ? colors.primary : colors.gray700} />
+                    {activeFilterCount > 0 && (
+                        <View style={styles.filterBadge}>
+                            <Text style={styles.filterBadgeText}>{activeFilterCount}</Text>
+                        </View>
+                    )}
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btnAdd}>
-                    <IcPlus width={24} height={24} color="#ffffff" style={{ translate: 0.9 }} />
+
+                <TouchableOpacity
+                    style={styles.btnAdd}
+                    onPress={() => console.log('Thêm mới dự án')}
+                    activeOpacity={0.8}
+                >
+                    <IcPlus width={20} height={20} color={colors.white} style={{ translate: 0.9 }} />
                 </TouchableOpacity>
             </View>
 
@@ -224,7 +238,7 @@ const ProjectScreen = () => {
                 }}
             />
 
-            {/*Filter Tags */}
+            {/* Filter Tags Bar */}
             <View style={styles.tagRow}>
                 <ScrollView
                     horizontal
@@ -240,7 +254,6 @@ const ProjectScreen = () => {
                         activeTags.map((tag) => (
                             <View key={tag.id} style={styles.activeTag}>
                                 <Text style={styles.tagText}>{tag.label}</Text>
-
                                 <TouchableOpacity
                                     onPress={() => handleRemoveSingleTag(tag)}
                                     style={styles.btnRemoveTag}
@@ -261,14 +274,13 @@ const ProjectScreen = () => {
                 </TouchableOpacity>
             </View>
 
-            {/* Count & Sort */}
+            {/* Total Count & Sort Control */}
             <View style={styles.subHeaderRow}>
                 <Text style={styles.countText}>
-                    <Text style={{ fontWeight: '700' }}>16,135</Text>
-                    <Text> Khách hàng</Text>
+                    Tổng cộng: <Text style={styles.countHighlight}>{filteredData.length.toLocaleString('vi-VN')}</Text> dự án
                 </Text>
-                <TouchableOpacity style={styles.btnSort}>
-                    <IcSort width={18} height={18} color="#1A7FC1" />
+                <TouchableOpacity style={styles.btnSort} activeOpacity={0.7}>
+                    <IcSort width={14} height={14} color={colors.primary} />
                     <Text style={styles.sortText}>Mới nhất</Text>
                 </TouchableOpacity>
             </View>
@@ -277,21 +289,43 @@ const ProjectScreen = () => {
             <FlatList
                 style={{ flex: 1 }}
                 data={displayData}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item, index) => item?.id ? String(item.id) : index.toString()}
                 renderItem={({ item }) => (
                     <ProjectCard
                         item={item}
                         type="project"
+                        onPress={() => {
+                            navigation.navigate('DetailProjectScreen', {
+                                item: item,
+                                initialTab: 'project'
+                            });
+                        }}
+                        onButtonPress={() => {
+                            navigation.navigate('DetailProjectScreen', {
+                                item: item,
+                                initialTab: 'log'
+                            });
+                        }}
                     />
                 )}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 12, marginTop: 12 }}
-
+                contentContainerStyle={styles.listContent}
+                ListEmptyComponent={() => (
+                    <View style={styles.emptyContainer}>
+                        <IcSearch width={48} height={48} color={colors.gray300} />
+                        <Text style={styles.emptyText}>Không tìm thấy dự án nào</Text>
+                        <Text style={styles.emptySubText}>Vui lòng thử tìm kiếm bằng từ khóa hoặc bộ lọc khác</Text>
+                    </View>
+                )}
                 ListFooterComponent={() => {
                     if (visibleCount < filteredData.length) {
                         return (
-                            <TouchableOpacity style={styles.btnLoadMore} onPress={handleLoadMore}>
-                                <IcPlus width={26} height={26} color="#ffffff" style={{ translateY: 1.2 }} />
+                            <TouchableOpacity
+                                style={styles.btnLoadMore}
+                                onPress={handleLoadMore}
+                                activeOpacity={0.7}
+                            >
+                                <IcPlus width={18} height={18} color={colors.primary} style={{ translate: 0.9 }} />
                                 <Text style={styles.loadMoreText}>Tải thêm {loadCount} dự án</Text>
                             </TouchableOpacity>
                         );

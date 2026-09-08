@@ -1,61 +1,98 @@
 import { StyleSheet } from "react-native";
+import colors from "../../constants/colors";
+import theme from "../../constants/theme";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E4E6E9'
+        backgroundColor: colors.background,
     },
 
     searchSection: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 10,
-        paddingVertical: 14,
-        gap: 5,
-        backgroundColor: '#ffffff',
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        gap: 8,
+        backgroundColor: colors.white,
         borderBottomWidth: 1,
-        borderBottomColor: '#E4E6E9'
+        borderBottomColor: colors.gray200,
     },
 
     searchBox: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: 24,
+        borderRadius: theme.radius.md,
         borderWidth: 1,
-        borderColor: '#D3D5D7',
+        borderColor: colors.gray200,
         height: 40,
-        paddingHorizontal: 10,
-        gap: 3
+        paddingHorizontal: 12,
+        gap: 8,
+        backgroundColor: colors.gray50,
     },
 
     searchInput: {
         flex: 1,
-        fontSize: 14,
-        fontWeight: '300',
-        color: "#000000",
-        paddingBottom: 8
+        fontSize: 13,
+        color: colors.gray900,
+        paddingVertical: 0,
+    },
+
+    clearBtn: {
+        padding: 4,
+    },
+
+    clearBtnText: {
+        fontSize: 12,
+        color: colors.gray400,
+        fontWeight: '700',
     },
 
     btnFilter: {
         width: 40,
         height: 40,
-        borderRadius: 10,
+        borderRadius: theme.radius.md,
         borderWidth: 1,
-        borderColor: '#D3D5D7',
+        borderColor: colors.gray200,
+        backgroundColor: colors.gray50,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+
+    btnFilterActive: {
+        borderColor: colors.primary,
+        backgroundColor: colors.primarySubtle,
+    },
+
+    filterBadge: {
+        position: 'absolute',
+        top: -4,
+        right: -4,
+        width: 16,
+        height: 16,
+        borderRadius: 8,
+        backgroundColor: colors.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1.5,
+        borderColor: colors.white,
+    },
+
+    filterBadgeText: {
+        color: colors.white,
+        fontSize: 9,
+        fontWeight: '700',
     },
 
     btnAdd: {
         width: 40,
         height: 40,
-        borderRadius: 10,
+        borderRadius: theme.radius.md,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#185FA5',
-        backgroundColor: '#4AA0DF'
+        backgroundColor: colors.primary,
+        ...theme.shadows.xs,
     },
 
     tagRow: {
@@ -63,29 +100,30 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 16,
-        paddingVertical: 12,
-        backgroundColor: '#ffffff',
+        paddingVertical: 10,
+        backgroundColor: colors.white,
         borderBottomWidth: 1,
-        borderBottomColor: '#E4E6E9',
-        gap: 8
+        borderBottomColor: colors.gray100,
+        gap: 8,
     },
 
     activeTag: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#E6F1FB',
+        backgroundColor: colors.primarySubtle,
         borderWidth: 1,
-        borderColor: '#185FA5',
-        borderRadius: 20,
-        paddingLeft: 12,
+        borderColor: colors.primaryBorder,
+        borderRadius: theme.radius.full,
+        paddingLeft: 10,
         paddingRight: 8,
         paddingVertical: 4,
-        gap: 4
+        gap: 6,
     },
 
     tagText: {
-        color: '#185FA5',
-        fontSize: 13
+        color: colors.primary,
+        fontSize: 12,
+        fontWeight: '600',
     },
 
     btnRemoveTag: {
@@ -93,15 +131,15 @@ const styles = StyleSheet.create({
     },
 
     xText: {
-        color: '#E24B4A',
+        color: colors.danger,
         fontSize: 11,
         fontWeight: '700',
     },
 
     btnClear: {
-        color: '#E24B4A',
-        fontSize: 13,
-        fontWeight: '500'
+        color: colors.danger,
+        fontSize: 12,
+        fontWeight: '600',
     },
 
     subHeaderRow: {
@@ -109,45 +147,85 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 16,
-        paddingVertical: 12,
-        backgroundColor: '#ffffff'
+        paddingVertical: 10,
+        backgroundColor: colors.white,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.gray200,
     },
 
     countText: {
-        fontSize: 14,
-        color: '#000000'
+        fontSize: 13,
+        color: colors.gray600,
+    },
+
+    countHighlight: {
+        fontWeight: '700',
+        color: colors.gray900,
     },
 
     btnSort: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8
+        gap: 6,
+        backgroundColor: colors.gray50,
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: theme.radius.full,
+        borderWidth: 1,
+        borderColor: colors.gray200,
     },
 
     sortText: {
-        fontSize: 14,
-        fontWeight: '300',
-        color: '#1A7FC1'
+        fontSize: 12,
+        fontWeight: '600',
+        color: colors.primary,
+    },
+
+    listContent: {
+        paddingTop: 10,
+        paddingBottom: 24,
     },
 
     btnLoadMore: {
-        backgroundColor: '#0284C7',
-        borderRadius: 6,
-        paddingVertical: 8,
-        marginHorizontal: 20,
+        backgroundColor: colors.primarySubtle,
+        borderRadius: theme.radius.md,
+        borderWidth: 1.5,
+        borderColor: colors.primary,
+        paddingVertical: 10,
+        marginHorizontal: 16,
+        marginVertical: 10,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 4,
-        marginTop: -2,
-        marginBottom: 10
+        gap: 6,
     },
 
     loadMoreText: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: '500'
-    }
+        color: colors.primary,
+        fontSize: 13,
+        fontWeight: '600',
+    },
+
+    emptyContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 60,
+        paddingHorizontal: 24,
+    },
+
+    emptyText: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: colors.gray700,
+        marginTop: 12,
+    },
+
+    emptySubText: {
+        fontSize: 13,
+        color: colors.gray400,
+        marginTop: 4,
+        textAlign: 'center',
+    },
 });
 
 export default styles;

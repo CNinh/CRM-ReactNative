@@ -1,254 +1,237 @@
 import { StyleSheet } from "react-native";
+import colors from "../../constants/colors";
+import theme from "../../constants/theme";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E4E6E9',
+        backgroundColor: colors.gray50,
     },
 
-    badge: {
-        position: 'absolute',
-        right: -6,
-        top: -6,
-        backgroundColor: 'red',
-        borderRadius: 9,
-        width: 18,
-        height: 18,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-
-    badgeText: {
-        color: '#ffffff',
-        fontsize: 10,
-        fontWeight: 'bold',
+    topSection: {
+        backgroundColor: colors.white,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.gray200,
     },
 
     dateFilterContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 12,
-        paddingVertical: 3,
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        backgroundColor: colors.white,
         borderBottomWidth: 1,
-        borderBottomColor: '#ffffff'
+        borderBottomColor: colors.gray100,
+    },
+
+    dateItem: {
+        flex: 1,
     },
 
     dateLabel: {
-        fontSize: 13,
-        color: '#000000',
-        marginHorizontal: 4,
+        fontSize: 11,
+        fontWeight: '600',
+        color: colors.gray500,
+        marginBottom: 4,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
 
     dateBox: {
-        width: 128,
         flexDirection: 'row',
-        backgroundColor: '#ffffff',
-        paddingVertical: 4,
-        paddingRight: 6,
-        paddingLeft: 8,
-        margin: 3,
-        borderWidth: 0.5,
-        borderColor: '#cccccc',
-        justifyContent: 'space-between',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: colors.gray50,
+        borderRadius: theme.radius.sm,
+        borderWidth: 1,
+        borderColor: colors.gray200,
+        paddingHorizontal: 10,
+        paddingVertical: 7,
     },
 
     dateText: {
         fontSize: 12,
-        color: '#000000'
+        fontWeight: '600',
+        color: colors.gray800,
+    },
+
+    dateArrow: {
+        paddingHorizontal: 6,
+        paddingTop: 16,
+    },
+
+    dateArrowText: {
+        fontSize: 14,
+        color: colors.gray400,
+        fontWeight: '600',
     },
 
     gridContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        gap: 12
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        gap: 10,
     },
 
     reportCard: {
         width: '48%',
-        backgroundColor: '#ffffff',
-        borderRadius: 4,
-        padding: 10,
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        maxWidth: 178,
-        minHeight: 113,
-        elevation: 2,
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 1
+        backgroundColor: colors.white,
+        borderRadius: theme.radius.md,
+        padding: 12,
+        borderWidth: 1,
+        borderColor: colors.gray200,
+        borderLeftWidth: 4,
+        ...theme.shadows.xs,
     },
 
     headerRow: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        gap: 8,
     },
 
     iconBox: {
-        width: 40,
-        height: 40,
-        borderRadius: 8,
+        width: 32,
+        height: 32,
+        borderRadius: theme.radius.xs,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 8
     },
 
     reportTitle: {
-        fontSize: 14,
-        color: '#000000',
-        flex: 1
+        fontSize: 12,
+        fontWeight: '600',
+        color: colors.gray700,
+        flex: 1,
+        lineHeight: 16,
     },
 
     reportValue: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#000000',
-        paddingLeft: 4,
-        marginTop: 6,
-        marginBottom: 2
+        fontSize: 22,
+        fontWeight: '700',
+        color: colors.gray900,
+        marginTop: 8,
+        marginBottom: 4,
     },
 
     bottomContent: {
-        flexDirection: 'column',
-        gap: -2,
-        paddingLeft: 4
+        gap: 2,
     },
 
     reportSub: {
         fontSize: 11,
-        color: '#000000',
+        color: colors.gray500,
+        lineHeight: 15,
     },
 
     boldText: {
-        fontWeight: '700'
-    },
-
-    scrollContainer: {
-        paddingHorizontal: 12,
-        paddingVertical: 10,
-    },
-
-    sectionContainer: {
-        backgroundColor: '#ffffff',
-        borderRadius: 6,
-        padding: 10,
-        borderWidth: 1,
-        borderColor: '#e0e0e0e0',
-    },
-
-    sectionHeader:
-    {
-        backgroundColor: '#E5E7EB',
-        paddingHorizontal: 26,
-        paddingVertical: 13
-    },
-
-    sectionTitle:
-    { fontSize: 16,
-        fontWeight: '500',
-        color: '#000000'
-    },
-
-    loadMoreBtn: {
-        backgroundColor: '#007bff',
-        paddingVertical: 10,
-        borderRadius: 4,
-        alignItems: 'center',
-        marginTop: 10,
-    },
-
-    loadMoreBtnText: {
-        color: '#ffffff',
-        fontWeight: 'bold',
-        fontSize: 14,
-    },
-
-    mockItem: {
-        padding: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: '#f0f0f0',
-        backgroundColor: '#ffffff'
+        fontWeight: '700',
+        color: colors.gray800,
     },
 
     overviewBody: {
         flex: 1,
-        gap: 10
+        paddingBottom: 24,
     },
 
     halfSection: {
-        backgroundColor: '#ffffff',
-        elevation: 2,
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
+        backgroundColor: colors.white,
+        marginTop: 10,
         borderTopWidth: 1,
-        borderTopColor: '#ffffff'
+        borderBottomWidth: 1,
+        borderColor: colors.gray200,
+        ...theme.shadows.xs,
     },
 
-    expandedContainer: {
-        flex: 1
+    sectionHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.gray100,
     },
 
-    scrollListContent: {
-        paddingHorizontal: 12,
-        paddingBottom: 20
+    sectionTitleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+
+    accentBar: {
+        width: 3.5,
+        height: 16,
+        borderRadius: 2,
+        backgroundColor: colors.primary,
+    },
+
+    sectionTitle: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: colors.gray800,
+    },
+
+    viewAllText: {
+        fontSize: 13,
+        fontWeight: '600',
+        color: colors.primary,
     },
 
     searchBox: {
-        backgroundColor: '#ffffff',
-        borderRadius: 6,
+        backgroundColor: colors.gray50,
+        borderRadius: theme.radius.md,
         borderWidth: 1,
-        borderColor: '#D1D5DB',
-        paddingHorizontal: 6,
-        marginVertical: 12,
-        marginHorizontal: 20,
-        height: 36,
+        borderColor: colors.gray200,
+        paddingHorizontal: 12,
+        marginHorizontal: 16,
+        marginVertical: 10,
+        height: 38,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8
+        gap: 8,
     },
 
     searchInput: {
+        flex: 1,
         fontSize: 13,
-        paddingVertical: 6
+        color: colors.gray800,
+        paddingVertical: 0,
     },
 
-    searchTitleBox: {
-        backgroundColor: '#ffffff',
-        marginHorizontal: 12,
-        marginVertical: 8,
-        borderRadius: 6,
-        borderWidth: 1,
-        borderColor: '#D1D5DB',
-        paddingHorizontal: 10,
-        marginHorizontal: 12,
-        height: 38,
-        justifyContent: 'center'
+    clearBtn: {
+        padding: 4,
+    },
+
+    clearBtnText: {
+        fontSize: 12,
+        color: colors.gray400,
+        fontWeight: '700',
     },
 
     btnLoadMore: {
-        backgroundColor: '#0284C7',
-        borderRadius: 6,
-        paddingVertical: 8,
-        marginHorizontal: 20,
+        backgroundColor: colors.primarySubtle,
+        borderRadius: theme.radius.md,
+        borderWidth: 1.5,
+        borderColor: colors.primary,
+        paddingVertical: 9,
+        marginHorizontal: 16,
+        marginBottom: 14,
+        marginTop: 4,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 4,
-        marginTop: -2,
-        marginBottom: 10
+        gap: 6,
     },
 
     loadMoreText: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: '500'
-    }
+        color: colors.primary,
+        fontSize: 13,
+        fontWeight: '600',
+    },
 });
 
 export default styles;

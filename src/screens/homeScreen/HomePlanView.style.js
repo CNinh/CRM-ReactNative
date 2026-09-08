@@ -1,57 +1,59 @@
 import { StyleSheet } from "react-native";
+import colors from "../../constants/colors";
+import theme from "../../constants/theme";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E4E6E9'
+        backgroundColor: colors.gray50,
     },
 
     listPadding: {
-        paddingBottom: 2
+        paddingBottom: 24,
     },
 
     calendarContainer: {
-        backgroundColor: "#ffffff",
-        marginBottom: 10
+        backgroundColor: colors.white,
+        marginBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.gray200,
+        ...theme.shadows.xs,
     },
 
     tierContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: "#E8EBF0",
-        paddingLeft: 22,
-        paddingRight: 32,
-        paddingTop: 10,
-        paddingBottom: 5
+        backgroundColor: colors.white,
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.gray100,
     },
 
     checkboxRow: {
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
     },
 
-    checkbox: {
-        width: 15,
-        height: 15,
-        borderRadius: 4,
-        borderWidth: 1,
-        borderColor: "#7E8387",
-        backgroundColor: "#ffffff",
-        marginRight: 10
+    checkboxContainer: {
+        marginRight: 8,
     },
 
     checkboxLabel: {
-        fontSize: 14,
-        fontWeight: "500",
-        color: "#000000",
-        marginHorizontal: 12
+        fontSize: 13,
+        fontWeight: "600",
+        color: colors.gray700,
     },
 
     txtTotal: {
-        fontSize: 14,
-        fontWeight: "500",
-        color: "#000000"
+        fontSize: 12,
+        fontWeight: "600",
+        color: colors.primary,
+        backgroundColor: colors.primarySubtle,
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: theme.radius.full,
     },
 
     monthSelectorRow: {
@@ -60,89 +62,101 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 16,
         paddingVertical: 10,
-        backgroundColor: "#E8EBF0",
-        borderTopWidth: 1,
-        borderTopColor: "#ffffff"
+        backgroundColor: colors.white,
     },
 
     arrowBtn: {
-        paddingHorizontal: 6,
-        paddingVertical: 4
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: colors.gray100,
+        justifyContent: "center",
+        alignItems: "center",
     },
 
     monthBadge: {
-        backgroundColor: "#ffffff",
-        paddingHorizontal: 60,
+        backgroundColor: colors.gray50,
+        paddingHorizontal: 24,
         paddingVertical: 6,
-        borderRadius: 20,
+        borderRadius: theme.radius.full,
         borderWidth: 1,
-        borderColor: "#D1D5DB"
+        borderColor: colors.gray200,
     },
 
     monthText: {
-        fontSize: 14,
-        fontWeight: "500",
-        color: "#000000"
+        fontSize: 13,
+        fontWeight: "700",
+        color: colors.gray800,
     },
 
     weekStripRow: {
         flexDirection: "row",
-        backgroundColor: "#ffffff"
+        backgroundColor: colors.white,
+        paddingHorizontal: 6,
+        paddingVertical: 8,
+        borderTopWidth: 1,
+        borderTopColor: colors.gray100,
     },
 
     dayItemBtn: {
         flex: 1,
         alignItems: "center",
-        paddingVertical: 3,
-        borderBottomWidth: 2,
-        borderBottomColor: "transparent"
+        paddingVertical: 6,
+        marginHorizontal: 2,
+        borderRadius: theme.radius.sm,
     },
 
     dayItemActive: {
-        borderBottomColor: "#1A7FC1",
+        backgroundColor: colors.primarySubtle,
+        borderWidth: 1,
+        borderColor: colors.primaryBorder,
     },
 
     txtSubDay: {
-        fontSize: 12,
-        color: "#000000",
-        marginBottom: -1
+        fontSize: 11,
+        fontWeight: "600",
+        color: colors.gray500,
+        marginBottom: 2,
     },
 
     txtMainDay: {
         fontSize: 13,
-        color: "#000000"
+        fontWeight: "700",
+        color: colors.gray800,
     },
 
     txtRedColor: {
-        color: "#EF4444"
+        color: colors.danger,
     },
 
     badgeWrapper: {
         height: 16,
         justifyContent: "center",
         alignItems: "center",
-        marginBottom: -1
+        marginTop: 4,
     },
 
     taskBadge: {
-        backgroundColor: "#1A7FC1",
-        width: 16,
+        backgroundColor: colors.primary,
+        minWidth: 16,
         height: 16,
         borderRadius: 8,
+        paddingHorizontal: 4,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
 
     taskBadgeText: {
-        color: "#ffffff",
-        fontSize: 13,
-        lineHeight: 16
+        color: colors.white,
+        fontSize: 10,
+        fontWeight: "700",
+        lineHeight: 12,
     },
 
     emptyBadge: {
         width: 16,
-        height: 16
-    }
+        height: 16,
+    },
 });
 
 export default styles;

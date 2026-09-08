@@ -6,16 +6,13 @@ import {
     ScrollView,
     TouchableOpacity,
     TextInput,
-    StyleSheet,
-    FlatList,
-    LayoutAnimation,
     Platform,
     UIManager,
 } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import styles from "./HomeGeneralView.style";
 import colors from "../../constants/colors";
-import DefaultHeader from "../../components/header/DefaultHeader";
+import theme from "../../constants/theme";
 
 import IcCalendar from "../../assets/icons/calendar.svg";
 import IcFolder from "../../assets/icons/folder.svg";
@@ -25,7 +22,6 @@ import IcTarget from "../../assets/icons/target.svg";
 import OpportunityCard from "../../components/cards/OpportunityCard";
 import ProjectCard from "../../components/cards/ProjectCard";
 import IcSearch from "../../assets/icons/search.svg";
-import IcList from "../../assets/icons/list.svg";
 import IcPlus from "../../assets/icons/plus.svg";
 
 import { mockOpportunity, mockProject } from "../../data/mockData";
@@ -44,9 +40,8 @@ const HomeGeneralView = () => {
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const year = today.getFullYear();
         return `${day}/${month}/${year}`;
-    }
+    };
 
-    const [currentTab, setCurrentTab] = useState('summary');
     const [fromDate, setFromDate] = useState(getCurrentDateString());
     const [toDate, setToDate] = useState(getCurrentDateString());
     const [searchOpportunity, setSearchOpportunity] = useState('');
@@ -97,11 +92,11 @@ const HomeGeneralView = () => {
 
     const handleLoadMoreOpt = () => {
         setVisibleOpportunity(prev => prev + 10);
-    }
+    };
 
     const handleLoadMorePrj = () => {
         setVisibleProject(prev => prev + 10);
-    }
+    };
 
     useEffect(() => {
         navigation.setOptions({
@@ -115,101 +110,155 @@ const HomeGeneralView = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                {/* Date picker | Report grid */}
-                <View style={{ backgroundColor: '#E4E6E9' }}>
-                    {/* Date picker */}
+                {/* Top Section: Date Filter & KPI Executive Grid */}
+                <View style={styles.topSection}>
+                    {/* Date filter bar */}
                     <View style={styles.dateFilterContainer}>
-                        <Text style={styles.dateLabel}>Từ ngày</Text>
-                        <TouchableOpacity style={styles.dateBox}>
-                            <Text style={styles.dateText}>07/05/2026</Text>
-                            <IcCalendar width={20} height={20} color="#000000" />
-                        </TouchableOpacity>
+                        <View style={styles.dateItem}>
+                            <Text style={styles.dateLabel}>Từ ngày</Text>
+                            <TouchableOpacity style={styles.dateBox} activeOpacity={0.7}>
+                                <Text style={styles.dateText}>{fromDate}</Text>
+                                <IcCalendar width={16} height={16} color={colors.gray500} />
+                            </TouchableOpacity>
+                        </View>
 
-                        <Text style={styles.dateLabel}>Đến ngày</Text>
-                        <TouchableOpacity style={styles.dateBox}>
-                            <Text style={styles.dateText}>07/05/2026</Text>
-                            <IcCalendar width={20} height={20} color="#000000" />
-                        </TouchableOpacity>
+                        <View style={styles.dateArrow}>
+                            <Text style={styles.dateArrowText}>→</Text>
+                        </View>
+
+                        <View style={styles.dateItem}>
+                            <Text style={styles.dateLabel}>Đến ngày</Text>
+                            <TouchableOpacity style={styles.dateBox} activeOpacity={0.7}>
+                                <Text style={styles.dateText}>{toDate}</Text>
+                                <IcCalendar width={16} height={16} color={colors.gray500} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
-                    {/* Report Grid */}
+                    {/* KPI Executive Summary Grid */}
                     <View style={styles.gridContainer}>
-                        <View style={styles.reportCard}>
+                        {/* 1. Dự án */}
+                        <TouchableOpacity
+                            style={[styles.reportCard, { borderLeftColor: colors.danger }]}
+                            onPress={() => navigation.navigate('Dự án')}
+                            activeOpacity={0.8}
+                        >
                             <View style={styles.headerRow}>
-                                <View style={[styles.iconBox, { backgroundColor: '#E24B4A' }]}>
-                                    <IcFolder width={20} height={20} color="#ffffff" />
+                                <View style={[styles.iconBox, { backgroundColor: colors.dangerLight }]}>
+                                    <IcFolder width={18} height={18} color={colors.danger} />
                                 </View>
-                                <Text style={styles.reportTitle}>Dự án</Text>
+                                <Text style={styles.reportTitle} numberOfLines={2}>Dự án</Text>
                             </View>
                             <Text style={styles.reportValue}>20</Text>
                             <View style={styles.bottomContent}>
-                                <Text style={styles.reportSub}>DT dự kiến: <Text style={styles.boldText}>10,116 tr</Text></Text>
-                                <Text style={styles.reportSub}>DT thực hiện: <Text style={styles.boldText}>833 tr</Text></Text>
+                                <Text style={styles.reportSub}>
+                                    DT dự kiến: <Text style={styles.boldText}>10,116 tr</Text>
+                                </Text>
+                                <Text style={styles.reportSub}>
+                                    DT thực hiện: <Text style={styles.boldText}>833 tr</Text>
+                                </Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
 
-                        <View style={styles.reportCard}>
+                        {/* 2. Dự án >= 80% */}
+                        <TouchableOpacity
+                            style={[styles.reportCard, { borderLeftColor: colors.success }]}
+                            onPress={() => navigation.navigate('Dự án')}
+                            activeOpacity={0.8}
+                        >
                             <View style={styles.headerRow}>
-                                <View style={[styles.iconBox, { backgroundColor: '#56A856' }]}>
-                                    <IcFolderCheck width={20} height={20} color="#ffffff" />
+                                <View style={[styles.iconBox, { backgroundColor: colors.successLight }]}>
+                                    <IcFolderCheck width={18} height={18} color={colors.success} />
                                 </View>
-                                <Text style={styles.reportTitle}>Dự án ≥ 80%</Text>
+                                <Text style={styles.reportTitle} numberOfLines={2}>Dự án ≥ 80%</Text>
                             </View>
                             <Text style={styles.reportValue}>2</Text>
                             <View style={styles.bottomContent}>
-                                <Text style={styles.reportSub}>DT dự kiến: <Text style={styles.boldText}>10,116 tr</Text></Text>
+                                <Text style={styles.reportSub}>
+                                    DT dự kiến: <Text style={styles.boldText}>10,116 tr</Text>
+                                </Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
 
-                        <View style={styles.reportCard}>
+                        {/* 3. Cơ hội kinh doanh */}
+                        <TouchableOpacity
+                            style={[styles.reportCard, { borderLeftColor: colors.warning }]}
+                            onPress={() => navigation.navigate('Cơ hội')}
+                            activeOpacity={0.8}
+                        >
                             <View style={styles.headerRow}>
-                                <View style={[styles.iconBox, { backgroundColor: '#E19E2E' }]}>
-                                    <IcHandshake width={20} height={20} color="#ffffff" />
+                                <View style={[styles.iconBox, { backgroundColor: colors.warningLight }]}>
+                                    <IcHandshake width={18} height={18} color={colors.warning} />
                                 </View>
-                                <Text style={styles.reportTitle}>Cơ hội{"\n"}kinh doanh</Text>
+                                <Text style={styles.reportTitle} numberOfLines={2}>Cơ hội{"\n"}kinh doanh</Text>
                             </View>
                             <Text style={styles.reportValue}>37</Text>
                             <View style={styles.bottomContent}>
-                                <Text style={styles.reportSub}>DT dự kiến: <Text style={styles.boldText}>10,116 tr</Text></Text>
+                                <Text style={styles.reportSub}>
+                                    DT dự kiến: <Text style={styles.boldText}>10,116 tr</Text>
+                                </Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
 
-                        <View style={styles.reportCard}>
+                        {/* 4. Cơ hội KD >= 80% */}
+                        <TouchableOpacity
+                            style={[styles.reportCard, { borderLeftColor: colors.primary }]}
+                            onPress={() => navigation.navigate('Cơ hội')}
+                            activeOpacity={0.8}
+                        >
                             <View style={styles.headerRow}>
-                                <View style={[styles.iconBox, { backgroundColor: '#3B82D9' }]}>
-                                    <IcTarget width={20} height={20} color="#ffffff" />
+                                <View style={[styles.iconBox, { backgroundColor: colors.primarySubtle }]}>
+                                    <IcTarget width={18} height={18} color={colors.primary} />
                                 </View>
-                                <Text style={styles.reportTitle}>Cơ hội KD ≥ 80%</Text>
+                                <Text style={styles.reportTitle} numberOfLines={2}>Cơ hội KD ≥ 80%</Text>
                             </View>
                             <Text style={styles.reportValue}>29</Text>
                             <View style={styles.bottomContent}>
-                                <Text style={styles.reportSub}>DT dự kiến: <Text style={styles.boldText}>10,116 tr</Text></Text>
+                                <Text style={styles.reportSub}>
+                                    DT dự kiến: <Text style={styles.boldText}>10,116 tr</Text>
+                                </Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
-                {/* Opportunity | Project list */}
+                {/* Main Content: Opportunity & Project Lists */}
                 <View style={styles.overviewBody}>
-                    {/* Opportunity list */}
+                    {/* Opportunity Section */}
                     <View style={styles.halfSection}>
                         <View style={styles.sectionHeader}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 30 }}>
-                                <IcList width={24} height={24} color="#1A7FC1" />
+                            <View style={styles.sectionTitleRow}>
+                                <View style={styles.accentBar} />
                                 <Text style={styles.sectionTitle}>Danh sách cơ hội</Text>
                             </View>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('Cơ hội')}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={styles.viewAllText}>Xem tất cả →</Text>
+                            </TouchableOpacity>
                         </View>
+
                         <View style={styles.searchBox}>
-                            <IcSearch width={18} height={18} color="#D3D5D7" />
+                            <IcSearch width={16} height={16} color={colors.gray400} />
                             <TextInput
-                                style={[styles.searchInput, { flex: 1 }]}
-                                placeholder="Nhập tên cơ hội kinh doanh"
+                                style={styles.searchInput}
+                                placeholder="Nhập tên hoặc mã cơ hội..."
+                                placeholderTextColor={colors.gray400}
                                 value={searchOpportunity}
                                 onChangeText={setSearchOpportunity}
                             />
+                            {searchOpportunity.length > 0 && (
+                                <TouchableOpacity
+                                    onPress={() => setSearchOpportunity('')}
+                                    style={styles.clearBtn}
+                                >
+                                    <Text style={styles.clearBtnText}>✕</Text>
+                                </TouchableOpacity>
+                            )}
                         </View>
 
-                        {getDisplayOpt().map((item, index) => (
+                        {getDisplayOpt().map((item) => (
                             <OpportunityCard
                                 key={item.id}
                                 item={item}
@@ -230,46 +279,79 @@ const HomeGeneralView = () => {
                         ))}
 
                         {visibleOpportunity < (mockOpportunity?.length || 0) && (
-                            <TouchableOpacity style={styles.btnLoadMore} onPress={handleLoadMoreOpt}>
-                                <IcPlus width={26} height={26} color="#ffffff" style={{ translateY: 1.2 }} />
+                            <TouchableOpacity
+                                style={styles.btnLoadMore}
+                                onPress={handleLoadMoreOpt}
+                                activeOpacity={0.7}
+                            >
+                                <IcPlus width={18} height={18} color={colors.primary} style={{ translate: 0.9 }} />
                                 <Text style={styles.loadMoreText}>Tải thêm 10 cơ hội</Text>
                             </TouchableOpacity>
                         )}
                     </View>
 
-                    {/* Project list */}
+                    {/* Project Section */}
                     <View style={styles.halfSection}>
                         <View style={styles.sectionHeader}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 30 }}>
-                                <IcList width={24} height={24} color="#1A7FC1" />
+                            <View style={styles.sectionTitleRow}>
+                                <View style={[styles.accentBar, { backgroundColor: colors.success }]} />
                                 <Text style={styles.sectionTitle}>Danh sách dự án</Text>
                             </View>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('Dự án')}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={[styles.viewAllText, { color: colors.success }]}>Xem tất cả →</Text>
+                            </TouchableOpacity>
                         </View>
+
                         <View style={styles.searchBox}>
-                            <IcSearch width={18} height={18} color="#D3D5D7" />
+                            <IcSearch width={16} height={16} color={colors.gray400} />
                             <TextInput
-                                style={[styles.searchInput, { flex: 1 }]}
-                                placeholder="Nhập tên dự án"
+                                style={styles.searchInput}
+                                placeholder="Nhập tên hoặc mã dự án..."
+                                placeholderTextColor={colors.gray400}
                                 value={searchProject}
                                 onChangeText={setSearchProject}
                             />
+                            {searchProject.length > 0 && (
+                                <TouchableOpacity
+                                    onPress={() => setSearchProject('')}
+                                    style={styles.clearBtn}
+                                >
+                                    <Text style={styles.clearBtnText}>✕</Text>
+                                </TouchableOpacity>
+                            )}
                         </View>
 
-                        {getDisplayPrj().map((item, index) => (
+                        {getDisplayPrj().map((item) => (
                             <ProjectCard
                                 key={item.id}
                                 item={item}
                                 type="home"
+                                onPress={() => {
+                                    navigation.navigate('DetailProjectScreen', {
+                                        item: item,
+                                        initialTab: 'info'
+                                    });
+                                }}
                                 onButtonPress={() => {
-                                    console.log('Hiển thị nhật ký dự án')
+                                    navigation.navigate('DetailProjectScreen', {
+                                        item: item,
+                                        initialTab: 'log'
+                                    });
                                 }}
                             />
                         ))}
 
                         {visibleProject < (mockProject?.length || 0) && (
-                            <TouchableOpacity style={styles.btnLoadMore} onPress={handleLoadMorePrj}>
-                                <IcPlus width={26} height={26} color="#ffffff" style={{ translateY: 1.2 }} />
-                                <Text style={styles.loadMoreText}>Tải thêm 10 dự án</Text>
+                            <TouchableOpacity
+                                style={[styles.btnLoadMore, { borderColor: colors.success, backgroundColor: colors.successLight }]}
+                                onPress={handleLoadMorePrj}
+                                activeOpacity={0.7}
+                            >
+                                <IcPlus width={18} height={18} color={colors.success} style={{ translate: 0.9 }} />
+                                <Text style={[styles.loadMoreText, { color: colors.success }]}>Tải thêm 10 dự án</Text>
                             </TouchableOpacity>
                         )}
                     </View>
